@@ -49,7 +49,7 @@ A production-ready enterprise Clean Architecture template built with **ASP.NET C
 | ASP.NET Core | 10.x | Web Framework |
 | C# | Latest | Programming Language |
 | Entity Framework Core | 10.x | ORM & Database Access |
-| SQL Server / PostgreSQL | - | Database |
+| SQL Server | - | Database |
 | JWT Bearer | Latest | Authentication |
 | Swagger/Swashbuckle | Latest | API Documentation |
 | FluentValidation | Latest | Input Validation |
