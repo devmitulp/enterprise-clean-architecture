@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="API/API.csproj" Id="00e5b70f-7c0d-49eb-9ec7-e08e26bac984" />
+  <Project Path="Application/Application.csproj" Id="52ce1204-c0f8-4c82-857e-32febd4a286f" />
+  <Project Path="Domain/Domain.csproj" Id="9a61c921-87ab-4f9f-868e-300d2a03bba0" />
+  <Project Path="Infrastructure/Infrastructure.csproj" Id="b8ca5ac3-0111-49c9-9273-7ad3cd9f9db9" />
+  <Project Path="Persistence/Persistence.csproj" Id="b1c10932-2489-4d38-a273-83e5a754b51f" />
+  <Project Path="Shared/Shared.csproj" Id="8c622c51-266d-4d75-bd84-98d2a7194db8" />
+</Solution>

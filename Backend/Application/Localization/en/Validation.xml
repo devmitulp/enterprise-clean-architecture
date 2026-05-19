@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<localizationDictionary culture="en">
+
+	<texts>
+
+		<text name="Required">
+			{0} is required.
+		</text>
+
+		<text name="MaxLength">
+			{0} must not exceed {1} characters.
+		</text>
+
+		<text name="InvalidCredentials">
+			Invalid username or password.
+		</text>
+
+	</texts>
+
+</localizationDictionary>
