@@ -13,13 +13,14 @@ builder.Services.AddControllers();
 builder.Services
     .AddFluentValidationAutoValidation();
 
-// Clean registration
-builder.Services.AddSwaggerServices();
+// Clean registration - Extension registration
+builder.Services.AddApiConfiguration(builder.Configuration);
 builder.Services.AddApplicationSettings(builder.Configuration);
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddInfrastructure();
 builder.Services.AddJwtAuthentication();
 builder.Services.AddValidators();
+builder.Services.AddSwaggerServices();
 
 var app = builder.Build();
 
@@ -30,10 +31,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerMiddleware();
 }
 
+app.UseHttpsRedirection();
+app.UseResponseCompression();
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseHttpsRedirection();
+
 app.MapControllers();
 
 app.Run();

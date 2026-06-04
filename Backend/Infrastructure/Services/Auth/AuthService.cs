@@ -26,6 +26,8 @@ namespace Infrastructure.Services.Auth
         public async Task<LoginResponseDto> LoginAsync(LoginRequestDto request)
         {
             var user = await _dbContext.Users
+                .Include(x => x.Employee)
+                    .ThenInclude(x => x.JobTitle)
                 .FirstOrDefaultAsync(x =>
                     x.UserName == request.UserName);
 

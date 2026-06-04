@@ -36,7 +36,8 @@ namespace Infrastructure.Extensions
 
                             IssuerSigningKey =
                                 new SymmetricSecurityKey(
-                                    Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
+                                    Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
+                            ClockSkew = TimeSpan.Zero
                         };
                 });
 
