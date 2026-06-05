@@ -15,7 +15,7 @@ namespace API.Controllers.Auth
 
         public AuthController(IAuthService authService)
         {
-            _authService =  authService;
+            _authService = authService;
         }
 
         [HttpPost("login")]
