@@ -13,7 +13,7 @@ namespace Shared.Exceptions
         }
 
 
-        public ValidationException(IDictionary<string, string[]> errors)
+        public ValidationException(IReadOnlyDictionary<string, string[]> errors)
             : base("One or more validation errors occurred.", ErrorCodes.ValidationError)
         {
             Errors = new Dictionary<string, string[]>(errors);

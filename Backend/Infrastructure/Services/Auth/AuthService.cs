@@ -4,6 +4,7 @@ using Application.Features.Auth;
 using Application.Features.Auth.DTOs;
 using Persistence.Context;
 using Microsoft.EntityFrameworkCore;
+using Shared.Exceptions;
 
 namespace Infrastructure.Services.Auth
 {
@@ -32,16 +33,14 @@ namespace Infrastructure.Services.Auth
                     x.UserName == request.UserName);
 
             if (user == null)
-                throw new Exception("Invalid username or password");
-
-
+                throw new NotFoundException("Invalid username or password");
 
             var isValidPassword = _passwordHelper.VerifyPassword(user,
                 request.Password,
                 user.PasswordHash);
 
             if (!isValidPassword)
-                throw new Exception("Invalid username or password");
+                throw new NotFoundException("Invalid username or password");
 
 
 

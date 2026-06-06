@@ -32,6 +32,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseApplicationMiddleware();
 app.UseResponseCompression();
 app.UseCors();
 

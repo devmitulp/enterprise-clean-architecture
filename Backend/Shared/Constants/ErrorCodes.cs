@@ -11,5 +11,7 @@
         public const string Unauthorized = "UNAUTHORIZED";
 
         public const string Forbidden = "FORBIDDEN";
+
+        public const string InternalServerError = "INTERNAL_SERVER_ERROR";
     }
 }
