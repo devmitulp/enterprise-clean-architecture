@@ -13,7 +13,7 @@ namespace Application.Features.Auth.Validators
                 .Required(nameof(LoginRequestDto.UserName))
                 .MaxLengthValidation(
                     nameof(LoginRequestDto.UserName),
-                    100); ;
+                    100);
 
             RuleFor(x => x.Password)
                 .Required(nameof(LoginRequestDto.Password));

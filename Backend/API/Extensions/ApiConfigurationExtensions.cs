@@ -7,9 +7,7 @@ namespace API.Extensions
 {
     public static class ApiConfigurationExtensions
     {
-        public static IServiceCollection AddApiConfiguration(
-     this IServiceCollection services,
-     IConfiguration configuration)
+        public static IServiceCollection AddApiConfiguration(this IServiceCollection services,IConfiguration configuration)
         {
             // CORS
             services.AddCors(options =>
