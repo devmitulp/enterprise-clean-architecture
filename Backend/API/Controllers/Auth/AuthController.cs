@@ -1,4 +1,5 @@
-﻿using Application.Features.Auth;
+﻿using API.Controllers.Common;
+using Application.Features.Auth;
 using Application.Features.Auth.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,7 @@ namespace API.Controllers.Auth
 {
     [ApiController]
     [Tags("Auth")]
-    [Route("[controller]")]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseApiController
     {
         private readonly IAuthService _authService;
 

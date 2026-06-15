@@ -1,3 +1,4 @@
+using API.Controllers.Common;
 using Application.Common.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,8 +8,7 @@ namespace API.Controllers
     [Authorize]
     [ApiController]
     [Tags("Weather Forecast")]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : BaseApiController
     {
         private readonly IPasswordHelper _passwordHelper;
         private static readonly string[] Summaries =
