@@ -1,8 +1,9 @@
-﻿using Application.Common.Helpers;
-using Application.Features.Auth;
+﻿using Application.Features.Auth;
 using Application.Features.Auth.DTOs;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using Shared.Constants;
 
 namespace API.Controllers.Auth
 {
@@ -18,6 +19,8 @@ namespace API.Controllers.Auth
             _authService = authService;
         }
 
+        [AllowAnonymous]
+        [EnableRateLimiting(RateLimitPolicies.Login)]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequestDto request)
         {

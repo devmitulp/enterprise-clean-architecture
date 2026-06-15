@@ -19,8 +19,14 @@ builder.Services.AddApplicationSettings(builder.Configuration);
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddInfrastructure();
 builder.Services.AddJwtAuthentication();
+builder.Services.AddRateLimiting();
 builder.Services.AddValidators();
 builder.Services.AddSwaggerServices();
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.AddServerHeader = false;
+});
 
 var app = builder.Build();
 
@@ -38,6 +44,7 @@ app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 
 app.MapControllers();
 

@@ -13,6 +13,8 @@ namespace API.Extensions
 
             app.UseMiddleware<GlobalExceptionMiddleware>();
 
+            app.UseMiddleware<SecurityHeadersMiddleware>();
+
             return app;
         }
     }
