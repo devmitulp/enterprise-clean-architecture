@@ -1,30 +1,31 @@
 ﻿using Shared.Constants;
+using Shared.Models;
 
 namespace Shared.Exceptions
 {
     public class ValidationException : AppException
     {
-        public IReadOnlyDictionary<string, string[]> Errors { get; }
+        public IReadOnlyCollection<ValidationError> Errors { get; }
 
         public ValidationException(string message)
             : base(message, ErrorCodes.ValidationError)
         {
-            Errors = new Dictionary<string, string[]>();
+            Errors = Array.Empty<ValidationError>();
         }
 
 
-        public ValidationException(IReadOnlyDictionary<string, string[]> errors)
+        public ValidationException(IReadOnlyCollection<ValidationError> errors)
             : base("One or more validation errors occurred.", ErrorCodes.ValidationError)
         {
-            Errors = new Dictionary<string, string[]>(errors);
+            Errors = errors.ToList().AsReadOnly();
         }
-        public ValidationException(string propertyName,string errorMessage)
+        public ValidationException(string propertyName, string errorMessage)
             : base("One or more validation errors occurred.", ErrorCodes.ValidationError)
         {
-            Errors = new Dictionary<string, string[]>
-            {
-                [propertyName] = new[] { errorMessage }
-            };
+            Errors = new List<ValidationError>
+        {
+            new ValidationError(propertyName, errorMessage)
+        }.AsReadOnly();
         }
     }
 }

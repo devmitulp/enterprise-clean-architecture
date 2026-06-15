@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Shared.Exceptions;
+using Shared.Models;
 using System.IO.Compression;
 
 namespace API.Extensions
@@ -42,12 +43,12 @@ namespace API.Extensions
                     ResponseCompressionDefaults.MimeTypes.Concat(
                     [
                         "application/json",
-                "application/problem+json",
-                "application/pdf",
-                "text/csv",
-                "application/xml",
-                "text/xml",
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                        "application/problem+json",
+                        "application/pdf",
+                        "text/csv",
+                        "application/xml",
+                        "text/xml",
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                     ]);
             });
 
@@ -70,13 +71,32 @@ namespace API.Extensions
 
                 options.InvalidModelStateResponseFactory = context =>
                 {
+                    var dtoType = context.ActionDescriptor.Parameters
+                                  .Select(p => p.ParameterType)
+                                  .FirstOrDefault(t =>
+                                     t != typeof(string) &&
+                                     !t.IsPrimitive);
+
+                    var propertyOrder = dtoType?
+                        .GetProperties()
+                        .Select((p, i) => new { p.Name, i })
+                        .ToDictionary(x => x.Name, x => x.i)
+                        ?? new Dictionary<string, int>();
+
                     var errors = context.ModelState
-                        .Where(x => x.Value?.Errors.Count > 0)
-                        .ToDictionary(
-                            x => x.Key,
-                            x => x.Value!.Errors
-                                .Select(e => e.ErrorMessage)
-                                .ToArray());
+                                .SelectMany(modelState =>
+                                    modelState.Value?.Errors.Select(error =>
+                                        new ValidationError(
+                                            modelState.Key,
+                                            error.ErrorMessage))
+                                    ?? Enumerable.Empty<ValidationError>())
+                                .OrderBy(x =>
+                                    propertyOrder.TryGetValue(
+                                        x.PropertyName,
+                                        out var index)
+                                            ? index
+                                            : int.MaxValue)
+                                .ToList();
 
                     throw new ValidationException(errors);
                 };
