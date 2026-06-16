@@ -1,4 +1,5 @@
-﻿using Shared.Constants;
+﻿using Newtonsoft.Json;
+using Shared.Constants;
 using Shared.Results;
 using System.Threading.RateLimiting;
 
@@ -20,10 +21,12 @@ namespace API.Extensions
                     var response =
                         Result<string>.Failure(
                             "Too many requests. Please try again later.");
+                    
+                    context.HttpContext.Response.ContentType = "application/problem+json";
 
                     await context.HttpContext.Response
-                        .WriteAsJsonAsync(
-                            response,
+                        .WriteAsync(
+                            JsonConvert.SerializeObject(response),
                             cancellationToken);
                 };
 
