@@ -1,9 +1,10 @@
-﻿using Application.Common.Helpers;
+using Application.Common.Helpers;
 using Application.Common.Interfaces.JwtToken;
+using Application.Common.Models;
 using Application.Features.Auth;
 using Application.Features.Auth.DTOs;
-using Persistence.Context;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Context;
 using Shared.Exceptions;
 
 namespace Infrastructure.Services.Auth
@@ -24,33 +25,24 @@ namespace Infrastructure.Services.Auth
             _passwordHelper = passwordHelper;
         }
 
-        public async Task<LoginResponseDto> LoginAsync(LoginRequestDto request)
+        public async Task<TokenResult> LoginAsync(LoginRequestDto request)
         {
             var user = await _dbContext.Users
-                .Include(x => x.Employee)
-                    .ThenInclude(x => x.JobTitle)
-                .FirstOrDefaultAsync(x =>
-                    x.UserName == request.UserName);
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.UserName == request.UserName);
 
-            if (user == null)
-                throw new NotFoundException("Invalid username or password");
+            if (user is null)
+                throw new UnauthorizedException("Invalid username or password.");
 
-            var isValidPassword = _passwordHelper.VerifyPassword(user,
+            var isValidPassword = _passwordHelper.VerifyPassword(
+                user,
                 request.Password,
                 user.PasswordHash);
 
             if (!isValidPassword)
-                throw new NotFoundException("Invalid username or password");
+                throw new UnauthorizedException("Invalid username or password.");
 
-
-
-            var token = _jwtTokenService.GenerateToken(user);
-
-            return new LoginResponseDto
-            {
-                AccessToken = token,
-                ExpirationUtc = DateTime.UtcNow.AddHours(1)
-            };
+            return _jwtTokenService.GenerateToken(user);
         }
     }
 }

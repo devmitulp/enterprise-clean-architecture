@@ -1,9 +1,10 @@
-﻿using Application.Features.Auth.DTOs;
+using Application.Common.Models;
+using Application.Features.Auth.DTOs;
 
 namespace Application.Features.Auth
 {
     public interface IAuthService
     {
-        Task<LoginResponseDto> LoginAsync(LoginRequestDto request);
+        Task<TokenResult> LoginAsync(LoginRequestDto request);
     }
 }

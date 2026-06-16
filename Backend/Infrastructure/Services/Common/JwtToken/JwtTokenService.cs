@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces.JwtToken;
+using Application.Common.Interfaces.JwtToken;
+using Application.Common.Models;
 using Domain.Entities.Users;
 using Infrastructure.Settings;
 using Microsoft.Extensions.Options;
@@ -18,14 +19,16 @@ namespace Infrastructure.Services.Common.JwtToken
             _jwtSettings = jwtSettings.Value;
         }
 
-        public string GenerateToken(User user)
+        public TokenResult GenerateToken(User user)
         {
+            var expiresAt = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes);
+
             var claims = new List<Claim>
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
-        };
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
+            };
 
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
@@ -38,10 +41,15 @@ namespace Infrastructure.Services.Common.JwtToken
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
+                expires: expiresAt,
                 signingCredentials: credentials);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return new TokenResult
+            {
+                AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+                Expiration = expiresAt,
+                ExpiresInMinutes = _jwtSettings.ExpiryMinutes
+            };
         }
     }
 }
