@@ -38,7 +38,7 @@ namespace Persistence.Repositories
 
         public IQueryable<T> AsQueryable()
         {
-            return _dbSet.AsQueryable();
+            return _dbSet.AsQueryable().AsNoTracking();
         }
 
         public async Task AddAsync(T entity)

@@ -30,7 +30,6 @@ namespace Infrastructure.Services.Auth
         {
             var user = await _userRepository
                         .AsQueryable()
-                        .AsNoTracking()
                         .FirstOrDefaultAsync(x => x.UserName == request.UserName);
 
             if (user is null)
