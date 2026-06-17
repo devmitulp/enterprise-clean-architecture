@@ -1,4 +1,4 @@
-﻿using Infrastructure.Settings;
+using Infrastructure.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -12,33 +12,28 @@ namespace Infrastructure.Extensions
         public static IServiceCollection AddJwtAuthentication(
         this IServiceCollection services)
         {
-            var serviceProvider = services.BuildServiceProvider();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer();
 
-            var jwtSettings =
-                serviceProvider
-                    .GetRequiredService<IOptions<JwtSettings>>()
-                    .Value;
-
-            services.AddAuthentication(
-                JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+            services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
+                .Configure<IOptions<JwtSettings>>((options, jwtSettingsOptions) =>
                 {
-                    options.TokenValidationParameters =
-                        new TokenValidationParameters
-                        {
-                            ValidateIssuer = true,
-                            ValidateAudience = true,
-                            ValidateLifetime = true,
-                            ValidateIssuerSigningKey = true,
+                    var jwtSettings = jwtSettingsOptions.Value;
 
-                            ValidIssuer = jwtSettings.Issuer,
-                            ValidAudience = jwtSettings.Audience,
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
 
-                            IssuerSigningKey =
-                                new SymmetricSecurityKey(
-                                    Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
-                            ClockSkew = TimeSpan.Zero
-                        };
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Audience,
+
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
+                        ClockSkew = TimeSpan.Zero
+                    };
                 });
 
             return services;
