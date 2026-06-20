@@ -2,6 +2,7 @@ using API.Extensions;
 using FluentValidation.AspNetCore;
 using Infrastructure.Extensions;
 using Persistence.Extensions;
+using Application.Common.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
