@@ -1,7 +1,6 @@
-﻿using Domain.Common;
+using Domain.Common;
 using Domain.Entities.Employees;
 using Domain.Enums;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.Users
 {
@@ -22,7 +21,6 @@ namespace Domain.Entities.Users
         public string? ExternalProviderId { get; set; }
 
         // Navigation Property
-        [ForeignKey(nameof(EmployeeId))]
         public Employee Employee { get; set; } = default!;
     }
 }

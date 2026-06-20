@@ -1,7 +1,6 @@
-﻿using Domain.Common;
+using Domain.Common;
 using Domain.Entities.JobTitles;
 using Domain.Entities.Users;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.Employees
 {
@@ -18,7 +17,6 @@ namespace Domain.Entities.Employees
         public int JobTitleId { get; set; }
 
         // Navigation Property
-        [ForeignKey(nameof(JobTitleId))]
         public JobTitle JobTitle { get; set; } = default!;
 
         // Navigation
