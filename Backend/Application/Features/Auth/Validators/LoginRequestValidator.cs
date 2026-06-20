@@ -2,20 +2,20 @@ using Application.Common.Extensions;
 using Application.Common.Interfaces.Localization;
 using Application.Common.Validators;
 using Application.Features.Auth.DTOs;
-using FluentValidation;
 
 namespace Application.Features.Auth.Validators
 {
     public class LoginRequestValidator : BaseValidator<LoginRequestDto>
     {
-        public LoginRequestValidator(ILocalizationService localizer) : base(localizer)
+        public LoginRequestValidator(ILocalizationService localizer)
+            : base(localizer)
         {
             RuleFor(x => x.UserName)
-                .Required(nameof(LoginRequestDto.UserName))
-                .MaxLengthValidation(nameof(LoginRequestDto.UserName), 100);
+                .Required(nameof(LoginRequestDto.UserName), L)
+                .MaxLengthValidation(nameof(LoginRequestDto.UserName), 100, L);
 
             RuleFor(x => x.Password)
-                .Required(nameof(LoginRequestDto.Password));
+                .Required(nameof(LoginRequestDto.Password), L);
         }
     }
 }

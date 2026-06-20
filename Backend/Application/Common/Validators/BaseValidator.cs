@@ -1,4 +1,3 @@
-using Application.Common.Extensions;
 using Application.Common.Interfaces.Localization;
 using FluentValidation;
 
@@ -11,7 +10,6 @@ namespace Application.Common.Validators
         protected BaseValidator(ILocalizationService localizer)
         {
             L = localizer;
-            ValidatorExtensions.Configure(localizer);
         }
     }
 }
