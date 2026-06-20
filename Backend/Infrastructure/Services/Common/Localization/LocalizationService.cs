@@ -1,17 +1,18 @@
-﻿using System.Xml.Linq;
+using Application.Common.Interfaces.Localization;
+using System.Xml.Linq;
 
-namespace Application.Common.Helpers
+namespace Infrastructure.Services.Common.Localization
 {
-    public static class LocalizationHelper
+    public class LocalizationService : ILocalizationService
     {
-        private static readonly Dictionary<string, string> _messages = new(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, string> _messages = new(StringComparer.OrdinalIgnoreCase);
 
-        static LocalizationHelper()
+        public LocalizationService()
         {
             LoadMessages();
         }
 
-        public static string L(string key, params object[] args)
+        public string L(string key, params object[] args)
         {
             if (!_messages.TryGetValue(key, out var value))
             {
@@ -30,7 +31,7 @@ namespace Application.Common.Helpers
             }
         }
 
-        private static void LoadMessages()
+        private void LoadMessages()
         {
             var localizationPath = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,

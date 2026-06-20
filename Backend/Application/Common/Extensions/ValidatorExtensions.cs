@@ -1,10 +1,24 @@
-﻿using Application.Common.Helpers;
+using Application.Common.Interfaces.Localization;
 using FluentValidation;
+using System;
 
 namespace Application.Common.Extensions
 {
     public static class ValidatorExtensions
     {
+        private static ILocalizationService? _localizer;
+
+        public static void Configure(ILocalizationService localizer)
+        {
+            if (_localizer != null)
+            {
+                return; // Guard to keep the reference write-protected (read-only)
+            }
+            _localizer = localizer;
+        }
+
+        private static ILocalizationService Localizer => _localizer ?? throw new InvalidOperationException("Localization service is not configured.");
+
         public static IRuleBuilderOptions<T, TProperty>
         Required<T, TProperty>(
             this IRuleBuilder<T, TProperty> ruleBuilder,
@@ -13,7 +27,7 @@ namespace Application.Common.Extensions
             return ruleBuilder
                 .NotEmpty()
                 .WithMessage(
-                    LocalizationHelper.L(
+                    Localizer.L(
                         "Required",
                         propertyName));
         }
@@ -27,7 +41,7 @@ namespace Application.Common.Extensions
             return ruleBuilder
                 .MaximumLength(length)
                 .WithMessage(
-                    LocalizationHelper.L(
+                    Localizer.L(
                         "MaxLength",
                         propertyName,
                         length));
