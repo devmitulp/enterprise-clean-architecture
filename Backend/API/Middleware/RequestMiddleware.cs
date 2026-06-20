@@ -1,4 +1,4 @@
-﻿namespace API.Middleware
+namespace API.Middleware
 {
     public class RequestMiddleware
     {
@@ -17,19 +17,12 @@
         public async Task InvokeAsync(
             HttpContext context)
         {
-            try
-            {
             _logger.LogInformation(
                 "Request: {Method} {Path}",
                 context.Request.Method,
                 context.Request.Path);
 
             await _next(context);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
         }
     }
 }

@@ -23,10 +23,7 @@ builder.Services.AddRateLimiting();
 builder.Services.AddValidators();
 builder.Services.AddSwaggerServices();
 
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.AddServerHeader = false;
-});
+builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
 
 var app = builder.Build();
 

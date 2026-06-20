@@ -1,10 +1,7 @@
-﻿using Domain.Entities.Users;
+using Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Persistence.Seeding.Users;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Persistence.Configurations.Users
 {
@@ -37,7 +34,7 @@ namespace Persistence.Configurations.Users
             builder.HasOne(x => x.Employee)
                 .WithOne(x => x.User)
                 .HasForeignKey<User>(x => x.EmployeeId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasData(UserSeedData.Data);
         }

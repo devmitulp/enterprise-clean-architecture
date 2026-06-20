@@ -1,7 +1,5 @@
-﻿using Domain.Entities.JobTitles;
+using Domain.Entities.JobTitles;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Persistence.Seeding.JobTitles
 {

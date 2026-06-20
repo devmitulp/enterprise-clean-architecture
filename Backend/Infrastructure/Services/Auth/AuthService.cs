@@ -5,7 +5,6 @@ using Application.Common.Models;
 using Application.Features.Auth;
 using Application.Features.Auth.DTOs;
 using Domain.Entities.Users;
-using Microsoft.EntityFrameworkCore;
 using Shared.Exceptions;
 
 namespace Infrastructure.Services.Auth
@@ -29,8 +28,7 @@ namespace Infrastructure.Services.Auth
         public async Task<TokenResult> LoginAsync(LoginRequestDto request)
         {
             var user = await _userRepository
-                        .AsQueryable()
-                        .FirstOrDefaultAsync(x => x.UserName == request.UserName);
+                        .FirstOrDefaultAsync(x => x.UserName == request.UserName && x.IsActive);
 
             if (user is null)
                 throw new UnauthorizedException("Invalid username or password.");

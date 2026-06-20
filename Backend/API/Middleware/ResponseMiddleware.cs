@@ -1,4 +1,4 @@
-﻿namespace API.Middleware
+namespace API.Middleware
 {
     public class ResponseMiddleware
     {
@@ -19,22 +19,15 @@
         {
             var startTime = DateTime.UtcNow;
 
-            try
-            {
-                await _next(context);
+            await _next(context);
 
-                var duration =
-                    DateTime.UtcNow - startTime;
+            var duration =
+                DateTime.UtcNow - startTime;
 
-                _logger.LogInformation(
-                    "Response: {StatusCode} completed in {Duration} ms",
-                    context.Response.StatusCode,
-                    duration.TotalMilliseconds);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            _logger.LogInformation(
+                "Response: {StatusCode} completed in {Duration} ms",
+                context.Response.StatusCode,
+                duration.TotalMilliseconds);
         }
     }
 }

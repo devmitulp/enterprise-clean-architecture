@@ -1,5 +1,3 @@
-using Domain.Entities.Users;
-
 namespace Application.Common.Interfaces.Persistence
 {
     public interface IUnitOfWork

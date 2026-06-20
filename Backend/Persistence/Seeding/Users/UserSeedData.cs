@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Users;
+using Domain.Entities.Users;
+using Domain.Enums;
 
 namespace Persistence.Seeding.Users
 {
@@ -14,6 +15,7 @@ namespace Persistence.Seeding.Users
                Email = "admin@company.com",
                PasswordHash = "AQAAAAIAAYagAAAAEOEICcDos33D5KeqhPKlST+y37hWet2yDs9KQL4GLEWLrhiJZ4EFQtr5uBkOVtGpzw==",
                IsActive = true,
+               LoginProvider = LoginProvider.Local,
                CreatedDateUtc =
                    new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)
            }
