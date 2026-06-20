@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 using Shared.Exceptions;
 using Shared.Models;
@@ -10,6 +10,14 @@ namespace API.Extensions
     {
         public static IServiceCollection AddApiConfiguration(this IServiceCollection services,IConfiguration configuration)
         {
+            // Configure Forwarded Headers for reverse proxies
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto;
+                options.KnownIPNetworks.Clear();
+                options.KnownProxies.Clear();
+            });
+
             // CORS
             services.AddCors(options =>
             {
