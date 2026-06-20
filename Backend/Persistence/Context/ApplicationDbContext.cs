@@ -1,8 +1,9 @@
-﻿using Domain.Common;
+using Domain.Common;
 using Domain.Entities.Employees;
 using Domain.Entities.JobTitles;
 using Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Persistence.Context
 {
@@ -25,6 +26,20 @@ namespace Persistence.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+            // Configure global query filter for soft-deleted entities
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                if (typeof(AuditableEntity).IsAssignableFrom(entityType.ClrType))
+                {
+                    var parameter = Expression.Parameter(entityType.ClrType, "x");
+                    var property = Expression.Property(parameter, nameof(AuditableEntity.IsDeleted));
+                    var notExpression = Expression.Not(property);
+                    var lambda = Expression.Lambda(notExpression, parameter);
+
+                    modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
+                }
+            }
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
