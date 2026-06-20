@@ -1,8 +1,8 @@
 using API.Extensions;
+using Application.Common.Extensions;
 using FluentValidation.AspNetCore;
 using Infrastructure.Extensions;
 using Persistence.Extensions;
-using Application.Common.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +26,8 @@ builder.Services.AddSwaggerServices();
 builder.WebHost.ConfigureKestrel(options => options.AddServerHeader = false);
 
 var app = builder.Build();
+
+await app.Services.ApplyMigrationsAndSeedAsync();
 
 app.UseForwardedHeaders();
 
