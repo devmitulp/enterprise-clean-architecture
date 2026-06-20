@@ -1,4 +1,4 @@
-﻿using API.Controllers.Common;
+using API.Controllers.Common;
 using Application.Features.Auth;
 using Application.Features.Auth.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -22,9 +22,11 @@ namespace API.Controllers.Auth
         [AllowAnonymous]
         [EnableRateLimiting(RateLimitPolicies.Login)]
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginRequestDto request)
+        public async Task<IActionResult> Login(
+            LoginRequestDto request,
+            CancellationToken ct)
         {
-            var response = await _authService.LoginAsync(request);
+            var response = await _authService.LoginAsync(request, ct);
 
             return Ok(response);
         }

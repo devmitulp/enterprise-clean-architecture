@@ -25,10 +25,14 @@ namespace Infrastructure.Services.Auth
             _passwordHelper = passwordHelper;
         }
 
-        public async Task<TokenResult> LoginAsync(LoginRequestDto request)
+        public async Task<TokenResult> LoginAsync(
+            LoginRequestDto request,
+            CancellationToken ct = default)
         {
             var user = await _userRepository
-                        .FirstOrDefaultAsync(x => x.UserName == request.UserName && x.IsActive);
+                        .FirstOrDefaultAsync(
+                            x => x.UserName == request.UserName && x.IsActive,
+                            ct);
 
             if (user is null)
                 throw new UnauthorizedException("Invalid username or password.");

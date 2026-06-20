@@ -1,5 +1,4 @@
 using Application.Common.Interfaces.Persistence;
-using Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore.Storage;
 using Persistence.Context;
 
@@ -29,28 +28,27 @@ namespace Persistence.Repositories
             return (IRepository<T>)repositoryInstance;
         }
 
-        public IRepository<User> Users => Repository<User>();
 
-        public async Task SaveChangesAsync()
+
+        public async Task SaveChangesAsync(CancellationToken ct = default)
         {
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(ct);
         }
 
-        
-        public async Task BeginTransactionAsync()
+        public async Task BeginTransactionAsync(CancellationToken ct = default)
         {
-            _currentTransaction = await _context.Database.BeginTransactionAsync();
+            _currentTransaction = await _context.Database.BeginTransactionAsync(ct);
         }
 
-        public async Task CommitTransactionAsync()
+        public async Task CommitTransactionAsync(CancellationToken ct = default)
         {
-            await _context.SaveChangesAsync();
-            await _currentTransaction!.CommitAsync();
+            await _context.SaveChangesAsync(ct);
+            await _currentTransaction!.CommitAsync(ct);
         }
 
-        public async Task RollbackTransactionAsync()
+        public async Task RollbackTransactionAsync(CancellationToken ct = default)
         {
-            await _currentTransaction!.RollbackAsync();
+            await _currentTransaction!.RollbackAsync(ct);
         }
 
         public async ValueTask DisposeAsync()

@@ -4,12 +4,12 @@ namespace Application.Common.Interfaces.Persistence
     {
         IRepository<T> Repository<T>() where T : class;
 
-        Task SaveChangesAsync();
+        Task SaveChangesAsync(CancellationToken ct = default);
 
-        Task BeginTransactionAsync();
+        Task BeginTransactionAsync(CancellationToken ct = default);
 
-        Task CommitTransactionAsync();
+        Task CommitTransactionAsync(CancellationToken ct = default);
 
-        Task RollbackTransactionAsync();
+        Task RollbackTransactionAsync(CancellationToken ct = default);
     }
 }

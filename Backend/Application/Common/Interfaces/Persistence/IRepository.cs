@@ -4,20 +4,19 @@ namespace Application.Common.Interfaces.Persistence
 {
     public interface IRepository<T> where T : class
     {
+        Task<T?> GetByIdAsync(int id, CancellationToken ct = default);
 
-        Task<T?> GetByIdAsync(int id);
+        Task<IReadOnlyList<T>> GetAllAsync(CancellationToken ct = default);
 
-        Task<IReadOnlyList<T>> GetAllAsync();
+        Task<IReadOnlyList<T>> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default);
 
-        Task<IReadOnlyList<T>> FindAsync(Expression<Func<T, bool>> predicate);
-
-        Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
+        Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default);
 
         IQueryable<T> AsQueryable();
 
-        Task AddAsync(T entity);
+        Task AddAsync(T entity, CancellationToken ct = default);
 
-        Task AddRangeAsync(IEnumerable<T> entities);
+        Task AddRangeAsync(IEnumerable<T> entities, CancellationToken ct = default);
 
         void Update(T entity);
 
@@ -25,8 +24,8 @@ namespace Application.Common.Interfaces.Persistence
 
         void RemoveRange(IEnumerable<T> entities);
 
-        Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate);
+        Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default);
 
-        Task<int> CountAsync(Expression<Func<T, bool>> predicate);
+        Task<int> CountAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default);
     }
 }
