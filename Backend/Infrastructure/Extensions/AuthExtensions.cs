@@ -1,4 +1,5 @@
 using Infrastructure.Settings;
+using Infrastructure.Services.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -12,6 +13,8 @@ namespace Infrastructure.Extensions
         public static IServiceCollection AddJwtAuthentication(
         this IServiceCollection services)
         {
+            services.AddScoped<CustomJwtBearerEvents>();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer();
 
@@ -34,6 +37,11 @@ namespace Infrastructure.Extensions
                             Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
                         ClockSkew = TimeSpan.Zero
                     };
+
+                    options.EventsType = typeof(CustomJwtBearerEvents);
+
+                    options.TokenHandlers.Clear();
+                    options.TokenHandlers.Add(new CustomJwtSecurityTokenHandler());
                 });
 
             return services;

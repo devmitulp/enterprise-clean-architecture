@@ -1,9 +1,10 @@
+using System.Linq.Expressions;
+using Application.Common.Contexts;
 using Domain.Common;
 using Domain.Entities.Employees;
 using Domain.Entities.JobTitles;
 using Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Persistence.Context
 {
@@ -47,16 +48,20 @@ namespace Persistence.Context
             var entries = ChangeTracker
                 .Entries<AuditableEntity>();
 
+            var currentUserId = UserContext.UserId;
+
             foreach (var entry in entries)
             {
                 if (entry.State == EntityState.Added)
                 {
                     entry.Entity.CreatedDateUtc = DateTime.UtcNow;
+                    entry.Entity.CreatedBy = currentUserId;
                 }
 
                 if (entry.State == EntityState.Modified)
                 {
                     entry.Entity.UpdatedDateUtc = DateTime.UtcNow;
+                    entry.Entity.UpdatedBy = currentUserId;
                 }
             }
 
