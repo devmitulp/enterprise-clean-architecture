@@ -39,9 +39,6 @@ namespace Infrastructure.Extensions
                     };
 
                     options.EventsType = typeof(CustomJwtBearerEvents);
-
-                    options.TokenHandlers.Clear();
-                    options.TokenHandlers.Add(new CustomJwtSecurityTokenHandler());
                 });
 
             return services;
