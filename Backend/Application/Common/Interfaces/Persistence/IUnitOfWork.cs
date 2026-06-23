@@ -1,6 +1,6 @@
 namespace Application.Common.Interfaces.Persistence
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IAsyncDisposable
     {
         IRepository<T> Repository<T>() where T : class;
 

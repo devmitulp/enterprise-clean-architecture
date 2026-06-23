@@ -42,7 +42,6 @@ namespace Persistence.Repositories
 
         public async Task CommitTransactionAsync(CancellationToken ct = default)
         {
-            await _context.SaveChangesAsync(ct);
             await _currentTransaction!.CommitAsync(ct);
         }
 
@@ -57,6 +56,8 @@ namespace Persistence.Repositories
             {
                 await _currentTransaction.DisposeAsync();
             }
+
+            await _context.DisposeAsync();
         }
     }
 }
