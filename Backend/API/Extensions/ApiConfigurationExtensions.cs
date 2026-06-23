@@ -1,24 +1,44 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
-using Shared.Exceptions;
+using Shared.Constants;
 using Shared.Models;
+using Shared.Results;
 using System.IO.Compression;
 
 namespace API.Extensions
 {
     public static class ApiConfigurationExtensions
     {
-        public static IServiceCollection AddApiConfiguration(this IServiceCollection services,IConfiguration configuration)
+        /// <summary>
+        /// Configures forwarded headers so that the application correctly reads
+        /// the client IP and protocol when running behind a reverse proxy (e.g. nginx, YARP, Azure App Gateway).
+        /// </summary>
+        public static IServiceCollection AddForwardedHeadersConfiguration(
+            this IServiceCollection services)
         {
-            // Configure Forwarded Headers for reverse proxies
             services.Configure<ForwardedHeadersOptions>(options =>
             {
-                options.ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto;
+                options.ForwardedHeaders =
+                    Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor |
+                    Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto;
+
+                // Trust all proxies/networks — narrow this down in production
+                // to the actual known proxy IP ranges.
                 options.KnownIPNetworks.Clear();
                 options.KnownProxies.Clear();
             });
 
-            // CORS
+            return services;
+        }
+
+        /// <summary>
+        /// Configures the CORS default policy from <c>CorsSettings:AllowedOrigins</c>
+        /// in configuration.
+        /// </summary>
+        public static IServiceCollection AddCorsPolicy(
+            this IServiceCollection services,
+            IConfiguration configuration)
+        {
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(policy =>
@@ -40,7 +60,16 @@ namespace API.Extensions
                 });
             });
 
-            // Compression
+            return services;
+        }
+
+        /// <summary>
+        /// Registers GZIP response compression for JSON, PDF, CSV, XML, and
+        /// Office Open XML MIME types.
+        /// </summary>
+        public static IServiceCollection AddGzipResponseCompression(
+            this IServiceCollection services)
+        {
             services.AddResponseCompression(options =>
             {
                 options.EnableForHttps = true;
@@ -61,14 +90,24 @@ namespace API.Extensions
             });
 
             services.Configure<GzipCompressionProviderOptions>(options =>
-            {
-                options.Level = CompressionLevel.Fastest;
-            });
+                options.Level = CompressionLevel.Fastest);
 
-            // MVC + Json + Validation
-            services.AddControllers()
+            return services;
+        }
+
+        /// <summary>
+        /// Registers MVC controllers with Pascal-case JSON serialization and a
+        /// custom model-validation error response that maps validation failures
+        /// to the application's standard <see cref="ErrorResponse"/> shape.
+        /// </summary>
+        public static IServiceCollection AddMvcConfiguration(
+            this IServiceCollection services)
+        {
+            services
+                .AddControllers()
                 .AddJsonOptions(options =>
                 {
+                    // Preserve Pascal-case property names — matches the DTOs as written.
                     options.JsonSerializerOptions.PropertyNamingPolicy = null;
                     options.JsonSerializerOptions.DictionaryKeyPolicy = null;
                 });
@@ -77,8 +116,12 @@ namespace API.Extensions
             {
                 options.SuppressModelStateInvalidFilter = false;
 
+                // Return a structured ErrorResponse instead of the default ProblemDetails
+                // so that clients always receive a consistent error envelope.
                 options.InvalidModelStateResponseFactory = context =>
                 {
+                    // Determine field order from the DTO so errors are returned
+                    // in the same top-to-bottom order they appear on the request type.
                     var dtoType = context.ActionDescriptor.Parameters
                                   .Select(p => p.ParameterType)
                                   .FirstOrDefault(t =>
@@ -106,7 +149,17 @@ namespace API.Extensions
                                             : int.MaxValue)
                                 .ToList();
 
-                    throw new ValidationException(errors);
+                    var response = new ErrorResponse
+                    {
+                        StatusCode = StatusCodes.Status400BadRequest,
+                        Succeeded = false,
+                        Message = "One or more validation errors occurred.",
+                        ErrorCode = ErrorCodes.ValidationError,
+                        Errors = errors,
+                        TraceId = context.HttpContext.TraceIdentifier
+                    };
+
+                    return new BadRequestObjectResult(response);
                 };
             });
 

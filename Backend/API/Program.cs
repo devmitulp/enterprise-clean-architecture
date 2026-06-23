@@ -14,7 +14,10 @@ builder.Services
     .AddFluentValidationAutoValidation();
 
 // Clean registration - Extension registration
-builder.Services.AddApiConfiguration(builder.Configuration);
+builder.Services.AddForwardedHeadersConfiguration();
+builder.Services.AddCorsPolicy(builder.Configuration);
+builder.Services.AddGzipResponseCompression();
+builder.Services.AddMvcConfiguration();
 builder.Services.AddApplicationSettings(builder.Configuration);
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddInfrastructure();
