@@ -1,6 +1,7 @@
-﻿using Application.Common.Helpers;
+using Application.Common.Helpers;
 using Domain.Entities.Users;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Services.Common.Helpers
 {
@@ -8,9 +9,9 @@ namespace Infrastructure.Services.Common.Helpers
     {
         private readonly PasswordHasher<User> _passwordHasher;
 
-        public PasswordHelper()
+        public PasswordHelper(IOptions<PasswordHasherOptions> options)
         {
-            _passwordHasher = new PasswordHasher<User>();
+            _passwordHasher = new PasswordHasher<User>(options);
         }
 
         public string HashPassword(User user, string password)
