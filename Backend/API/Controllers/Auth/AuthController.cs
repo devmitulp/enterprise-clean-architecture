@@ -23,7 +23,7 @@ namespace API.Controllers.Auth
         [EnableRateLimiting(RateLimitPolicies.Login)]
         [HttpPost("login")]
         public async Task<IActionResult> Login(
-            LoginRequestDto request,
+            [FromBody] LoginRequestDto request,
             CancellationToken ct)
         {
             var response = await _authService.LoginAsync(request, ct);
