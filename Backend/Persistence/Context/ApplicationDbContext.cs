@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Application.Common.Contexts;
+using Application.Common.Interfaces.Auth;
 using Domain.Common;
 using Domain.Entities.Employees;
 using Domain.Entities.JobTitles;
@@ -10,10 +11,14 @@ namespace Persistence.Context
 {
     public class ApplicationDbContext : DbContext
     {
+        private readonly ICurrentUserContext _userContext;
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(
+            DbContextOptions<ApplicationDbContext> options,
+            ICurrentUserContext userContext)
             : base(options)
         {
+            _userContext = userContext;
         }
 
         public DbSet<JobTitle> JobTitles => Set<JobTitle>();
@@ -48,7 +53,7 @@ namespace Persistence.Context
             var entries = ChangeTracker
                 .Entries<AuditableEntity>();
 
-            var currentUserId = UserContext.UserId;
+            var currentUserId = _userContext.UserId;
 
             foreach (var entry in entries)
             {

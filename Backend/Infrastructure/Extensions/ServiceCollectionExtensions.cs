@@ -1,6 +1,7 @@
 using Application.Common.Helpers;
 using Application.Common.Interfaces.JwtToken;
 using Application.Common.Interfaces.Localization;
+using Application.Common.Interfaces.Auth;
 using Application.Features.Auth;
 using Infrastructure.Services.Auth;
 using Infrastructure.Services.Common.Helpers;
@@ -26,6 +27,9 @@ namespace Infrastructure.Extensions
 
             // Auth Service
             services.AddScoped<IAuthService, AuthService>();
+
+            // User Context Service
+            services.AddScoped<ICurrentUserContext, CurrentUserContext>();
 
             return services;
         }
