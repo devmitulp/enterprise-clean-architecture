@@ -103,6 +103,11 @@ namespace API.Extensions
         public static IServiceCollection AddMvcConfiguration(
             this IServiceCollection services)
         {
+            services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+            });
+
             services
                 .AddControllers()
                 .AddJsonOptions(options =>
