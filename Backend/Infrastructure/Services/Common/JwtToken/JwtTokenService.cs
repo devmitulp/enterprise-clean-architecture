@@ -20,7 +20,7 @@ namespace Infrastructure.Services.Common.JwtToken
             _jwtSettings = jwtSettings.Value;
         }
 
-        public TokenResult GenerateToken(User user)
+        public TokenResult GenerateToken(User user, string refreshToken)
         {
             var expiresAt = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes);
 
@@ -49,8 +49,43 @@ namespace Infrastructure.Services.Common.JwtToken
             {
                 AccessToken = _tokenHandler.WriteToken(token),
                 Expiration = expiresAt,
-                ExpiresInMinutes = _jwtSettings.ExpiryMinutes
+                ExpiresInMinutes = _jwtSettings.ExpiryMinutes,
+                RefreshToken = refreshToken
             };
+        }
+
+        public string GenerateRefreshToken()
+        {
+            var randomNumber = System.Security.Cryptography.RandomNumberGenerator.GetBytes(64);
+            return Convert.ToBase64String(randomNumber);
+        }
+
+        public ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey)),
+                ValidateLifetime = false
+            };
+
+            try
+            {
+                var principal = _tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+                if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+                    !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.OrdinalIgnoreCase))
+                {
+                    return null;
+                }
+
+                return principal;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ using Domain.Common;
 using Domain.Entities.Employees;
 using Domain.Entities.JobTitles;
 using Domain.Entities.Users;
+using Domain.Entities.UserSessions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Context
@@ -26,6 +27,8 @@ namespace Persistence.Context
         public DbSet<Employee> Employees => Set<Employee>();
 
         public DbSet<User> Users => Set<User>();
+
+        public DbSet<UserSession> UserSessions => Set<UserSession>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

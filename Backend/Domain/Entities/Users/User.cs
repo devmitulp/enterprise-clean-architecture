@@ -1,5 +1,6 @@
 using Domain.Common;
 using Domain.Entities.Employees;
+using Domain.Entities.UserSessions;
 using Domain.Enums;
 
 namespace Domain.Entities.Users
@@ -20,5 +21,7 @@ namespace Domain.Entities.Users
 
         // Navigation Property
         public Employee Employee { get; set; } = default!;
+
+        public ICollection<UserSession> UserSessions { get; set; } = new List<UserSession>();
     }
 }

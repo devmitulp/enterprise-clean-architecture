@@ -26,7 +26,22 @@ namespace API.Controllers.Auth
             [FromBody] LoginRequestDto request,
             CancellationToken ct)
         {
-            var response = await _authService.LoginAsync(request, ct);
+            var userAgent = Request.Headers.UserAgent.ToString();
+            var timeZone = Request.Headers["X-Timezone"].ToString();
+            var response = await _authService.LoginAsync(request, userAgent, timeZone, ct);
+
+            return Ok(response);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh(
+            [FromBody] RefreshTokenRequestDto request,
+            CancellationToken ct)
+        {
+            var userAgent = Request.Headers.UserAgent.ToString();
+            var timeZone = Request.Headers["X-Timezone"].ToString();
+            var response = await _authService.RefreshTokenAsync(request, userAgent, timeZone, ct);
 
             return Ok(response);
         }

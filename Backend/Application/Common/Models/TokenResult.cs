@@ -7,5 +7,7 @@ namespace Application.Common.Models
         public DateTime Expiration { get; set; }
 
         public int ExpiresInMinutes { get; set; }
+
+        public string RefreshToken { get; set; } = string.Empty;
     }
 }
