@@ -1,4 +1,4 @@
-using Infrastructure.Settings;
+using Application.Common.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
