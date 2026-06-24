@@ -19,11 +19,11 @@ namespace API.Middleware
         public async Task InvokeAsync(
             HttpContext context)
         {
-            var startTime = DateTime.UtcNow;
+            var sw = Stopwatch.StartNew();
 
             await _next(context);
 
-            var sw = Stopwatch.StartNew();
+            sw.Stop();
 
             _logger.LogInformation(
                 "Response: {StatusCode} completed in {Duration} ms",

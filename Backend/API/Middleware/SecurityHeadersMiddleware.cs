@@ -1,5 +1,3 @@
-using System.Reflection.PortableExecutable;
-
 namespace API.Middleware
 {
     public class SecurityHeadersMiddleware
