@@ -1,16 +1,19 @@
 using Application.Common.Interfaces.Localization;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Infrastructure.Services.Common.Localization
 {
     public class LocalizationService : ILocalizationService
     {
+        private readonly IWebHostEnvironment _env;
         private readonly Dictionary<string, string> _messages = new(StringComparer.OrdinalIgnoreCase);
         private readonly object _lock = new();
         private bool _isLoaded;
 
-        public LocalizationService()
+        public LocalizationService(IWebHostEnvironment env)
         {
+            _env = env;
             LoadMessages();
         }
 
@@ -48,7 +51,7 @@ namespace Infrastructure.Services.Common.Localization
                 }
 
                 var localizationPath = Path.Combine(
-                    AppDomain.CurrentDomain.BaseDirectory,
+                    _env.ContentRootPath,
                     "Localization",
                     "en");
 
