@@ -63,7 +63,15 @@ namespace Persistence.Repositories
 
         public void Remove(T entity)
         {
-            _dbSet.Remove(entity);
+            if (entity is AuditableEntity auditableEntity)
+            {
+                auditableEntity.IsDeleted = true;
+                _dbSet.Update(entity);
+            }
+            else
+            {
+                _dbSet.Remove(entity);
+            }
         }
 
         public void RemoveRange(IEnumerable<T> entities)
