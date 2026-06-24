@@ -1,8 +1,10 @@
+using Domain.Common;
+
 namespace Application.Common.Interfaces.Persistence
 {
     public interface IUnitOfWork : IAsyncDisposable
     {
-        IRepository<T> Repository<T>() where T : class;
+        IRepository<T> Repository<T>() where T : BaseEntity;
 
         Task SaveChangesAsync(CancellationToken ct = default);
 

@@ -1,11 +1,12 @@
 using Application.Common.Interfaces.Persistence;
+using Domain.Common;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Context;
 using System.Linq.Expressions;
 
 namespace Persistence.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         private readonly ApplicationDbContext _context;
         private readonly DbSet<T> _dbSet;

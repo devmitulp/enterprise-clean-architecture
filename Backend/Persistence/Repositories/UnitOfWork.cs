@@ -1,4 +1,5 @@
 using Application.Common.Interfaces.Persistence;
+using Domain.Common;
 using Microsoft.EntityFrameworkCore.Storage;
 using Persistence.Context;
 
@@ -15,7 +16,7 @@ namespace Persistence.Repositories
             _context = context;
         }
 
-        public IRepository<T> Repository<T>() where T : class
+        public IRepository<T> Repository<T>() where T : BaseEntity
         {
             var entityType = typeof(T);
 

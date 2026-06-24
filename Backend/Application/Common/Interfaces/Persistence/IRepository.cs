@@ -1,8 +1,9 @@
+using Domain.Common;
 using System.Linq.Expressions;
 
 namespace Application.Common.Interfaces.Persistence
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> where T : BaseEntity
     {
         Task<T?> GetByIdAsync(int id, CancellationToken ct = default);
 
