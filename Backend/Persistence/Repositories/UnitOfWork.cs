@@ -43,12 +43,46 @@ namespace Persistence.Repositories
 
         public async Task CommitTransactionAsync(CancellationToken ct = default)
         {
-            await _currentTransaction!.CommitAsync(ct);
+            if (_currentTransaction == null)
+            {
+                throw new InvalidOperationException("No active transaction to commit.");
+            }
+
+            try
+            {
+                await _currentTransaction.CommitAsync(ct);
+            }
+            catch
+            {
+                await RollbackTransactionAsync(ct);
+                throw;
+            }
+            finally
+            {
+                if (_currentTransaction != null)
+                {
+                    await _currentTransaction.DisposeAsync();
+                    _currentTransaction = null;
+                }
+            }
         }
 
         public async Task RollbackTransactionAsync(CancellationToken ct = default)
         {
-            await _currentTransaction!.RollbackAsync(ct);
+            if (_currentTransaction == null)
+            {
+                throw new InvalidOperationException("No active transaction to rollback.");
+            }
+
+            try
+            {
+                await _currentTransaction.RollbackAsync(ct);
+            }
+            finally
+            {
+                await _currentTransaction.DisposeAsync();
+                _currentTransaction = null;
+            }
         }
 
         public async ValueTask DisposeAsync()
