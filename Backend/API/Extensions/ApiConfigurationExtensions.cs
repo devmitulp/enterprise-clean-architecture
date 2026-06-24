@@ -14,7 +14,9 @@ namespace API.Extensions
         /// the client IP and protocol when running behind a reverse proxy (e.g. nginx, YARP, Azure App Gateway).
         /// </summary>
         public static IServiceCollection AddForwardedHeadersConfiguration(
-            this IServiceCollection services)
+            this IServiceCollection services,
+            IConfiguration configuration,
+            IWebHostEnvironment environment)
         {
             services.Configure<ForwardedHeadersOptions>(options =>
             {
@@ -22,10 +24,43 @@ namespace API.Extensions
                     Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor |
                     Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto;
 
-                // Trust all proxies/networks — narrow this down in production
-                // to the actual known proxy IP ranges.
+                // Lock down trusted proxies for production environments
                 options.KnownIPNetworks.Clear();
                 options.KnownProxies.Clear();
+
+                if (environment.IsDevelopment())
+                {
+                    // No restrictions for local Development
+                }
+                else
+                {
+                    var knownProxies = configuration.GetSection("ForwardedHeaders:KnownProxies").Get<string[]>();
+                    if (knownProxies != null)
+                    {
+                        foreach (var proxy in knownProxies)
+                        {
+                            if (System.Net.IPAddress.TryParse(proxy, out var ip))
+                            {
+                                options.KnownProxies.Add(ip);
+                            }
+                        }
+                    }
+
+                    var knownIPNetworks = configuration.GetSection("ForwardedHeaders:KnownIPNetworks").Get<string[]>();
+                    if (knownIPNetworks != null)
+                    {
+                        foreach (var networkStr in knownIPNetworks)
+                        {
+                            var parts = networkStr.Split('/');
+                            if (parts.Length == 2 && 
+                                System.Net.IPAddress.TryParse(parts[0], out var prefix) && 
+                                int.TryParse(parts[1], out var prefixLength))
+                            {
+                                options.KnownIPNetworks.Add(new System.Net.IPNetwork(prefix, prefixLength));
+                            }
+                        }
+                    }
+                }
             });
 
             return services;
