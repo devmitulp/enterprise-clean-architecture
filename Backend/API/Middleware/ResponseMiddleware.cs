@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace API.Middleware
 {
     public class ResponseMiddleware
@@ -21,13 +23,12 @@ namespace API.Middleware
 
             await _next(context);
 
-            var duration =
-                DateTime.UtcNow - startTime;
+            var sw = Stopwatch.StartNew();
 
             _logger.LogInformation(
                 "Response: {StatusCode} completed in {Duration} ms",
                 context.Response.StatusCode,
-                duration.TotalMilliseconds);
+                sw.ElapsedMilliseconds);
         }
     }
 }
