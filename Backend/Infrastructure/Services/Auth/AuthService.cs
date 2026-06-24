@@ -5,6 +5,7 @@ using Application.Common.Models;
 using Application.Features.Auth;
 using Application.Features.Auth.DTOs;
 using Domain.Entities.Users;
+using Microsoft.EntityFrameworkCore;
 using Shared.Exceptions;
 
 namespace Infrastructure.Services.Auth
@@ -30,9 +31,11 @@ namespace Infrastructure.Services.Auth
             CancellationToken ct = default)
         {
             var user = await _userRepository
-                        .FirstOrDefaultAsync(
-                            x => x.UserName == request.UserName && x.IsActive,
-                            ct);
+                        .AsQueryable()
+                        .Include(x => x.Employee)
+                        .ThenInclude(x => x.JobTitle)
+                        .Where(x => x.UserName == request.UserName && x.IsActive)
+                        .FirstOrDefaultAsync(ct);
 
             if (user is null)
                 throw new UnauthorizedException("Invalid username or password.");

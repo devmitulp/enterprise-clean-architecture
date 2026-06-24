@@ -12,7 +12,6 @@ namespace Persistence.Seeding.Users
                Id = 1,
                EmployeeId = 1,
                UserName = "admin",
-               Email = "admin@company.com",
                PasswordHash = "AQAAAAIAAYagAAAAEOEICcDos33D5KeqhPKlST+y37hWet2yDs9KQL4GLEWLrhiJZ4EFQtr5uBkOVtGpzw==",
                IsActive = true,
                LoginProvider = LoginProvider.Local,

@@ -17,17 +17,10 @@ namespace Persistence.Configurations.Users
                 .HasMaxLength(100)
                 .IsRequired();
 
-            builder.Property(x => x.Email)
-                .HasMaxLength(200)
-                .IsRequired();
-
             builder.Property(x => x.PasswordHash)
                 .IsRequired();
 
             builder.HasIndex(x => x.UserName)
-                .IsUnique();
-
-            builder.HasIndex(x => x.Email)
                 .IsUnique();
 
             // 1 : 1 Relationship
