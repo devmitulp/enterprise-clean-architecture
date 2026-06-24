@@ -1,4 +1,4 @@
-﻿using System.Reflection.PortableExecutable;
+using System.Reflection.PortableExecutable;
 
 namespace API.Middleware
 {
@@ -45,7 +45,7 @@ namespace API.Middleware
                 "Permissions-Policy",
                 "camera=(), microphone=(), geolocation=()");
 
-            headers.TryAdd("Cross-Origin-Resource-Policy", "same-origin");
+            headers.TryAdd("Cross-Origin-Resource-Policy", "cross-origin");
 
             // HTTP Strict Transport Security (HTTPS only)
             if (context.Request.IsHttps)
