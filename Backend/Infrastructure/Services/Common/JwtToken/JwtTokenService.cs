@@ -1,7 +1,7 @@
 using Application.Common.Interfaces.JwtToken;
 using Application.Common.Models;
 using Domain.Entities.Users;
-using Infrastructure.Settings;
+using Application.Common.Settings;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
