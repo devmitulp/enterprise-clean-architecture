@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Shared.Constants
+﻿namespace Shared.Constants
 {
-    public class RateLimitPolicies
+    public static class RateLimitPolicies
     {
         public const string Login = "LoginPolicy";
 
