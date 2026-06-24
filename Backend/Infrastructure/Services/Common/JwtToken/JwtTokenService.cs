@@ -12,6 +12,7 @@ namespace Infrastructure.Services.Common.JwtToken
 {
     public class JwtTokenService : IJwtTokenService
     {
+        private static readonly JwtSecurityTokenHandler _tokenHandler = new();
         private readonly JwtSettings _jwtSettings;
 
         public JwtTokenService(IOptions<JwtSettings> jwtSettings)
@@ -46,7 +47,7 @@ namespace Infrastructure.Services.Common.JwtToken
 
             return new TokenResult
             {
-                AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+                AccessToken = _tokenHandler.WriteToken(token),
                 Expiration = expiresAt,
                 ExpiresInMinutes = _jwtSettings.ExpiryMinutes
             };
