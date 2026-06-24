@@ -6,6 +6,8 @@ namespace Infrastructure.Services.Common.Localization
     public class LocalizationService : ILocalizationService
     {
         private readonly Dictionary<string, string> _messages = new(StringComparer.OrdinalIgnoreCase);
+        private readonly object _lock = new();
+        private bool _isLoaded;
 
         public LocalizationService()
         {
@@ -33,37 +35,53 @@ namespace Infrastructure.Services.Common.Localization
 
         private void LoadMessages()
         {
-            var localizationPath = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "Localization",
-                "en");
-
-            if (!Directory.Exists(localizationPath))
+            if (_isLoaded)
             {
                 return;
             }
 
-            var xmlFiles = Directory.GetFiles(
-                localizationPath,
-                "*.xml",
-                SearchOption.TopDirectoryOnly);
-
-            foreach (var file in xmlFiles)
+            lock (_lock)
             {
-                var document = XDocument.Load(file);
-
-                foreach (var text in document.Descendants("text"))
+                if (_isLoaded)
                 {
-                    var key = text.Attribute("name")?.Value;
-
-                    if (string.IsNullOrWhiteSpace(key))
-                    {
-                        continue;
-                    }
-
-                    var value = text.Value.Trim();
-                    _messages.TryAdd(key, value);
+                    return;
                 }
+
+                var localizationPath = Path.Combine(
+                    AppDomain.CurrentDomain.BaseDirectory,
+                    "Localization",
+                    "en");
+
+                if (!Directory.Exists(localizationPath))
+                {
+                    _isLoaded = true;
+                    return;
+                }
+
+                var xmlFiles = Directory.GetFiles(
+                    localizationPath,
+                    "*.xml",
+                    SearchOption.TopDirectoryOnly);
+
+                foreach (var file in xmlFiles)
+                {
+                    var document = XDocument.Load(file);
+
+                    foreach (var text in document.Descendants("text"))
+                    {
+                        var key = text.Attribute("name")?.Value;
+
+                        if (string.IsNullOrWhiteSpace(key))
+                        {
+                            continue;
+                        }
+
+                        var value = text.Value.Trim();
+                        _messages.TryAdd(key, value);
+                    }
+                }
+
+                _isLoaded = true;
             }
         }
     }
