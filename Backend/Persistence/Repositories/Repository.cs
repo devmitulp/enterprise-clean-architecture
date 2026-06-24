@@ -76,7 +76,18 @@ namespace Persistence.Repositories
 
         public void RemoveRange(IEnumerable<T> entities)
         {
-            _dbSet.RemoveRange(entities);
+            var list = entities.ToList();
+            var auditables = list.OfType<AuditableEntity>().ToList();
+            var hardDeletes = list.Except(auditables.Cast<T>()).ToList();
+
+            foreach (var entity in auditables)
+                entity.IsDeleted = true;
+
+            if (auditables.Any())
+                _dbSet.UpdateRange(auditables.Cast<T>());
+
+            if (hardDeletes.Any())
+                _dbSet.RemoveRange(hardDeletes);
         }
 
         public async Task<bool> ExistsAsync(
