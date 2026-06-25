@@ -29,7 +29,7 @@ namespace API.Controllers.JobTitles
         [HttpPost]
         public async Task<ActionResult<JobTitleDto>> Create([FromBody] JobTitleInputDto input, CancellationToken ct)
         {
-            var result = await _jobTitleAppService.CreateAsync(input, ct);
+            var result = await _jobTitleAppService.CreateOrUpdateJobTitleAsync(input, ct);
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
 
@@ -41,7 +41,7 @@ namespace API.Controllers.JobTitles
                 return BadRequest("The identifier in the URL path must match the identifier in the request body.");
             }
 
-            var result = await _jobTitleAppService.UpdateAsync(input, ct);
+            var result = await _jobTitleAppService.CreateOrUpdateJobTitleAsync(input, ct);
             return Ok(result);
         }
 

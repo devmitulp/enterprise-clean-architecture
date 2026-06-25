@@ -10,14 +10,22 @@ using System.Linq.Dynamic.Core;
 
 namespace Infrastructure.Services.JobTitles
 {
-    public class JobTitleAppService(
-        IRepository<JobTitle> jobTitleRepository,
-        IUnitOfWork unitOfWork,
-        IMapper mapper) : IJobTitleAppService
+    public class JobTitleAppService : IJobTitleAppService
     {
-        private readonly IRepository<JobTitle> _jobTitleRepository = jobTitleRepository;
-        private readonly IUnitOfWork _unitOfWork = unitOfWork;
-        private readonly IMapper _mapper = mapper;
+        private readonly IRepository<JobTitle> _jobTitleRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
+        public JobTitleAppService(IRepository<JobTitle> jobTitleRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
+        {
+            _jobTitleRepository = jobTitleRepository;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
+
+        #region Public Methods
 
         public async Task<PagedResultDto<JobTitleDto>> GetAllAsync(GetAllJobTitlesInput input, CancellationToken ct = default)
         {
@@ -48,7 +56,30 @@ namespace Infrastructure.Services.JobTitles
             return _mapper.Map<JobTitleDto>(entity);
         }
 
-        public async Task<JobTitleDto> CreateAsync(JobTitleInputDto input, CancellationToken ct = default)
+        public async Task<JobTitleDto> CreateOrUpdateJobTitleAsync(JobTitleInputDto input, CancellationToken ct = default)
+        {
+            if (input.Id.HasValue && input.Id.Value > 0)
+            {
+                return await Update(input, ct);
+            }
+            else
+            {
+                return await Create(input, ct);
+            }
+        }
+
+        public async Task DeleteAsync(int id, CancellationToken ct = default)
+        {
+            var entity = await _jobTitleRepository.GetByIdAsync(id, ct) ?? throw new NotFoundException("JobTitle", id);
+            _jobTitleRepository.Remove(entity);
+            await _unitOfWork.SaveChangesAsync(ct);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private async Task<JobTitleDto> Create(JobTitleInputDto input, CancellationToken ct = default)
         {
             var nameExists = await _jobTitleRepository.ExistsAsync(x => x.Name.ToLower() == input.Name.ToLower(), ct);
             if (nameExists)
@@ -61,9 +92,9 @@ namespace Infrastructure.Services.JobTitles
             return _mapper.Map<JobTitleDto>(entity);
         }
 
-        public async Task<JobTitleDto> UpdateAsync(JobTitleInputDto input, CancellationToken ct = default)
+        private async Task<JobTitleDto> Update(JobTitleInputDto input, CancellationToken ct = default)
         {
-            var id     = input.Id ?? throw new AppException("Id is required for updating a Job Title.");
+            var id = input.Id ?? throw new AppException("Id is required for updating a Job Title.");
             var entity = await _jobTitleRepository.GetByIdAsync(id, ct) ?? throw new NotFoundException("JobTitle", id);
 
             var nameExists = await _jobTitleRepository.ExistsAsync(
@@ -78,11 +109,6 @@ namespace Infrastructure.Services.JobTitles
             return _mapper.Map<JobTitleDto>(entity);
         }
 
-        public async Task DeleteAsync(int id, CancellationToken ct = default)
-        {
-            var entity = await _jobTitleRepository.GetByIdAsync(id, ct) ?? throw new NotFoundException("JobTitle", id);
-            _jobTitleRepository.Remove(entity);
-            await _unitOfWork.SaveChangesAsync(ct);
-        }
+        #endregion
     }
 }

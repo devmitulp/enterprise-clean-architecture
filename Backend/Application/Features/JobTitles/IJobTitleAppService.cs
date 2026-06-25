@@ -9,9 +9,7 @@ namespace Application.Features.JobTitles
 
         Task<JobTitleDto> GetByIdAsync(int id, CancellationToken ct = default);
 
-        Task<JobTitleDto> CreateAsync(JobTitleInputDto input, CancellationToken ct = default);
-
-        Task<JobTitleDto> UpdateAsync(JobTitleInputDto input, CancellationToken ct = default);
+        Task<JobTitleDto> CreateOrUpdateJobTitleAsync(JobTitleInputDto input, CancellationToken ct = default);
 
         Task DeleteAsync(int id, CancellationToken ct = default);
     }
