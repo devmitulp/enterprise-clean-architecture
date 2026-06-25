@@ -6,14 +6,12 @@ namespace Infrastructure.Services.Common.Localization
 {
     public class LocalizationService : ILocalizationService
     {
-        private readonly IWebHostEnvironment _env;
         private readonly Dictionary<string, string> _messages = new(StringComparer.OrdinalIgnoreCase);
-        private readonly object _lock = new();
+        private readonly Lock _lock = new();
         private bool _isLoaded;
 
-        public LocalizationService(IWebHostEnvironment env)
+        public LocalizationService()
         {
-            _env = env;
             LoadMessages();
         }
 
@@ -51,7 +49,7 @@ namespace Infrastructure.Services.Common.Localization
                 }
 
                 var localizationPath = Path.Combine(
-                    _env.ContentRootPath,
+                    AppDomain.CurrentDomain.BaseDirectory,
                     "Localization",
                     "en");
 
