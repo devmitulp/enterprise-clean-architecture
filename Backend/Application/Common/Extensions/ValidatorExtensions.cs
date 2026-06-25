@@ -9,14 +9,17 @@ namespace Application.Common.Extensions
         Required<T, TProperty>(
             this IRuleBuilder<T, TProperty> ruleBuilder,
             string propertyName,
-            ILocalizationService localizer)
+            ILocalizationService localizer,
+            Func<T, bool>? condition = null)
         {
-            return ruleBuilder
+            var options = ruleBuilder
                 .NotEmpty()
                 .WithMessage(
                     localizer.L(
                         "Required",
                         propertyName));
+
+            return condition != null ? options.When(condition) : options;
         }
 
         public static IRuleBuilderOptions<T, string>
@@ -24,15 +27,57 @@ namespace Application.Common.Extensions
                 this IRuleBuilder<T, string> ruleBuilder,
                 string propertyName,
                 int length,
-                ILocalizationService localizer)
+                ILocalizationService localizer,
+                Func<T, bool>? condition = null)
         {
-            return ruleBuilder
+            var options = ruleBuilder
                 .MaximumLength(length)
                 .WithMessage(
                     localizer.L(
                         "MaxLength",
                         propertyName,
                         length));
+
+            return condition != null ? options.When(condition) : options;
+        }
+
+        public static IRuleBuilderOptions<T, TProperty>
+        GreaterThanValidation<T, TProperty>(
+            this IRuleBuilder<T, TProperty> ruleBuilder,
+            string propertyName,
+            TProperty valueToCompare,
+            ILocalizationService localizer,
+            Func<T, bool>? condition = null)
+            where TProperty : IComparable<TProperty>, IComparable
+        {
+            var options = ruleBuilder
+                .GreaterThan(valueToCompare)
+                .WithMessage(
+                    localizer.L(
+                        "GreaterThan",
+                        propertyName,
+                        valueToCompare));
+
+            return condition != null ? options.When(condition) : options;
+        }
+
+        public static IRuleBuilderOptions<T, int?>
+        GreaterThanValidation<T>(
+            this IRuleBuilder<T, int?> ruleBuilder,
+            string propertyName,
+            int valueToCompare,
+            ILocalizationService localizer,
+            Func<T, bool>? condition = null)
+        {
+            var options = ruleBuilder
+                .GreaterThan(valueToCompare)
+                .WithMessage(
+                    localizer.L(
+                        "GreaterThan",
+                        propertyName,
+                        valueToCompare));
+
+            return condition != null ? options.When(condition) : options;
         }
     }
 }

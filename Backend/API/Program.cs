@@ -19,6 +19,7 @@ builder.Services.AddCorsPolicy(builder.Configuration);
 builder.Services.AddGzipResponseCompression();
 builder.Services.AddMvcConfiguration();
 builder.Services.AddApplicationSettings(builder.Configuration);
+builder.Services.AddApplication();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddInfrastructure();
 builder.Services.AddJwtAuthentication();
