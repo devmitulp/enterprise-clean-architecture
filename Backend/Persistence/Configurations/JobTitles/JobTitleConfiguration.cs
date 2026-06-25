@@ -1,4 +1,4 @@
-﻿using Domain.Entities.JobTitles;
+using Domain.Entities.JobTitles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Persistence.Seeding.JobTitles;
@@ -13,10 +13,9 @@ namespace Persistence.Configurations.JobTitles
 
             builder.HasKey(x => x.Id);
 
-            // Manual Id
-            // Prevent auto increment
+            // Auto-increment: SQL Server IDENTITY(1,1)
             builder.Property(x => x.Id)
-                   .ValueGeneratedNever();
+                   .ValueGeneratedOnAdd();
 
             builder.Property(x => x.Name)
                 .HasMaxLength(200)
