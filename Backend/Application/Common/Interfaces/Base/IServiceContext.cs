@@ -11,7 +11,7 @@ namespace Application.Common.Interfaces.Base
 
         IMapper Mapper { get; }
 
-        ICurrentUserContext UserContext { get; }
+        IUserContext UserContext { get; }
 
         ILocalizationService Localization { get; }
 

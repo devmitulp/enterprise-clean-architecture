@@ -1,6 +1,6 @@
 namespace Application.Common.Interfaces.Auth
 {
-    public interface ICurrentUserContext
+    public interface IUserContext
     {
         int? UserId { get; }
         string? UserName { get; }

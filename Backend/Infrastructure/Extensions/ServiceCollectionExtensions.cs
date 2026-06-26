@@ -37,7 +37,7 @@ namespace Infrastructure.Extensions
             services.AddScoped<IAuthService, AuthService>();
 
             // User Context Service
-            services.AddScoped<ICurrentUserContext, CurrentUserContext>();
+            services.AddScoped<IUserContext, UserContext>();
 
             // Job Title Application Service
             services.AddScoped<IJobTitleAppService, JobTitleAppService>();

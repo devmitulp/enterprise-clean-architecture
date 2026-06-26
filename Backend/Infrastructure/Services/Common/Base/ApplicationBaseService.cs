@@ -21,7 +21,7 @@ public class ApplicationBaseService
     protected IMapper ObjectMapper
         => Context.Mapper;
 
-    protected ICurrentUserContext UserContext
+    protected IUserContext UserContext
         => Context.UserContext;
 
     protected ILocalizationService Localization

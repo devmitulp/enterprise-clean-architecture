@@ -12,14 +12,14 @@ namespace Infrastructure.Services.Common.Base
 
         public IMapper Mapper { get; }
 
-        public ICurrentUserContext UserContext { get; }
+        public IUserContext UserContext { get; }
 
         public ILocalizationService Localization { get; }
 
         public ServiceContext(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            ICurrentUserContext userContext,
+            IUserContext userContext,
             ILocalizationService localization
             )
         {

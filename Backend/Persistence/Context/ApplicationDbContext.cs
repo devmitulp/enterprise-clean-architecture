@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using Application.Common.Contexts;
 using Application.Common.Interfaces.Auth;
 using Domain.Common;
 using Domain.Entities.Employees;
@@ -12,11 +11,11 @@ namespace Persistence.Context
 {
     public class ApplicationDbContext : DbContext
     {
-        private readonly ICurrentUserContext _userContext;
+        private readonly IUserContext _userContext;
 
         public ApplicationDbContext(
             DbContextOptions<ApplicationDbContext> options,
-            ICurrentUserContext userContext)
+            IUserContext userContext)
             : base(options)
         {
             _userContext = userContext;
