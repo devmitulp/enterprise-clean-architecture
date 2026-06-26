@@ -54,7 +54,7 @@ namespace Infrastructure.Services.Auth
                         .FirstOrDefaultAsync(ct);
 
             if (user is null)
-                throw new UnauthorizedException("Invalid username or password.");
+                throw new UnauthorizedException(Localization.L("InvalidCredentials"));
 
             var isValidPassword = _passwordHelper.VerifyPassword(
                 user,
@@ -62,7 +62,7 @@ namespace Infrastructure.Services.Auth
                 user.PasswordHash);
 
             if (!isValidPassword)
-                throw new UnauthorizedException("Invalid username or password.");
+                throw new UnauthorizedException(Localization.L("InvalidCredentials"));
 
             var refreshToken = _jwtTokenService.GenerateRefreshToken();
             var tokenResult = _jwtTokenService.GenerateToken(user, refreshToken);
@@ -96,13 +96,13 @@ namespace Infrastructure.Services.Auth
             var principal = _jwtTokenService.GetPrincipalFromExpiredToken(request.AccessToken);
             if (principal is null)
             {
-                throw new UnauthorizedException("Invalid access token or refresh token.");
+                throw new UnauthorizedException(Localization.L("InvalidToken"));
             }
 
             var userIdClaim = principal.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier) ?? principal.FindFirst("sub");
             if (userIdClaim is null || !int.TryParse(userIdClaim.Value, out var userId))
             {
-                throw new UnauthorizedException("Invalid access token or refresh token.");
+                throw new UnauthorizedException(Localization.L("InvalidToken"));
             }
 
             var session = await _sessionRepository
@@ -115,7 +115,7 @@ namespace Infrastructure.Services.Auth
 
             if (session is null || session.RefreshTokenExpiryTime <= DateTime.UtcNow || !session.User.IsActive)
             {
-                throw new UnauthorizedException("Invalid access token or refresh token.");
+                throw new UnauthorizedException(Localization.L("InvalidToken"));
             }
 
             var tokenResult = _jwtTokenService.GenerateToken(session.User, session.RefreshToken);

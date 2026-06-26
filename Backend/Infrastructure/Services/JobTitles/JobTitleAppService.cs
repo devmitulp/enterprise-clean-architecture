@@ -47,7 +47,7 @@ namespace Infrastructure.Services.JobTitles
 
         public async Task<JobTitleDto> GetByIdAsync(int id, CancellationToken ct = default)
         {
-            var entity = await _jobTitleRepository.GetByIdAsync(id, ct) ?? throw new NotFoundException("JobTitle", id);
+            var entity = await _jobTitleRepository.GetByIdAsync(id, ct) ?? throw new NotFoundException(Localization.L("EntityNotFound", "JobTitle", id));
             return ObjectMapper.Map<JobTitleDto>(entity);
         }
 
@@ -65,7 +65,7 @@ namespace Infrastructure.Services.JobTitles
 
         public async Task DeleteAsync(int id, CancellationToken ct = default)
         {
-            var entity = await _jobTitleRepository.GetByIdAsync(id, ct) ?? throw new NotFoundException("JobTitle", id);
+            var entity = await _jobTitleRepository.GetByIdAsync(id, ct) ?? throw new NotFoundException(Localization.L("EntityNotFound", "JobTitle", id));
             _jobTitleRepository.Remove(entity);
             await UnitOfWork.SaveChangesAsync(ct);
         }
@@ -90,7 +90,7 @@ namespace Infrastructure.Services.JobTitles
         private async Task<JobTitleDto> Update(JobTitleInputDto input, CancellationToken ct = default)
         {
             var id = input.Id ?? throw new AppException(Localization.L("JobTitleIdRequiredForUpdate"));
-            var entity = await _jobTitleRepository.GetByIdAsync(id, ct) ?? throw new NotFoundException("JobTitle", id);
+            var entity = await _jobTitleRepository.GetByIdAsync(id, ct) ?? throw new NotFoundException(Localization.L("EntityNotFound", "JobTitle", id));
 
             var nameExists = await _jobTitleRepository.ExistsAsync(
                 x => x.Name.ToLower() == input.Name.ToLower() && x.Id != id, ct);

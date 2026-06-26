@@ -21,6 +21,8 @@
 
 		<text name="JobTitleAlreadyExists">Job title '{0}' already exists.</text>
 		<text name="JobTitleIdRequiredForUpdate">Id is required to update a job title.</text>
+		<text name="InvalidToken">Invalid access token or refresh token.</text>
+		<text name="EntityNotFound">{0} with identifier '{1}' was not found.</text>
 	</texts>
 
 </localizationDictionary>
