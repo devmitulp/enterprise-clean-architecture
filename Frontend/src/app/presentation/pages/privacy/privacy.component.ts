@@ -3,14 +3,8 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 @Component({
   selector: 'app-privacy',
   standalone: true,
-  template: `
-    <div class="py-24 sm:py-32 px-6 lg:px-8 max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl mb-6">Privacy Policy</h2>
-      <p class="text-base leading-7 text-slate-600 dark:text-slate-400">
-        This is a placeholder for your enterprise application's privacy policy. Data security and confidentiality are handled in accordance with GDPR and local compliance requirements.
-      </p>
-    </div>
-  `,
+  templateUrl: './privacy.component.html',
+  styleUrl: './privacy.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PrivacyComponent {}

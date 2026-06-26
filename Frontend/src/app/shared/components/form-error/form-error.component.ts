@@ -4,24 +4,9 @@ import { AbstractControl } from '@angular/forms';
 @Component({
   selector: 'app-form-error',
   standalone: true,
-  template: `
-    @if (control && control.invalid && (control.dirty || control.touched)) {
-      <div class="mt-1.5 text-xs text-rose-600 dark:text-rose-400 flex items-center gap-1.5 animate-fadeIn">
-        <i class="pi pi-exclamation-circle text-xs"></i>
-        <span>{{ errorMessage }}</span>
-      </div>
-    }
-  `,
-  styles: [`
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-3px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fadeIn {
-      animation: fadeIn 200ms ease-out forwards;
-    }
-  `],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './form-error.component.html',
+  styleUrl: './form-error.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormErrorComponent {
   @Input({ required: true }) control!: AbstractControl | null;

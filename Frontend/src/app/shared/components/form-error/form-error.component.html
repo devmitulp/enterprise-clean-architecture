@@ -1,0 +1,6 @@
+@if (control && control.invalid && (control.dirty || control.touched)) {
+  <div class="mt-1.5 text-xs text-rose-600 dark:text-rose-400 flex items-center gap-1.5 animate-fadeIn">
+    <i class="pi pi-exclamation-circle text-xs"></i>
+    <span>{{ errorMessage }}</span>
+  </div>
+}
