@@ -1,0 +1,77 @@
+// ==========================================================================
+// SCSS DESIGN SYSTEM MIXINS (Angular Enterprise Clean Architecture)
+// ==========================================================================
+
+@import 'variables';
+
+// --- Media Queries ---
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: $breakpoint-sm) { @content; }
+  } @else if $breakpoint == md {
+    @media (min-width: $breakpoint-md) { @content; }
+  } @else if $breakpoint == lg {
+    @media (min-width: $breakpoint-lg) { @content; }
+  } @else if $breakpoint == xl {
+    @media (min-width: $breakpoint-xl) { @content; }
+  } @else if $breakpoint == 2xl {
+    @media (min-width: $breakpoint-2xl) { @content; }
+  }
+}
+
+// --- Layout Utilities ---
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// --- Glassmorphic Effect (Premium UI) ---
+@mixin glassmorphism($bg-color: rgba(255, 255, 255, 0.4), $blur: 12px, $border-color: rgba(255, 255, 255, 0.2)) {
+  background: $bg-color;
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid $border-color;
+}
+
+// --- Typography Presets ---
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// --- Custom Scrollbar ---
+@mixin custom-scrollbar($width: 6px, $track-color: $color-neutral-100, $thumb-color: $color-neutral-300) {
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $radius-full;
+    &:hover {
+      background: darken($thumb-color, 10%);
+    }
+  }
+}
+
+// --- Focus Ring Accessibility ---
+@mixin focus-ring {
+  outline: 2px solid $color-primary-500;
+  outline-offset: 2px;
+}

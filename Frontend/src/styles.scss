@@ -1,0 +1,28 @@
+/* ==========================================================================
+   GLOBAL STYLE SHEET (Angular Enterprise Clean Architecture)
+   ========================================================================== */
+
+// 1. Tailwind CSS v4 & Plugins
+@import "tailwindcss";
+@plugin "tailwindcss-primeui";
+
+// 2. Vendor Icons
+@import "@fortawesome/fontawesome-free/css/all.css";
+@import "primeicons/primeicons.css";
+
+// 3. Design System Abstracts
+@import 'styles/abstracts/variables';
+@import 'styles/abstracts/functions';
+@import 'styles/abstracts/mixins';
+
+// 4. Custom Base Resets and Adjustments
+@import 'styles/base/reset';
+
+// Custom CSS Utility classes can be defined below
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'Outfit', 'Inter', sans-serif;
+}

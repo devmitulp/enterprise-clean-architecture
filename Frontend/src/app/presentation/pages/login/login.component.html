@@ -1,0 +1,129 @@
+<div class="flex min-h-[calc(100vh-4rem)] flex-col justify-center py-12 px-6 lg:px-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
+  
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <!-- Branding logo -->
+    <div class="flex justify-center">
+      <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white shadow-xl shadow-indigo-500/25">
+        <i class="pi pi-compass text-2xl animate-spin-slow"></i>
+      </div>
+    </div>
+    <h2 class="mt-6 text-center text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+      Sign in to your account
+    </h2>
+    <p class="mt-2 text-center text-sm text-slate-500 dark:text-slate-400">
+      Or
+      <a [routerLink]="[routePaths.ABOUT]" class="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+        learn about our enterprise framework
+      </a>
+    </p>
+  </div>
+
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[440px]">
+    <!-- Main Login Card -->
+    <div class="bg-white dark:bg-slate-900 px-10 py-10 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-xl transition-all duration-300">
+      
+      @if (loginError()) {
+        <div class="mb-5 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 dark:bg-rose-950/20 dark:border-rose-900 dark:text-rose-400 text-xs flex items-center gap-2">
+          <i class="pi pi-exclamation-triangle"></i>
+          <span>{{ loginError() }}</span>
+        </div>
+      }
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
+        
+        <!-- Email Input -->
+        <div>
+          <app-text-box 
+            formControlName="email"
+            label="Email Address"
+            type="email"
+            placeholder="name@company.com"
+            icon="pi pi-envelope"
+            [required]="true"
+            [invalid]="(emailControl?.invalid && (emailControl?.dirty || emailControl?.touched)) || false">
+          </app-text-box>
+          <app-form-error [control]="emailControl"></app-form-error>
+        </div>
+
+        <!-- Password Input -->
+        <div>
+          <app-text-box 
+            formControlName="password"
+            label="Password"
+            type="password"
+            placeholder="••••••••"
+            icon="pi pi-lock"
+            [required]="true"
+            [invalid]="(passwordControl?.invalid && (passwordControl?.dirty || passwordControl?.touched)) || false">
+          </app-text-box>
+          <app-form-error [control]="passwordControl"></app-form-error>
+        </div>
+
+        <!-- Remember me & Forgot Password -->
+        <div class="flex items-center justify-between">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input 
+              type="checkbox" 
+              formControlName="rememberMe"
+              class="h-4.5 w-4.5 rounded border-slate-300 dark:border-slate-700 text-indigo-600 focus:ring-indigo-500/25 cursor-pointer"
+            />
+            <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 select-none">Remember me</span>
+          </label>
+
+          <a [routerLink]="[routePaths.FORGOT_PASSWORD]" class="text-xs font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+            Forgot password?
+          </a>
+        </div>
+
+        <!-- Local Submit Button -->
+        <div>
+          <button 
+            type="submit" 
+            [disabled]="loginForm.invalid || isSubmitting()"
+            class="w-full flex justify-center items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 py-3 text-sm font-semibold text-white shadow-md hover:from-violet-500 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 disabled:opacity-50 disabled:pointer-events-none active:scale-98 transition-all">
+            @if (isSubmitting()) {
+              <i class="pi pi-spin pi-spinner text-sm animate-spin"></i>
+              <span>Authenticating...</span>
+            } @else {
+              <i class="pi pi-sign-in text-sm"></i>
+              <span>Sign In</span>
+            }
+          </button>
+        </div>
+      </form>
+
+      <!-- Social Provider Separator -->
+      <div class="relative my-6">
+        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+          <div class="w-full border-t border-slate-200 dark:border-slate-800"></div>
+        </div>
+        <div class="relative flex justify-center text-xs font-semibold uppercase tracking-wider">
+          <span class="bg-white dark:bg-slate-900 px-3 text-slate-500">Or continue with</span>
+        </div>
+      </div>
+
+      <!-- OAuth Login Buttons -->
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Google -->
+        <button 
+          type="button"
+          (click)="loginWithGoogle()"
+          class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800/80 hover:shadow-sm font-semibold text-xs transition-all">
+          <i class="fab fa-google text-slate-600 dark:text-slate-400"></i>
+          <span>Google</span>
+        </button>
+
+        <!-- Microsoft -->
+        <button 
+          type="button"
+          (click)="loginWithMicrosoft()"
+          class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800/80 hover:shadow-sm font-semibold text-xs transition-all">
+          <i class="fab fa-windows text-slate-600 dark:text-slate-400"></i>
+          <span>Microsoft</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

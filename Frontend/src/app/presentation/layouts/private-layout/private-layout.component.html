@@ -1,0 +1,166 @@
+<div class="flex h-screen w-screen overflow-hidden bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-300">
+  
+  <!-- Left Sidebar -->
+  <aside 
+    [class.w-64]="!isSidebarCollapsed()" 
+    [class.w-20]="isSidebarCollapsed()"
+    class="flex-shrink-0 h-full border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 transition-all duration-300 flex flex-col z-20">
+    
+    <!-- Sidebar Brand -->
+    <div class="h-16 flex items-center px-4 border-b border-slate-200 dark:border-slate-800 gap-3">
+      <div class="flex h-10 w-10 min-w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white shadow-lg shadow-indigo-500/20">
+        <i class="pi pi-compass text-xl"></i>
+      </div>
+      @if (!isSidebarCollapsed()) {
+        <span class="text-lg font-bold tracking-tight bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent dark:from-violet-400 dark:to-indigo-400">
+          ANTIGRAVITY
+        </span>
+      }
+    </div>
+
+    <!-- Sidebar Navigation (Dynamic & Permission-based) -->
+    <nav class="flex-grow py-4 px-3 space-y-1 overflow-y-auto">
+      @for (item of authorizedMenuItems(); track item.route) {
+        <a [routerLink]="[item.route]" 
+           routerLinkActive="bg-violet-50 text-violet-600 dark:bg-violet-950/30 dark:text-violet-400 font-semibold"
+           class="flex items-center gap-4 px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-200 group">
+          <i [class]="item.icon + ' text-lg transition-transform duration-200 group-hover:scale-110'"></i>
+          @if (!isSidebarCollapsed()) {
+            <span class="text-sm font-medium">{{ item.label }}</span>
+          }
+        </a>
+      }
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="p-4 border-t border-slate-200 dark:border-slate-800">
+      <button 
+        (click)="toggleSidebar()" 
+        class="w-full flex items-center justify-center p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+        <i [class]="isSidebarCollapsed() ? 'pi pi-chevron-right' : 'pi pi-chevron-left'" class="text-sm"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Right Panel -->
+  <div class="flex-grow flex flex-col h-full overflow-hidden">
+    
+    <!-- Top Toolbar -->
+    <header class="h-16 flex-shrink-0 border-b border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md flex items-center justify-between px-6 z-10 transition-colors duration-300">
+      
+      <!-- Toolbar Left: Menu Toggle & Breadcrumb -->
+      <div class="flex items-center gap-4">
+        <button 
+          (click)="toggleSidebar()" 
+          class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none">
+          <i class="pi pi-bars text-lg"></i>
+        </button>
+        
+        <!-- Breadcrumb -->
+        <nav class="hidden md:flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+          <span class="hover:text-slate-800 dark:hover:text-white cursor-pointer">Workspace</span>
+          <i class="pi pi-chevron-right text-[10px]"></i>
+          <span class="text-slate-800 dark:text-white font-semibold">Dashboard</span>
+        </nav>
+      </div>
+
+      <!-- Toolbar Right: Theme Switch, Notifications, Settings, Profile -->
+      <div class="flex items-center gap-2">
+        
+        <!-- Theme Switch -->
+        <button 
+          (click)="toggleTheme()" 
+          title="Toggle Light/Dark Theme"
+          class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-colors">
+          <i [class]="isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'" class="text-lg"></i>
+        </button>
+
+        <!-- Notification Area -->
+        <div class="relative">
+          <button 
+            (click)="toggleNotifications()"
+            class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none relative">
+            <i class="pi pi-bell text-lg"></i>
+            <span class="absolute top-1.5 right-1.5 h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-white dark:ring-slate-900"></span>
+          </button>
+          
+          @if (isNotificationsOpen()) {
+            <div class="absolute right-0 mt-2 w-80 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl py-3 px-4 z-50">
+              <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
+                <span class="font-semibold text-sm">Notifications</span>
+                <span class="text-[10px] text-violet-600 dark:text-violet-400 font-semibold cursor-pointer">Mark all as read</span>
+              </div>
+              <div class="py-3 text-center text-xs text-slate-500">
+                No new notifications.
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Settings Icon -->
+        <a [routerLink]="[routePaths.SETTINGS]" 
+           class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none">
+          <i class="pi pi-cog text-lg"></i>
+        </a>
+
+        <!-- Divider -->
+        <span class="h-6 w-px bg-slate-200 dark:bg-slate-800 mx-1"></span>
+
+        <!-- User Profile Menu -->
+        <div class="relative">
+          <button 
+            (click)="toggleProfileMenu()"
+            class="flex items-center gap-2 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-all">
+            <div class="h-8 w-8 rounded-lg bg-gradient-to-tr from-violet-500 to-indigo-500 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+              JD
+            </div>
+            <div class="hidden sm:block text-left">
+              <p class="text-xs font-semibold leading-none">John Doe</p>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Administrator</p>
+            </div>
+            <i class="pi pi-chevron-down text-[10px] text-slate-400"></i>
+          </button>
+          
+          @if (isProfileMenuOpen()) {
+            <div class="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl py-2 z-50">
+              <div class="px-4 py-2 border-b border-slate-100 dark:border-slate-800">
+                <p class="text-xs text-slate-400">Signed in as</p>
+                <p class="text-sm font-semibold truncate">john.doe@company.com</p>
+              </div>
+              <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                <i class="pi pi-user text-xs"></i> My Profile
+              </a>
+              <a [routerLink]="[routePaths.SETTINGS]" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                <i class="pi pi-sliders-h text-xs"></i> Settings
+              </a>
+              <div class="border-t border-slate-100 dark:border-slate-800 my-1"></div>
+              <button 
+                (click)="logout()" 
+                class="w-full text-left flex items-center gap-3 px-4 py-2 text-sm text-rose-600 dark:text-rose-400 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                <i class="pi pi-sign-out text-xs"></i> Sign Out
+              </button>
+            </div>
+          }
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Content Workspace -->
+    <main class="flex-grow overflow-y-auto p-6 md:p-8 bg-slate-50 dark:bg-slate-950/40">
+      <div class="mx-auto max-w-7xl h-full flex flex-col">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="h-12 flex-shrink-0 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 flex items-center justify-between px-8 text-xs text-slate-500 dark:text-slate-400 transition-colors duration-300">
+      <span>© 2026 ANTIGRAVITY. All rights reserved.</span>
+      <div class="flex gap-4">
+        <a href="#" class="hover:text-slate-800 dark:hover:text-white">Privacy Policy</a>
+        <a href="#" class="hover:text-slate-800 dark:hover:text-white">Terms of Service</a>
+      </div>
+    </footer>
+
+  </div>
+</div>

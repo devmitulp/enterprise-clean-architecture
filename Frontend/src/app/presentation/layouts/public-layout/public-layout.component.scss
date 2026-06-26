@@ -1,0 +1,6 @@
+// Styles specific to the public layout
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: var(--color-neutral-50, #f8fafc);
+}
