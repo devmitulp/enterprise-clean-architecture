@@ -1,28 +1,23 @@
+using System.Linq.Dynamic.Core;
+using Application.Common.Interfaces.Base;
 using Application.Common.Interfaces.Persistence;
 using Application.Features.JobTitles;
 using Application.Features.JobTitles.DTOs;
-using AutoMapper;
 using Domain.Entities.JobTitles;
+using Infrastructure.Services.Common.Base;
 using Microsoft.EntityFrameworkCore;
 using Shared.Exceptions;
 using Shared.Models;
-using System.Linq.Dynamic.Core;
 
 namespace Infrastructure.Services.JobTitles
 {
-    public class JobTitleAppService : IJobTitleAppService
+    public class JobTitleAppService : ApplicationBaseService, IJobTitleAppService
     {
         private readonly IRepository<JobTitle> _jobTitleRepository;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public JobTitleAppService(IRepository<JobTitle> jobTitleRepository,
-        IUnitOfWork unitOfWork,
-        IMapper mapper)
+        public JobTitleAppService(IServiceContext context, IRepository<JobTitle> jobTitleRepository) : base(context)
         {
             _jobTitleRepository = jobTitleRepository;
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         #region Public Methods
@@ -47,13 +42,13 @@ namespace Infrastructure.Services.JobTitles
 
             return new PagedResultDto<JobTitleDto>(
                 totalCount,
-                _mapper.Map<IReadOnlyList<JobTitleDto>>(await query.ToListAsync(ct)));
+                ObjectMapper.Map<IReadOnlyList<JobTitleDto>>(await query.ToListAsync(ct)));
         }
 
         public async Task<JobTitleDto> GetByIdAsync(int id, CancellationToken ct = default)
         {
             var entity = await _jobTitleRepository.GetByIdAsync(id, ct) ?? throw new NotFoundException("JobTitle", id);
-            return _mapper.Map<JobTitleDto>(entity);
+            return ObjectMapper.Map<JobTitleDto>(entity);
         }
 
         public async Task<JobTitleDto> CreateOrUpdateJobTitleAsync(JobTitleInputDto input, CancellationToken ct = default)
@@ -72,7 +67,7 @@ namespace Infrastructure.Services.JobTitles
         {
             var entity = await _jobTitleRepository.GetByIdAsync(id, ct) ?? throw new NotFoundException("JobTitle", id);
             _jobTitleRepository.Remove(entity);
-            await _unitOfWork.SaveChangesAsync(ct);
+            await UnitOfWork.SaveChangesAsync(ct);
         }
 
         #endregion
@@ -83,30 +78,30 @@ namespace Infrastructure.Services.JobTitles
         {
             var nameExists = await _jobTitleRepository.ExistsAsync(x => x.Name.ToLower() == input.Name.ToLower(), ct);
             if (nameExists)
-                throw new AppException($"Job Title with name '{input.Name}' already exists.");
+                throw new AppException(Localization.L("JobTitleAlreadyExists", input.Name));
 
-            var entity = _mapper.Map<JobTitle>(input);
+            var entity = ObjectMapper.Map<JobTitle>(input);
             await _jobTitleRepository.AddAsync(entity, ct);
-            await _unitOfWork.SaveChangesAsync(ct);
+            await UnitOfWork.SaveChangesAsync(ct);
 
-            return _mapper.Map<JobTitleDto>(entity);
+            return ObjectMapper.Map<JobTitleDto>(entity);
         }
 
         private async Task<JobTitleDto> Update(JobTitleInputDto input, CancellationToken ct = default)
         {
-            var id = input.Id ?? throw new AppException("Id is required for updating a Job Title.");
+            var id = input.Id ?? throw new AppException(Localization.L("JobTitleIdRequiredForUpdate"));
             var entity = await _jobTitleRepository.GetByIdAsync(id, ct) ?? throw new NotFoundException("JobTitle", id);
 
             var nameExists = await _jobTitleRepository.ExistsAsync(
                 x => x.Name.ToLower() == input.Name.ToLower() && x.Id != id, ct);
             if (nameExists)
-                throw new AppException($"Job Title with name '{input.Name}' already exists.");
+                throw new AppException(Localization.L("JobTitleAlreadyExists", input.Name));
 
-            _mapper.Map(input, entity);
+            ObjectMapper.Map(input, entity);
             _jobTitleRepository.Update(entity);
-            await _unitOfWork.SaveChangesAsync(ct);
+            await UnitOfWork.SaveChangesAsync(ct);
 
-            return _mapper.Map<JobTitleDto>(entity);
+            return ObjectMapper.Map<JobTitleDto>(entity);
         }
 
         #endregion

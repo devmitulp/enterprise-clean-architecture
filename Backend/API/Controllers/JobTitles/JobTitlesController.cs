@@ -8,9 +8,14 @@ namespace API.Controllers.JobTitles
 {
     [ApiController]
     [Tags("Job Titles")]
-    public class JobTitlesController(IJobTitleAppService jobTitleAppService) : BaseApiController
+    public class JobTitlesController : BaseApiController
     {
-        private readonly IJobTitleAppService _jobTitleAppService = jobTitleAppService;
+        private readonly IJobTitleAppService _jobTitleAppService;
+
+        public JobTitlesController(IJobTitleAppService jobTitleAppService)
+        {
+            _jobTitleAppService = jobTitleAppService;
+        }
 
         [HttpGet]
         public async Task<ActionResult<PagedResultDto<JobTitleDto>>> GetAll([FromQuery] GetAllJobTitlesInput input, CancellationToken ct)

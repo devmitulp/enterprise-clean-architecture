@@ -1,4 +1,5 @@
 using Application.Common.Helpers;
+using Application.Common.Interfaces.Base;
 using Application.Common.Interfaces.JwtToken;
 using Application.Common.Interfaces.Persistence;
 using Application.Common.Models;
@@ -7,34 +8,35 @@ using Application.Features.Auth;
 using Application.Features.Auth.DTOs;
 using Domain.Entities.Users;
 using Domain.Entities.UserSessions;
+using Infrastructure.Services.Common.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Shared.Exceptions;
 
 namespace Infrastructure.Services.Auth
 {
-    public class AuthService : IAuthService
+    public class AuthService : ApplicationBaseService, IAuthService
     {
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<UserSession> _sessionRepository;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly IPasswordHelper _passwordHelper;
-        private readonly IUnitOfWork _unitOfWork;
+
         private readonly JwtSettings _jwtSettings;
 
         public AuthService(
+            IServiceContext context,
             IRepository<User> userRepository,
             IRepository<UserSession> sessionRepository,
             IJwtTokenService jwtTokenService,
             IPasswordHelper passwordHelper,
-            IUnitOfWork unitOfWork,
-            IOptions<JwtSettings> jwtSettings)
+            IOptions<JwtSettings> jwtSettings) : base(context)
         {
             _userRepository = userRepository;
             _sessionRepository = sessionRepository;
             _jwtTokenService = jwtTokenService;
             _passwordHelper = passwordHelper;
-            _unitOfWork = unitOfWork;
+
             _jwtSettings = jwtSettings.Value;
         }
 
@@ -139,7 +141,7 @@ namespace Infrastructure.Services.Auth
             {
                 _sessionRepository.Update(session);
             }
-            await _unitOfWork.SaveChangesAsync(ct);
+            await UnitOfWork.SaveChangesAsync(ct);
         }
     }
 }
