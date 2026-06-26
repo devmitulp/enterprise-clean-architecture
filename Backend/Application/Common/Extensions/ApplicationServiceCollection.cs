@@ -7,7 +7,7 @@ namespace Application.Common.Extensions
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(cfg => {}, Assembly.GetExecutingAssembly());
 
             return services;
         }
