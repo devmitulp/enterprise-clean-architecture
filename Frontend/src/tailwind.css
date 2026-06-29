@@ -1,4 +1,46 @@
 @import "tailwindcss";
 @plugin "tailwindcss-primeui";
 
-/* Force CSS recompile trigger 4 */
+@theme {
+  /* ==========================================================================
+     TAILWIND CSS v4 THEME (Mapped to SCSS _variables.scss Single Source of Truth)
+     ========================================================================== */
+  
+  /* Mapping Tailwind utility classes to global CSS variables defined in SCSS */
+  --color-primary-50: var(--color-primary-50);
+  --color-primary-100: var(--color-primary-100);
+  --color-primary-200: var(--color-primary-200);
+  --color-primary-300: var(--color-primary-300);
+  --color-primary-400: var(--color-primary-400);
+  --color-primary-500: var(--color-primary-500);
+  --color-primary-600: var(--color-primary-600);
+  --color-primary-700: var(--color-primary-700);
+  --color-primary-800: var(--color-primary-800);
+  --color-primary-900: var(--color-primary-900);
+
+  /* Overriding Indigo to point to Primary CSS variables */
+  --color-indigo-50: var(--color-primary-50);
+  --color-indigo-100: var(--color-primary-100);
+  --color-indigo-200: var(--color-primary-200);
+  --color-indigo-300: var(--color-primary-300);
+  --color-indigo-400: var(--color-primary-400);
+  --color-indigo-500: var(--color-primary-500);
+  --color-indigo-600: var(--color-primary-600);
+  --color-indigo-700: var(--color-primary-700);
+  --color-indigo-800: var(--color-primary-800);
+  --color-indigo-900: var(--color-primary-900);
+
+  /* Overriding Violet to point to Secondary/Teal CSS variables */
+  --color-violet-50: var(--color-secondary-50);
+  --color-violet-100: var(--color-secondary-100);
+  --color-violet-200: var(--color-secondary-200);
+  --color-violet-300: var(--color-secondary-300);
+  --color-violet-400: var(--color-secondary-400);
+  --color-violet-500: var(--color-secondary-500);
+  --color-violet-600: var(--color-secondary-600);
+  --color-violet-700: var(--color-secondary-700);
+  --color-violet-800: var(--color-secondary-800);
+  --color-violet-900: var(--color-secondary-900);
+}
+
+/* Force CSS recompile trigger 6 */
