@@ -35,6 +35,14 @@ await app.Services.ApplyMigrationsAndSeedAsync();
 
 app.UseForwardedHeaders();
 
+var supportedCultures = new[] { "en", "gu" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture("en")
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizationOptions);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

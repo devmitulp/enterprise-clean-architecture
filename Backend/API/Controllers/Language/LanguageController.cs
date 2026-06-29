@@ -16,10 +16,10 @@ namespace API.Controllers.Language
         }
 
         [AllowAnonymous]
-        [HttpGet("resources")]
-        public IActionResult GetResources()
+        [HttpGet("{culture}")]
+        public IActionResult GetResources([FromRoute] string? culture = null)
         {
-            var resources = _languageService.GetLanguageResources();
+            var resources = _languageService.GetLanguageResources(culture);
             return Ok(resources);
         }
     }

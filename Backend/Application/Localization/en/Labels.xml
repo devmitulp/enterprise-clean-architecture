@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<localizationDictionary culture="en">
+	<texts>
+		<!-- Login Page -->
+		<text name="SignInToYourAccount">Sign in to your account</text>
+		<text name="WelcomeToOurEnterprisePortal">Welcome to our enterprise portal</text>
+		<text name="EmailAddress">Email Address</text>
+		<text name="EmailPlaceholder">name@company.com</text>
+		<text name="Password">Password</text>
+		<text name="PasswordPlaceholder">••••••••</text>
+		<text name="RememberMe">Remember me</text>
+		<text name="Authenticating">Authenticating...</text>
+		<text name="SignIn">Sign In</text>
+		<text name="OrContinueWith">Or continue with</text>
+		<text name="Google">Google</text>
+		<text name="Microsoft">Microsoft</text>
+
+		<!-- MFA Page -->
+		<text name="TwoFactorAuthentication">Two-Factor Authentication</text>
+		<text name="MfaDescription">Please enter the 6-digit verification code sent to your authenticator app or mobile device.</text>
+		<text name="VerificationCode">Verification Code</text>
+		<text name="VerificationCodePlaceholder">123456</text>
+		<text name="Verifying">Verifying...</text>
+		<text name="VerifyCode">Verify Code</text>
+		<text name="DidNotReceiveCodeResend">Didn't receive the code? Resend</text>
+		<text name="BackToSignIn">Back to Sign In</text>
+	</texts>
+</localizationDictionary>

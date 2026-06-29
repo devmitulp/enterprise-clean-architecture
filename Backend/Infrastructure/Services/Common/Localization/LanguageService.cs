@@ -12,9 +12,9 @@ namespace Infrastructure.Services.Common.Localization
             _localizationService = localizationService;
         }
 
-        public IDictionary<string, string> GetLanguageResources()
+        public IDictionary<string, string> GetLanguageResources(string? culture = null)
         {
-            return _localizationService.GetResources();
+            return _localizationService.GetResources(culture);
         }
     }
 }

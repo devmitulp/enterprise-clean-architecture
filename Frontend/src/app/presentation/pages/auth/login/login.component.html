@@ -13,10 +13,10 @@
     <h2
       class="mt-6 text-center text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white"
     >
-      Sign in to your account
+      {{ 'SignInToYourAccount' | translate }}
     </h2>
     <p class="mt-2 text-center text-sm text-slate-500 dark:text-slate-400">
-      Welcome to our enterprise portal
+      {{ 'WelcomeToOurEnterprisePortal' | translate }}
     </p>
   </div>
 
@@ -39,9 +39,9 @@
         <div>
           <app-text-box
             formControlName="email"
-            label="Email Address"
+            [label]="'EmailAddress' | translate"
             type="email"
-            placeholder="name@company.com"
+            [placeholder]="'EmailPlaceholder' | translate"
             icon="pi pi-envelope"
             [required]="true"
             [invalid]="
@@ -56,9 +56,9 @@
         <div>
           <app-text-box
             formControlName="password"
-            label="Password"
+            [label]="'Password' | translate"
             type="password"
-            placeholder="••••••••"
+            [placeholder]="'PasswordPlaceholder' | translate"
             icon="pi pi-lock"
             [required]="true"
             [invalid]="
@@ -79,7 +79,7 @@
               class="h-4.5 w-4.5 rounded border-slate-300 dark:border-slate-700 text-indigo-600 focus:ring-indigo-500/25 cursor-pointer"
             />
             <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 select-none"
-              >Remember me</span
+              >{{ 'RememberMe' | translate }}</span
             >
           </label>
         </div>
@@ -93,10 +93,10 @@
           >
             @if (isSubmitting()) {
               <i class="pi pi-spin pi-spinner text-sm animate-spin"></i>
-              <span>Authenticating...</span>
+              <span>{{ 'Authenticating' | translate }}</span>
             } @else {
               <i class="pi pi-sign-in text-sm"></i>
-              <span>Sign In</span>
+              <span>{{ 'SignIn' | translate }}</span>
             }
           </button>
         </div>
@@ -108,7 +108,7 @@
           <div class="w-full border-t border-slate-200 dark:border-slate-800"></div>
         </div>
         <div class="relative flex justify-center text-xs font-semibold uppercase tracking-wider">
-          <span class="bg-white dark:bg-slate-900 px-3 text-slate-500">Or continue with</span>
+          <span class="bg-white dark:bg-slate-900 px-3 text-slate-500">{{ 'OrContinueWith' | translate }}</span>
         </div>
       </div>
 
@@ -121,7 +121,7 @@
           class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800/80 hover:shadow-sm font-semibold text-xs transition-all"
         >
           <i class="fab fa-google text-slate-600 dark:text-slate-400"></i>
-          <span>Google</span>
+          <span>{{ 'Google' | translate }}</span>
         </button>
 
         <!-- Microsoft -->
@@ -131,7 +131,7 @@
           class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800/80 hover:shadow-sm font-semibold text-xs transition-all"
         >
           <i class="fab fa-windows text-slate-600 dark:text-slate-400"></i>
-          <span>Microsoft</span>
+          <span>{{ 'Microsoft' | translate }}</span>
         </button>
       </div>
     </div>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<localizationDictionary culture="gu">
+
+	<texts>
+
+		<text name="Required">
+			{0} ફરજિયાત છે.
+		</text>
+
+		<text name="MaxLength">
+			{0} {1} અક્ષરોથી વધુ ન હોવો જોઈએ.
+		</text>
+
+		<text name="GreaterThan">
+			{0} {1} કરતાં મોટો હોવો જોઈએ.
+		</text>
+
+		<text name="InvalidCredentials">
+			અમાન્ય વપરાશકર્તા નામ અથવા પાસવર્ડ.
+		</text>
+
+		<text name="JobTitleAlreadyExists">જોબ શીર્ષક '{0}' પહેલેથી અસ્તિત્વમાં છે.</text>
+		<text name="JobTitleIdRequiredForUpdate">જોબ શીર્ષક અપડેટ કરવા માટે આઈડી જરૂરી છે.</text>
+		<text name="InvalidToken">અમાન્ય એક્સેસ ટોકન અથવા રિફ્રેશ ટોકન.</text>
+		<text name="EntityNotFound">આઇડેન્ટિફાયર '{1}' સાથેનું {0} મળ્યું નથી.</text>
+	</texts>
+
+</localizationDictionary>

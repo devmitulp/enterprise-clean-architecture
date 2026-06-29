@@ -6,6 +6,6 @@ namespace Application.Common.Interfaces.Localization
     {
         string L(string key, params object[] args);
 
-        IDictionary<string, string> GetResources();
+        IDictionary<string, string> GetResources(string? culture = null);
     }
 }

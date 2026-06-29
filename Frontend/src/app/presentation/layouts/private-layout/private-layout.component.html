@@ -26,7 +26,7 @@
            class="flex items-center gap-4 px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-200 group">
           <i [class]="item.icon + ' text-lg transition-transform duration-200 group-hover:scale-110'"></i>
           @if (!isSidebarCollapsed()) {
-            <span class="text-sm font-medium">{{ item.label }}</span>
+            <span class="text-sm font-medium">{{ item.label | translate }}</span>
           }
         </a>
       }
@@ -58,19 +58,48 @@
         
         <!-- Breadcrumb -->
         <nav class="hidden md:flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
-          <span class="hover:text-slate-800 dark:hover:text-white cursor-pointer">Workspace</span>
+          <span class="hover:text-slate-800 dark:hover:text-white cursor-pointer">{{ 'LAYOUT.WORKSPACE' | translate }}</span>
           <i class="pi pi-chevron-right text-[10px]"></i>
-          <span class="text-slate-800 dark:text-white font-semibold">Dashboard</span>
+          <span class="text-slate-800 dark:text-white font-semibold">{{ 'LAYOUT.DASHBOARD' | translate }}</span>
         </nav>
       </div>
 
-      <!-- Toolbar Right: Theme Switch, Notifications, Settings, Profile -->
+      <!-- Toolbar Right: Language Switch, Theme Switch, Notifications, Settings, Profile -->
       <div class="flex items-center gap-2">
+
+        <!-- Language Switcher -->
+        <div class="relative">
+          <button 
+            (click)="toggleLanguageMenu()"
+            [title]="'LAYOUT.LANG_TOGGLE' | translate"
+            class="flex items-center gap-1.5 p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-colors">
+            <i class="pi pi-globe text-lg"></i>
+            <span class="text-xs font-semibold uppercase">{{ currentLang() }}</span>
+          </button>
+          
+          @if (isLanguageMenuOpen()) {
+            <div class="absolute right-0 mt-2 w-32 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl py-2 z-50">
+              @for (lang of availableLanguages; track lang.code) {
+                <button 
+                  (click)="changeLanguage(lang.code)"
+                  [class.text-violet-600]="currentLang() === lang.code"
+                  [class.dark:text-violet-400]="currentLang() === lang.code"
+                  [class.font-semibold]="currentLang() === lang.code"
+                  class="w-full text-left flex items-center justify-between px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                  <span>{{ lang.name }}</span>
+                  @if (currentLang() === lang.code) {
+                    <i class="pi pi-check text-xs"></i>
+                  }
+                </button>
+              }
+            </div>
+          }
+        </div>
         
         <!-- Theme Switch -->
         <button 
           (click)="toggleTheme()" 
-          title="Toggle Light/Dark Theme"
+          [title]="'LAYOUT.THEME_TOGGLE' | translate"
           class="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-colors">
           <i [class]="isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'" class="text-lg"></i>
         </button>
@@ -87,11 +116,11 @@
           @if (isNotificationsOpen()) {
             <div class="absolute right-0 mt-2 w-80 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl py-3 px-4 z-50">
               <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
-                <span class="font-semibold text-sm">Notifications</span>
-                <span class="text-[10px] text-violet-600 dark:text-violet-400 font-semibold cursor-pointer">Mark all as read</span>
+                <span class="font-semibold text-sm">{{ 'LAYOUT.NOTIFICATIONS' | translate }}</span>
+                <span class="text-[10px] text-violet-600 dark:text-violet-400 font-semibold cursor-pointer">{{ 'LAYOUT.MARK_READ' | translate }}</span>
               </div>
               <div class="py-3 text-center text-xs text-slate-500">
-                No new notifications.
+                {{ 'LAYOUT.NO_NOTIFICATIONS' | translate }}.
               </div>
             </div>
           }
@@ -116,7 +145,7 @@
             </div>
             <div class="hidden sm:block text-left">
               <p class="text-xs font-semibold leading-none">John Doe</p>
-              <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Administrator</p>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">{{ 'LAYOUT.ADMINISTRATOR' | translate }}</p>
             </div>
             <i class="pi pi-chevron-down text-[10px] text-slate-400"></i>
           </button>
@@ -124,20 +153,20 @@
           @if (isProfileMenuOpen()) {
             <div class="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl py-2 z-50">
               <div class="px-4 py-2 border-b border-slate-100 dark:border-slate-800">
-                <p class="text-xs text-slate-400">Signed in as</p>
+                <p class="text-xs text-slate-400">{{ 'LAYOUT.SIGNED_IN_AS' | translate }}</p>
                 <p class="text-sm font-semibold truncate">john.doe@company.com</p>
               </div>
               <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                <i class="pi pi-user text-xs"></i> My Profile
+                <i class="pi pi-user text-xs"></i> {{ 'LAYOUT.MY_PROFILE' | translate }}
               </a>
               <a [routerLink]="[routePaths.SETTINGS]" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                <i class="pi pi-sliders-h text-xs"></i> Settings
+                <i class="pi pi-sliders-h text-xs"></i> {{ 'LAYOUT.SETTINGS' | translate }}
               </a>
               <div class="border-t border-slate-100 dark:border-slate-800 my-1"></div>
               <button 
                 (click)="logout()" 
                 class="w-full text-left flex items-center gap-3 px-4 py-2 text-sm text-rose-600 dark:text-rose-400 hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                <i class="pi pi-sign-out text-xs"></i> Sign Out
+                <i class="pi pi-sign-out text-xs"></i> {{ 'LAYOUT.SIGN_OUT' | translate }}
               </button>
             </div>
           }
@@ -155,10 +184,10 @@
 
     <!-- Footer -->
     <footer class="h-12 flex-shrink-0 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 flex items-center justify-between px-8 text-xs text-slate-500 dark:text-slate-400 transition-colors duration-300">
-      <span>© 2026 ANTIGRAVITY. All rights reserved.</span>
+      <span>© 2026 ANTIGRAVITY. {{ 'LAYOUT.FOOTER_RIGHTS' | translate }}.</span>
       <div class="flex gap-4">
-        <a href="#" class="hover:text-slate-800 dark:hover:text-white">Privacy Policy</a>
-        <a href="#" class="hover:text-slate-800 dark:hover:text-white">Terms of Service</a>
+        <a href="#" class="hover:text-slate-800 dark:hover:text-white">{{ 'LAYOUT.PRIVACY_POLICY' | translate }}</a>
+        <a href="#" class="hover:text-slate-800 dark:hover:text-white">{{ 'LAYOUT.TERMS_SERVICE' | translate }}</a>
       </div>
     </footer>
 

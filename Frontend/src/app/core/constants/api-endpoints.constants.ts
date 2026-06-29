@@ -32,6 +32,11 @@ export const API_ENDPOINTS = {
     LOOKUPS: 'common/lookups',
   },
 
+  // --- Localization Module ---
+  LOCALIZATION: {
+    RESOURCES: 'language',
+  },
+
   // --- User & Role Management Module ---
   USERS: {
     BASE: 'users',

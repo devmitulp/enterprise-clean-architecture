@@ -1,23 +1,23 @@
 using Application.Common.Interfaces.Localization;
 using System.Xml.Linq;
-using Microsoft.AspNetCore.Hosting;
+using System.Collections.Concurrent;
+using System.Globalization;
+using System.IO;
+using System;
 
 namespace Infrastructure.Services.Common.Localization
 {
     public class LocalizationService : ILocalizationService
     {
-        private readonly Dictionary<string, string> _messages = new(StringComparer.OrdinalIgnoreCase);
-        private readonly Lock _lock = new();
-        private bool _isLoaded;
-
-        public LocalizationService()
-        {
-            LoadMessages();
-        }
+        // Cache: culture -> (key -> value)
+        private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, string>> _cache = new(StringComparer.OrdinalIgnoreCase);
 
         public string L(string key, params object[] args)
         {
-            if (!_messages.TryGetValue(key, out var value))
+            var culture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+            var resources = GetResourcesForCulture(culture);
+
+            if (!resources.TryGetValue(key, out var value))
             {
                 return key;
             }
@@ -34,37 +34,39 @@ namespace Infrastructure.Services.Common.Localization
             }
         }
 
-        public IDictionary<string, string> GetResources()
+        public IDictionary<string, string> GetResources(string? culture = null)
         {
-            lock (_lock)
+            if (string.IsNullOrWhiteSpace(culture))
             {
-                return new Dictionary<string, string>(_messages);
+                culture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
             }
+            var resources = GetResourcesForCulture(culture);
+            return new Dictionary<string, string>(resources);
         }
 
-        private void LoadMessages()
+        private ConcurrentDictionary<string, string> GetResourcesForCulture(string culture)
         {
-            if (_isLoaded)
+            if (string.IsNullOrWhiteSpace(culture))
             {
-                return;
+                culture = "en";
             }
 
-            lock (_lock)
+            return _cache.GetOrAdd(culture, c =>
             {
-                if (_isLoaded)
-                {
-                    return;
-                }
-
+                var messages = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
                 var localizationPath = Path.Combine(
                     AppDomain.CurrentDomain.BaseDirectory,
                     "Localization",
-                    "en");
+                    c);
 
                 if (!Directory.Exists(localizationPath))
                 {
-                    _isLoaded = true;
-                    return;
+                    // Fallback to "en" if the requested culture folder does not exist
+                    if (!c.Equals("en", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return GetResourcesForCulture("en");
+                    }
+                    return messages;
                 }
 
                 var xmlFiles = Directory.GetFiles(
@@ -86,12 +88,12 @@ namespace Infrastructure.Services.Common.Localization
                         }
 
                         var value = text.Value.Trim();
-                        _messages.TryAdd(key, value);
+                        messages.TryAdd(key, value);
                     }
                 }
 
-                _isLoaded = true;
-            }
+                return messages;
+            });
         }
     }
 }
