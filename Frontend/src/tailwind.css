@@ -1,2 +1,4 @@
 @import "tailwindcss";
 @plugin "tailwindcss-primeui";
+
+/* Force CSS recompile trigger 4 */
