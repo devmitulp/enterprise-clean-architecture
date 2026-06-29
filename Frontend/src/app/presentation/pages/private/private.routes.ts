@@ -1,11 +1,13 @@
 import { Routes } from '@angular/router';
 import { ROUTE_PATHS } from '../../../core/constants/routes.constants';
 import { PrivateLayoutComponent } from '../../layouts/private-layout/private-layout.component';
+import { authGuard } from '../../../core/guards/auth.guard';
 
 export const PRIVATE_ROUTES: Routes = [
   {
     path: '',
     component: PrivateLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: ROUTE_PATHS.DASHBOARD,

@@ -1,11 +1,13 @@
 import { Routes } from '@angular/router';
 import { ROUTE_PATHS } from '../../../core/constants/routes.constants';
 import { BlankLayoutComponent } from '../../layouts/blank-layout/blank-layout.component';
+import { publicGuard } from '../../../core/guards/public.guard';
 
 export const AUTH_ROUTES: Routes = [
   {
     path: '',
     component: BlankLayoutComponent,
+    canActivate: [publicGuard],
     children: [
       {
         path: ROUTE_PATHS.LOGIN,
