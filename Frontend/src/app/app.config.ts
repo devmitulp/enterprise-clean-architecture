@@ -16,13 +16,14 @@ import { routes } from './app.routes';
 import { AppConfigService } from './core/config/app-config.service';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
+import { loaderInterceptor } from './core/interceptors/loader.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, errorInterceptor, loaderInterceptor])),
     provideAppInitializer(() => {
       const appConfigService = inject(AppConfigService);
       return appConfigService.loadConfig();
