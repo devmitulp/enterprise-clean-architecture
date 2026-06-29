@@ -34,6 +34,14 @@ namespace Infrastructure.Services.Common.Localization
             }
         }
 
+        public IDictionary<string, string> GetResources()
+        {
+            lock (_lock)
+            {
+                return new Dictionary<string, string>(_messages);
+            }
+        }
+
         private void LoadMessages()
         {
             if (_isLoaded)

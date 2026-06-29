@@ -27,6 +27,9 @@ namespace Infrastructure.Extensions
             // Localization Service
             services.AddSingleton<ILocalizationService, LocalizationService>();
 
+            // Language Service
+            services.AddScoped<ILanguageService, LanguageService>();
+
             // JWT Token Service
             services.AddScoped<IJwtTokenService, JwtTokenService>();
 
