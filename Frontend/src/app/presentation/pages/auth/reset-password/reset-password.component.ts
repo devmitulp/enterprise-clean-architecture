@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ROUTE_PATHS } from '../../../core/constants/routes.constants';
+import { ROUTE_PATHS } from '../../../../core/constants/routes.constants';
 
 @Component({
   selector: 'app-reset-password',

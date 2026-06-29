@@ -1,0 +1,91 @@
+<div
+  class="flex min-h-[calc(100vh-4rem)] flex-col justify-center py-12 px-6 lg:px-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-300"
+>
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <!-- Branding / Shield logo -->
+    <div class="flex justify-center">
+      <div
+        class="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-600 text-white shadow-xl shadow-teal-500/25"
+      >
+        <i class="pi pi-shield text-2xl animate-bounce"></i>
+      </div>
+    </div>
+    <h2
+      class="mt-6 text-center text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white"
+    >
+      Two-Factor Authentication
+    </h2>
+    <p class="mt-2 text-center text-sm text-slate-500 dark:text-slate-400">
+      Please enter the 6-digit verification code sent to your authenticator app or mobile device.
+    </p>
+  </div>
+
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[440px]">
+    <!-- Main MFA Card -->
+    <div
+      class="bg-white dark:bg-slate-900 px-10 py-10 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-xl transition-all duration-300"
+    >
+      @if (mfaError()) {
+        <div
+          class="mb-5 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 dark:bg-rose-950/20 dark:border-rose-900 dark:text-rose-400 text-xs flex items-center gap-2"
+        >
+          <i class="pi pi-exclamation-triangle"></i>
+          <span>{{ mfaError() }}</span>
+        </div>
+      }
+
+      <form [formGroup]="mfaForm" (ngSubmit)="onSubmit()" class="space-y-5">
+        <!-- Verification Code Input -->
+        <div>
+          <app-text-box
+            formControlName="code"
+            label="Verification Code"
+            type="text"
+            placeholder="123456"
+            icon="pi pi-key"
+            [required]="true"
+            [invalid]="
+              (codeControl?.invalid && (codeControl?.dirty || codeControl?.touched)) || false
+            "
+          >
+          </app-text-box>
+          <app-form-error [control]="codeControl"></app-form-error>
+        </div>
+
+        <!-- Submit Button -->
+        <div>
+          <button
+            type="submit"
+            [disabled]="mfaForm.invalid || isSubmitting()"
+            class="w-full flex justify-center items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 py-3 text-sm font-semibold text-white shadow-md hover:from-emerald-500 hover:to-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500/50 disabled:opacity-50 disabled:pointer-events-none active:scale-98 transition-all"
+          >
+            @if (isSubmitting()) {
+              <i class="pi pi-spin pi-spinner text-sm animate-spin"></i>
+              <span>Verifying...</span>
+            } @else {
+              <i class="pi pi-check-circle text-sm"></i>
+              <span>Verify Code</span>
+            }
+          </button>
+        </div>
+      </form>
+
+      <!-- Resend & Back Links -->
+      <div class="mt-6 flex flex-col items-center justify-center gap-3 text-xs font-semibold">
+        <button
+          type="button"
+          (click)="resendCode()"
+          class="text-teal-600 hover:text-teal-500 dark:text-teal-400 dark:hover:text-teal-300 transition-colors"
+        >
+          Didn't receive the code? Resend
+        </button>
+        <a
+          [routerLink]="['/' + routePaths.LOGIN]"
+          class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+        >
+          Back to Sign In
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

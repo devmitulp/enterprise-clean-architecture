@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ROUTE_PATHS } from '../../../core/constants/routes.constants';
-import { TextBoxComponent } from '../../../shared/components/text-box/text-box.component';
-import { FormErrorComponent } from '../../../shared/components/form-error/form-error.component';
+import { ROUTE_PATHS } from '../../../../core/constants/routes.constants';
+import { TextBoxComponent } from '../../../../shared/components/text-box/text-box.component';
+import { FormErrorComponent } from '../../../../shared/components/form-error/form-error.component';
 
 @Component({
   selector: 'app-login',

@@ -1,15 +1,15 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ROUTE_PATHS } from '../../../core/constants/routes.constants';
+import { ROUTE_PATHS } from '../../../../core/constants/routes.constants';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-forgot-password',
   standalone: true,
   imports: [RouterLink],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+  templateUrl: './forgot-password.component.html',
+  styleUrl: './forgot-password.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent {
+export class ForgotPasswordComponent {
   readonly routePaths = ROUTE_PATHS;
 }

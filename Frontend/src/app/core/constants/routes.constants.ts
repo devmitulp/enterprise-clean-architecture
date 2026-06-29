@@ -7,18 +7,21 @@ export const ROUTE_PATHS = {
   HOME: '',
   ABOUT: 'about-us',
   CONTACT: 'contact-us',
+  PRIVACY: 'privacy-policy',
+  TERMS: 'terms-and-conditions',
+
+  // Auth Pages (Before Sign-in)
   LOGIN: 'login',
   FORGOT_PASSWORD: 'forgot-password',
   RESET_PASSWORD: 'reset-password',
-  PRIVACY: 'privacy-policy',
-  TERMS: 'terms-and-conditions',
+  MFA: 'mfa',
 
   // Private Layout Pages (Authenticated Workspace)
   DASHBOARD: 'dashboard',
   SETTINGS: 'settings',
 
   // Error Pages
-  UNAUTHORIZED: 'unauthorized',
+  ACCESS_DENIED: 'access-denied',
   NOT_FOUND: '404',
   SERVER_ERROR: '500',
 } as const;
@@ -31,18 +34,21 @@ export const APP_ROUTES = {
   home: () => `/${ROUTE_PATHS.HOME}`,
   about: () => `/${ROUTE_PATHS.ABOUT}`,
   contact: () => `/${ROUTE_PATHS.CONTACT}`,
+  privacy: () => `/${ROUTE_PATHS.PRIVACY}`,
+  terms: () => `/${ROUTE_PATHS.TERMS}`,
+
+  // Auth
   login: () => `/${ROUTE_PATHS.LOGIN}`,
   forgotPassword: () => `/${ROUTE_PATHS.FORGOT_PASSWORD}`,
   resetPassword: () => `/${ROUTE_PATHS.RESET_PASSWORD}`,
-  privacy: () => `/${ROUTE_PATHS.PRIVACY}`,
-  terms: () => `/${ROUTE_PATHS.TERMS}`,
+  mfa: () => `/${ROUTE_PATHS.MFA}`,
 
   // Private
   dashboard: () => `/${ROUTE_PATHS.DASHBOARD}`,
   settings: () => `/${ROUTE_PATHS.SETTINGS}`,
 
   // Errors
-  unauthorized: () => `/${ROUTE_PATHS.UNAUTHORIZED}`,
+  unauthorized: () => `/${ROUTE_PATHS.ACCESS_DENIED}`,
   notFound: () => `/${ROUTE_PATHS.NOT_FOUND}`,
   serverError: () => `/${ROUTE_PATHS.SERVER_ERROR}`,
 } as const;
