@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { ROUTE_PATHS } from '../../../core/constants/routes.constants';
+import { maintenanceGuard } from '../../../core/guards/health.guard';
 
 export const ERROR_ROUTES: Routes = [
   // Error Pages (Directly loaded, no layout wrap required)
@@ -16,5 +17,11 @@ export const ERROR_ROUTES: Routes = [
   {
     path: ROUTE_PATHS.NOT_FOUND,
     loadComponent: () => import('./not-found/not-found.component').then((m) => m.NotFoundComponent),
+  },
+  {
+    path: ROUTE_PATHS.MAINTENANCE,
+    loadComponent: () =>
+      import('./maintenance/maintenance.component').then((m) => m.MaintenanceComponent),
+    canActivate: [maintenanceGuard],
   },
 ];

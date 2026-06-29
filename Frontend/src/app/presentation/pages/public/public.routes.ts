@@ -1,11 +1,13 @@
 import { Routes } from '@angular/router';
 import { ROUTE_PATHS } from '../../../core/constants/routes.constants';
 import { PublicLayoutComponent } from '../../layouts/public-layout/public-layout.component';
+import { healthGuard } from '../../../core/guards/health.guard';
 
 export const PUBLIC_ROUTES: Routes = [
   {
     path: '',
     component: PublicLayoutComponent,
+    canActivate: [healthGuard],
     children: [
       {
         path: ROUTE_PATHS.HOME,

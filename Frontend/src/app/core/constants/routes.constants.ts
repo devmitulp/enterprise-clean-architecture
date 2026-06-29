@@ -24,6 +24,7 @@ export const ROUTE_PATHS = {
   ACCESS_DENIED: 'access-denied',
   NOT_FOUND: '404',
   SERVER_ERROR: '500',
+  MAINTENANCE: 'maintenance',
 } as const;
 
 /**
@@ -51,4 +52,5 @@ export const APP_ROUTES = {
   unauthorized: () => `/${ROUTE_PATHS.ACCESS_DENIED}`,
   notFound: () => `/${ROUTE_PATHS.NOT_FOUND}`,
   serverError: () => `/${ROUTE_PATHS.SERVER_ERROR}`,
+  maintenance: () => `/${ROUTE_PATHS.MAINTENANCE}`,
 } as const;

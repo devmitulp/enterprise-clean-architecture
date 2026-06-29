@@ -11,6 +11,7 @@ import { AppConfig } from './app-config.interface';
 })
 export class AppConfigService {
   private config!: AppConfig;
+  private _isMaintenanceMode = false;
 
   /**
    * Loads the runtime configuration JSON file before Angular bootstrap.
@@ -27,6 +28,21 @@ export class AppConfigService {
       console.info(
         `[AppConfigService] Successfully loaded configuration for environment: ${environment.environmentName}`,
       );
+
+      // --- Startup API Health & Maintenance Check ---
+      try {
+        const apiBase = this.config.apiBaseUrl.replace(/\/+$/, '');
+        const healthResponse = await fetch(`${apiBase}/common/settings`, { method: 'GET' });
+        if (!healthResponse.ok) {
+          throw new Error(`API health check returned status ${healthResponse.status}`);
+        }
+      } catch (apiError) {
+        console.error(
+          '[AppConfigService] API is unreachable or under maintenance. Enabling maintenance mode.',
+          apiError
+        );
+        this._isMaintenanceMode = true;
+      }
     } catch (error) {
       console.error(
         `[AppConfigService] Critical Error: Configuration loading failed for environment: ${environment.environmentName}`,
@@ -37,6 +53,10 @@ export class AppConfigService {
   }
 
   // --- Strongly Typed Getters ---
+
+  public get isMaintenanceMode(): boolean {
+    return this._isMaintenanceMode;
+  }
 
   public get settings(): AppConfig {
     return this.config;
