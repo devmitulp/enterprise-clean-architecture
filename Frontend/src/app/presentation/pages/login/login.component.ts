@@ -48,9 +48,7 @@ export class LoginComponent {
     // Simulate authentication API delay
     setTimeout(() => {
       this.isSubmitting.set(false);
-      
-      // Perform mock navigation to dashboard on successful mock login
-      this.router.navigate([`/${ROUTE_PATHS.DASHBOARD}`]);
+      console.log('Successfully logged in (mock).');
     }, 1500);
   }
 
