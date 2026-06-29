@@ -5,15 +5,6 @@
 @import '../abstracts/variables';
 @import '../abstracts/mixins';
 
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 html {
   font-size: 16px;
   scroll-behavior: smooth;
@@ -36,31 +27,4 @@ a {
   color: inherit;
   text-decoration: none;
   transition: $transition-fast;
-}
-
-button,
-input,
-select,
-textarea {
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-  color: inherit;
-  border: none;
-  background: transparent;
-  outline: none;
-}
-
-button {
-  cursor: pointer;
-}
-
-ul,
-ol {
-  list-style: none;
-}
-
-img {
-  max-width: 100%;
-  display: block;
 }

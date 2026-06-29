@@ -8,14 +8,10 @@ import { FormErrorComponent } from '../../../shared/components/form-error/form-e
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    ReactiveFormsModule, 
-    TextBoxComponent, 
-    FormErrorComponent
-  ],
+  imports: [ReactiveFormsModule, TextBoxComponent, FormErrorComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
   private readonly fb = inject(FormBuilder);
@@ -29,11 +25,15 @@ export class LoginComponent {
   readonly loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
-    rememberMe: [false]
+    rememberMe: [false],
   });
 
-  get emailControl() { return this.loginForm.get('email'); }
-  get passwordControl() { return this.loginForm.get('password'); }
+  get emailControl() {
+    return this.loginForm.get('email');
+  }
+  get passwordControl() {
+    return this.loginForm.get('password');
+  }
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
