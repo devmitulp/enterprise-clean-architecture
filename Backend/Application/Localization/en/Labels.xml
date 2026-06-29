@@ -5,9 +5,9 @@
 		<text name="SignInToYourAccount">Sign in to your account</text>
 		<text name="WelcomeToOurEnterprisePortal">Welcome to our enterprise portal</text>
 		<text name="EmailAddress">Email Address</text>
-		<text name="EmailPlaceholder">name@company.com</text>
+		<text name="EmailPlaceholder">Enter your email address</text>
 		<text name="Password">Password</text>
-		<text name="PasswordPlaceholder">••••••••</text>
+		<text name="PasswordPlaceholder">Enter your password</text>
 		<text name="RememberMe">Remember me</text>
 		<text name="Authenticating">Authenticating...</text>
 		<text name="SignIn">Sign In</text>
