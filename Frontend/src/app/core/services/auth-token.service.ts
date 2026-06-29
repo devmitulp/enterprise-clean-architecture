@@ -2,15 +2,19 @@
 // AUTH TOKEN & CLAIMS SERVICE (Clean Architecture)
 // ==========================================================================
 
-import { Injectable, inject } from '@angular/core';
+import { Injectable, Injector, inject } from '@angular/core';
+import { lastValueFrom } from 'rxjs';
 import { AUTH_STORAGE_KEYS, JWT_CLAIM_KEYS } from '../constants/auth.constants';
+import { API_ENDPOINTS } from '../constants/api-endpoints.constants';
 import { AppConfigService } from '../config/app-config.service';
+import { BaseHttpService } from './base-http.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthTokenService {
   private appConfig = inject(AppConfigService);
+  private injector = inject(Injector);
 
   // --- Token Storage Management ---
 
@@ -105,7 +109,7 @@ export class AuthTokenService {
 
   /**
    * Refreshes the JWT Access Token using the stored Refresh Token.
-   * Uses native fetch to bypass HTTP Interceptors and prevent circular DI loops.
+   * Uses Angular Injector at runtime to fetch BaseHttpService, preventing Circular Dependency DI loops.
    */
   public async refreshToken(): Promise<boolean> {
     const refreshToken = this.getRefreshToken();
@@ -116,22 +120,17 @@ export class AuthTokenService {
     }
 
     try {
-      const response = await fetch(`${this.appConfig.apiBaseUrl}/auth/refresh`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ accessToken, refreshToken }),
-      });
+      const http = this.injector.get(BaseHttpService);
+      const response = await lastValueFrom(
+        http.post<{ accessToken: string | null; refreshToken: string }, { accessToken: string; refreshToken: string }>(
+          API_ENDPOINTS.AUTH.REFRESH,
+          { accessToken, refreshToken }
+        )
+      );
 
-      if (!response.ok) {
-        throw new Error('Refresh token request failed');
-      }
-
-      const data = await response.json();
-      if (data.accessToken && data.refreshToken) {
-        this.setAccessToken(data.accessToken);
-        this.setRefreshToken(data.refreshToken);
+      if (response && response.accessToken && response.refreshToken) {
+        this.setAccessToken(response.accessToken);
+        this.setRefreshToken(response.refreshToken);
         return true;
       }
 
