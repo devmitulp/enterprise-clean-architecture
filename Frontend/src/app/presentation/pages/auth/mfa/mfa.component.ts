@@ -3,13 +3,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { ROUTE_PATHS } from '../../../../core/constants/routes.constants';
 import { TextBoxComponent } from '../../../../shared/components/text-box/text-box.component';
-import { FormErrorComponent } from '../../../../shared/components/form-error/form-error.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-mfa',
   standalone: true,
-  imports: [ReactiveFormsModule, TextBoxComponent, FormErrorComponent, RouterLink, TranslatePipe],
+  imports: [ReactiveFormsModule, TextBoxComponent, RouterLink, TranslatePipe],
   templateUrl: './mfa.component.html',
   styleUrls: ['./mfa.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

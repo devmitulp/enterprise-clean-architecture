@@ -1,41 +1,78 @@
-import { Component, Input, forwardRef, signal, ChangeDetectionStrategy } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input, OnInit, Optional, Self } from '@angular/core';
+import { ControlValueAccessor, FormControl, NgControl, ReactiveFormsModule } from '@angular/forms';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormErrorComponent } from '../form-error/form-error.component';
 
 @Component({
   selector: 'app-text-box',
   standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    FormErrorComponent,
+    InputGroupModule,
+    InputGroupAddonModule,
+  ],
   templateUrl: './text-box.component.html',
   styleUrl: './text-box.component.scss',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => TextBoxComponent),
-      multi: true
-    }
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TextBoxComponent implements ControlValueAccessor {
-  @Input() id = 'input-' + Math.random().toString(36).substr(2, 9);
+export class TextBoxComponent implements OnInit, ControlValueAccessor {
+  @Input() id = 'input-' + crypto.randomUUID();
   @Input() label = '';
-  @Input() type: 'text' | 'password' | 'email' | 'number' = 'text';
   @Input() placeholder = '';
   @Input() icon = '';
-  @Input() hint = '';
   @Input() required = false;
-  @Input() loading = false;
   @Input() readonly = false;
-  @Input() invalid = false;
+  @Input() autoComplete = 'on';
+  @Input() maxLength?: number;
 
-  readonly value = signal<string>('');
   disabled = false;
 
-  // ControlValueAccessor Interface
-  onChange: (value: string) => void = () => {};
-  onTouched: () => void = () => {};
+  // Single source of truth
+  control = new FormControl('');
+
+  constructor(
+    @Optional()
+    @Self()
+    public ngControl: NgControl,
+  ) {
+    if (this.ngControl) {
+      this.ngControl.valueAccessor = this;
+    }
+  }
+
+  get displayControl(): FormControl {
+    return (this.ngControl?.control as FormControl) ?? this.control;
+  }
+
+  ngOnInit(): void {
+    if (this.ngControl?.control) {
+      this.control.setValidators(this.ngControl.control.validator);
+      this.control.setAsyncValidators(this.ngControl.control.asyncValidator);
+      this.control.updateValueAndValidity({ emitEvent: false });
+    }
+
+    this.control.valueChanges.subscribe((value) => {
+      this.onChange(value ?? '');
+    });
+  }
+
+  // -------------------------
+  // ControlValueAccessor
+  // -------------------------
+
+  private onChange: (value: string) => void = () => {};
+  private onTouched: () => void = () => {};
 
   writeValue(value: string): void {
-    this.value.set(value || '');
+    this.control.setValue(value ?? '', {
+      emitEvent: false,
+    });
   }
 
   registerOnChange(fn: (value: string) => void): void {
@@ -46,15 +83,14 @@ export class TextBoxComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-  }
+  setDisabledState(disabled: boolean): void {
+    this.disabled = disabled;
 
-  // Input events
-  onInput(event: Event): void {
-    const val = (event.target as HTMLInputElement).value;
-    this.value.set(val);
-    this.onChange(val);
+    if (disabled) {
+      this.control.disable({ emitEvent: false });
+    } else {
+      this.control.enable({ emitEvent: false });
+    }
   }
 
   onBlur(): void {
