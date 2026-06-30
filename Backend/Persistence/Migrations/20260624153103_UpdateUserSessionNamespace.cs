@@ -10,10 +10,18 @@ namespace Persistence.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "AccessTokenExpirationTime",
-                table: "UserSessions",
-                newName: "AccessTokenExpiryTime");
+            // Only rename if the old column name still exists (safe for fresh installs)
+            migrationBuilder.Sql(@"
+                IF EXISTS (
+                    SELECT 1 FROM sys.columns
+                    WHERE object_id = OBJECT_ID(N'UserSessions')
+                      AND name = N'AccessTokenExpirationTime'
+                )
+                BEGIN
+                    EXEC sp_rename N'UserSessions.AccessTokenExpirationTime', N'AccessTokenExpiryTime', 'COLUMN';
+                END
+            ");
+
         }
 
         /// <inheritdoc />
