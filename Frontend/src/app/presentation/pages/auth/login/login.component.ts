@@ -4,12 +4,11 @@ import { Router } from '@angular/router';
 import { ROUTE_PATHS } from '../../../../core/constants/routes.constants';
 import { TextBoxComponent } from '../../../../shared/components/text-box/text-box.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, TextBoxComponent, TranslatePipe, JsonPipe],
+  imports: [ReactiveFormsModule, TextBoxComponent, TranslatePipe],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

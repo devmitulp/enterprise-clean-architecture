@@ -3,9 +3,9 @@ import {
   provideBrowserGlobalErrorListeners,
   provideAppInitializer,
   inject,
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
@@ -20,9 +20,9 @@ import { loaderInterceptor } from './core/interceptors/loader.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideZonelessChangeDetection(),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideAnimationsAsync(),
     provideHttpClient(withInterceptors([authInterceptor, errorInterceptor, loaderInterceptor])),
     provideAppInitializer(() => {
       const appConfigService = inject(AppConfigService);
