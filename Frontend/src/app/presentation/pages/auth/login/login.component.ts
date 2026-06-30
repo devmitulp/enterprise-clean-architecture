@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ROUTE_PATHS } from '../../../../core/constants/routes.constants';
-import { PasswordComponent } from '../../../../shared/components/password/password.component';
-import { TextBoxComponent } from '../../../../shared/components/text-box/text-box.component';
+import { PasswordComponent } from '../../../../shared/ui/components/form-controls/password/password.component';
+import { TextBoxComponent } from '../../../../shared/ui/components/form-controls/text-box/text-box.component';
 
 @Component({
   selector: 'app-login',

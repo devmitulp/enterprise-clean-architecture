@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/cor
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ROUTE_PATHS } from '../../../../core/constants/routes.constants';
-import { TextBoxComponent } from '../../../../shared/components/text-box/text-box.component';
+import { TextBoxComponent } from '../../../../shared/ui/components/form-controls/text-box/text-box.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
