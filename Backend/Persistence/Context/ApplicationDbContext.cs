@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Application.Common.Interfaces.Auth;
 using Domain.Common;
+using Domain.Entities.ApplicationMenus;
 using Domain.Entities.Employees;
 using Domain.Entities.JobTitles;
 using Domain.Entities.Users;
@@ -26,6 +27,8 @@ namespace Persistence.Context
         public DbSet<Employee> Employees => Set<Employee>();
 
         public DbSet<User> Users => Set<User>();
+
+        public DbSet<ApplicationMenu> ApplicationMenus => Set<ApplicationMenu>();
 
         public DbSet<UserSession> UserSessions => Set<UserSession>();
 
