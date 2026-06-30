@@ -41,22 +41,24 @@
             formControlName="email"
             [label]="'EmailAddress' | translate"
             [placeholder]="'EmailPlaceholder' | translate"
-            icon="pi pi-envelope"
+            icon="fa fa-envelope"
             [required]="true"
+            [maxLength]="30"
           >
           </app-text-box>
         </div>
 
         <!-- Password Input -->
         <div>
-          <app-text-box
+          <app-password
             formControlName="password"
             [label]="'Password' | translate"
             [placeholder]="'PasswordPlaceholder' | translate"
-            icon="pi pi-lock"
+            icon="fa fa-lock"
             [required]="true"
+            [maxLength]="20"
           >
-          </app-text-box>
+          </app-password>
         </div>
 
         <!-- Remember me & Forgot Password -->

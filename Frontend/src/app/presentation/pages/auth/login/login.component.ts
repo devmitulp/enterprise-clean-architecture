@@ -1,14 +1,15 @@
-import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ROUTE_PATHS } from '../../../../core/constants/routes.constants';
-import { TextBoxComponent } from '../../../../shared/components/text-box/text-box.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ROUTE_PATHS } from '../../../../core/constants/routes.constants';
+import { PasswordComponent } from '../../../../shared/components/password/password.component';
+import { TextBoxComponent } from '../../../../shared/components/text-box/text-box.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, TextBoxComponent, TranslatePipe],
+  imports: [ReactiveFormsModule, TextBoxComponent, TranslatePipe, PasswordComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
