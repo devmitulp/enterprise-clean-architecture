@@ -13,15 +13,15 @@ import { FormErrorComponent } from '../form-error/form-error.component';
     InputGroup,
     InputGroupAddon,
     Tooltip,
-    FormErrorComponent
+    FormErrorComponent,
   ],
   templateUrl: './dropdown.component.html',
   styleUrl: './dropdown.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DropdownComponent extends BaseControlValueAccessor<any> implements OnInit {
+export class DropdownComponent<T = unknown> extends BaseControlValueAccessor<T> implements OnInit {
   @Input() icon = '';
-  @Input({ required: true }) options: any[] = [];
+  @Input({ required: true }) options: T[] = [];
   @Input() optionLabel?: string;
   @Input() optionValue?: string;
   @Input() filter = false;

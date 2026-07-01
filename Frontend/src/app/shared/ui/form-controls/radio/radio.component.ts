@@ -7,18 +7,13 @@ import { FormErrorComponent } from '../form-error/form-error.component';
 @Component({
   selector: 'app-radio',
   standalone: true,
-  imports: [
-    ...SHARED_ANGULAR_MODULES,
-    RadioButton,
-    Tooltip,
-    FormErrorComponent
-  ],
+  imports: [...SHARED_ANGULAR_MODULES, RadioButton, Tooltip, FormErrorComponent],
   templateUrl: './radio.component.html',
   styleUrl: './radio.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RadioComponent extends BaseControlValueAccessor<any> implements OnInit {
-  @Input({ required: true }) options: any[] = [];
+export class RadioComponent<T> extends BaseControlValueAccessor<T> implements OnInit {
+  @Input({ required: true }) options: T[] = [];
   @Input({ required: true }) name = '';
   @Input() optionLabel?: string;
   @Input() optionValue?: string;
@@ -31,17 +26,19 @@ export class RadioComponent extends BaseControlValueAccessor<any> implements OnI
     this.blur();
   }
 
-  getOptionLabel(option: any): string {
-    if (this.optionLabel && option && typeof option === 'object') {
-      return option[this.optionLabel];
+  getOptionLabel(option: T): string {
+    if (this.optionLabel && option !== null && typeof option === 'object') {
+      const value = (option as Record<PropertyKey, unknown>)[this.optionLabel];
+      return value != null ? String(value) : '';
     }
-    return option?.label !== undefined ? option.label : String(option);
+
+    return String(option);
   }
 
-  getOptionValue(option: any): any {
-    if (this.optionValue && option && typeof option === 'object') {
-      return option[this.optionValue];
+  getOptionValue(option: T): any {
+    if (this.optionValue && option !== null && typeof option === 'object') {
+      return (option as Record<PropertyKey, unknown>)[this.optionValue];
     }
-    return option?.value !== undefined ? option.value : option;
+    return option;
   }
 }

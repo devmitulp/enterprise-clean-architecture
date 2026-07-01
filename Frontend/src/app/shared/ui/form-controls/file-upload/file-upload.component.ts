@@ -4,6 +4,17 @@ import { FileUpload, Tooltip } from '@primeng';
 import { BaseControlValueAccessor } from '../base/base-control-value-accessor';
 import { FormErrorComponent } from '../form-error/form-error.component';
 
+interface FileSelectEvent {
+  originalEvent: Event;
+  files: File[];
+  currentFiles: File[];
+}
+
+interface FileRemoveEvent {
+  originalEvent: Event;
+  file: File;
+}
+
 @Component({
   selector: 'app-file-upload',
   standalone: true,
@@ -17,7 +28,7 @@ import { FormErrorComponent } from '../form-error/form-error.component';
   styleUrl: './file-upload.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FileUploadComponent extends BaseControlValueAccessor<any> implements OnInit {
+export class FileUploadComponent extends BaseControlValueAccessor<File | File[]> implements OnInit {
   @Input() multiple = false;
   @Input() accept = '';
   @Input() maxFileSize?: number;
@@ -28,7 +39,7 @@ export class FileUploadComponent extends BaseControlValueAccessor<any> implement
     this.initialize();
   }
 
-  onSelect(event: any): void {
+  onSelect(event: FileSelectEvent): void {
     const files = event.files;
     if (this.multiple) {
       this.control.setValue(files);
@@ -39,7 +50,7 @@ export class FileUploadComponent extends BaseControlValueAccessor<any> implement
     this.onTouched();
   }
 
-  onRemove(event: any): void {
+  onRemove(event: FileRemoveEvent): void {
     const removedFile = event.file;
     const currentValue = this.control.value;
     if (this.multiple && Array.isArray(currentValue)) {
