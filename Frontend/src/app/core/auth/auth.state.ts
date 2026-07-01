@@ -36,10 +36,10 @@ export class AuthState {
 
   /** Read-only signal representing whether user is valid and authenticated */
   public isAuthenticated = computed(() => {
+    // Depend on _currentUser signal for reactivity
     const user = this._currentUser();
-    if (!user || !user[JWT_CLAIM_KEYS.EXP]) return false;
-    const expirationTime = user[JWT_CLAIM_KEYS.EXP] * 1000;
-    return Date.now() < expirationTime - 30000;
+    if (!user) return false;
+    return this.authTokenService.isAuthenticated();
   });
 
   /** Read-only signal representing global loading state */

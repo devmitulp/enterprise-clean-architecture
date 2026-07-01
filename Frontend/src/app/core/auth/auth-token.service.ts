@@ -5,7 +5,7 @@ import { Injector, inject } from '@shared/angular';
 // ==========================================================================
 
 import { lastValueFrom } from 'rxjs';
-import { JWT_CLAIM_KEYS } from '@auth';
+import { JWT_CLAIM_KEYS, AUTH_TOKEN_EXPIRY_BUFFER_MS } from '@auth';
 import { API_ENDPOINTS } from '@constants';
 import { BaseHttpService, LoggerService } from '@services';
 import { TokenStorageService } from './token-storage.service';
@@ -37,7 +37,7 @@ export class AuthTokenService {
 
     // Check if token is expired (adding 30 seconds buffer)
     const expirationTime = decoded[JWT_CLAIM_KEYS.EXP] * 1000;
-    return Date.now() < expirationTime - 30000;
+    return Date.now() < expirationTime - AUTH_TOKEN_EXPIRY_BUFFER_MS;
   }
 
   // --- C# .NET Claims Extraction ---

@@ -33,3 +33,5 @@ export const JWT_CLAIM_KEYS = {
   PERMISSIONS: 'permissions',
   DEPARTMENT: 'department',
 } as const;
+
+export const AUTH_TOKEN_EXPIRY_BUFFER_MS = 30_000;
