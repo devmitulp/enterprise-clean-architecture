@@ -28,21 +28,3 @@ export {
   InputGroupAddon,
   InputGroupAddonModule
 };
-
-export const PRIMENG_FORM_MODULES = [
-  Checkbox,
-  DatePicker,
-  Select,
-  Password,
-  InputNumber,
-  RadioButton,
-  FileUpload,
-  ToggleSwitch,
-  Textarea,
-  InputText,
-  InputTextModule,
-  InputGroup,
-  InputGroupModule,
-  InputGroupAddon,
-  InputGroupAddonModule
-];

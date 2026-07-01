@@ -1,6 +1,6 @@
 import { OnInit, SHARED_ANGULAR_MODULES } from '@shared/angular';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { PRIMENG_FEEDBACK_MODULES, PRIMENG_FORM_MODULES } from '@primeng';
+import { DatePicker, InputGroup, InputGroupAddon, Tooltip } from '@primeng';
 import { BaseControlValueAccessor } from '../base/base-control-value-accessor';
 import { FormErrorComponent } from '../form-error/form-error.component';
 
@@ -9,8 +9,10 @@ import { FormErrorComponent } from '../form-error/form-error.component';
   standalone: true,
   imports: [
     ...SHARED_ANGULAR_MODULES,
-    ...PRIMENG_FORM_MODULES,
-    ...PRIMENG_FEEDBACK_MODULES,
+    DatePicker,
+    InputGroup,
+    InputGroupAddon,
+    Tooltip,
     FormErrorComponent
   ],
   templateUrl: './date-picker.component.html',
