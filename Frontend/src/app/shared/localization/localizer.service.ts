@@ -1,4 +1,5 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { inject } from '@shared/angular';
 import { LocalizationKey } from './localization.types';
 import { TranslateService } from '@ngx-translate/core';
 

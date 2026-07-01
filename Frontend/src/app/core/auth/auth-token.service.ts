@@ -1,8 +1,9 @@
+import { Injectable } from '@angular/core';
+import { Injector, inject } from '@shared/angular';
 // ==========================================================================
 // AUTH TOKEN & CLAIMS SERVICE (Clean Architecture)
 // ==========================================================================
 
-import { Injectable, Injector, inject } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { AUTH_STORAGE_KEYS, JWT_CLAIM_KEYS } from '@auth';
 import { API_ENDPOINTS } from '@constants';

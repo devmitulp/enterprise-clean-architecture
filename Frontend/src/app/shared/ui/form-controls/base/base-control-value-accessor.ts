@@ -1,6 +1,5 @@
-import { Directive, inject, Input, DestroyRef } from '@angular/core';
-import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Directive, Input } from '@angular/core';
+import { ControlValueAccessor, DestroyRef, FormControl, NgControl, inject, takeUntilDestroyed } from '@shared/angular';
 
 @Directive()
 export abstract class BaseControlValueAccessor<T> implements ControlValueAccessor {

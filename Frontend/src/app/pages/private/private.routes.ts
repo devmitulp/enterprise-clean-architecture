@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Routes } from '@shared/angular';
 import { ROUTE_PATHS } from '@constants';
 import { PrivateLayoutComponent } from '@layout';
 import { authGuard } from '@auth';

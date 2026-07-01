@@ -1,9 +1,9 @@
+import { Injectable } from '@angular/core';
+import { Router, computed, inject, signal } from '@shared/angular';
 // ==========================================================================
 // MODERN ANGULAR SIGNAL STATE STORE (Clean Architecture Core)
 // ==========================================================================
 
-import { Injectable, signal, computed, inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthTokenService } from '@auth';
 import { JWT_CLAIM_KEYS } from '@auth';
 import { ROUTE_PATHS } from '@constants';

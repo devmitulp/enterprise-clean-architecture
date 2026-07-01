@@ -1,9 +1,8 @@
+import { CanActivateFn, Router, inject } from '@shared/angular';
 // ==========================================================================
 // STARTUP API HEALTH & MAINTENANCE ROUTE GUARDS (Clean Architecture)
 // ==========================================================================
 
-import { CanActivateFn, Router } from '@angular/router';
-import { inject } from '@angular/core';
 import { AppConfigService } from '@configuration';
 import { ROUTE_PATHS } from '@constants';
 

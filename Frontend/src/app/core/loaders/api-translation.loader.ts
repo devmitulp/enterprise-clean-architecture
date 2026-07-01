@@ -1,12 +1,11 @@
+import { HttpClient, inject } from '@shared/angular';
 // ==========================================================================
 // API TRANSLATION LOADER (Clean Architecture Infrastructure)
 // ==========================================================================
 
 import { TranslateLoader } from '@ngx-translate/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppConfigService } from '@configuration';
-import { inject } from '@angular/core';
 import { API_ENDPOINTS } from '@constants';
 
 /**

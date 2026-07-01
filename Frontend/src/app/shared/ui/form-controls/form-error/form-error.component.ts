@@ -1,13 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  DestroyRef,
-  Input,
-  inject,
-} from '@angular/core';
-import { AbstractControl } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { AbstractControl, ChangeDetectorRef, DestroyRef, inject, takeUntilDestroyed } from '@shared/angular';
 import { LOCALIZATION_KEYS, LocalizerService } from '@shared/localization';
 
 @Component({

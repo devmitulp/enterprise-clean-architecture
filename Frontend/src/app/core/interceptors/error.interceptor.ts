@@ -1,10 +1,8 @@
+import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest, Router, inject } from '@shared/angular';
 // ==========================================================================
 // GLOBAL ERROR & REFRESH INTERCEPTOR (Clean Architecture)
 // ==========================================================================
 
-import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpErrorResponse } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { Router } from '@angular/router';
 import { throwError, from } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthTokenService } from '@auth';

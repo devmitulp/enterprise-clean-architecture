@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { signal } from '@shared/angular';
 
 interface DashboardStats {
   label: string;

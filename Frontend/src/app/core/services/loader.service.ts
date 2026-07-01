@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { signal } from '@shared/angular';
 
 @Injectable({
   providedIn: 'root',

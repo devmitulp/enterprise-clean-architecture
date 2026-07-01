@@ -16,6 +16,8 @@
     "module": "preserve",
     "baseUrl": "./src",
     "paths": {
+      "@shared/angular": ["app/shared/angular/index.ts"],
+      "@primeng": ["app/shared/primeng/index.ts"],
       "@app": ["app/index.ts"],
       "@app/*": ["app/*"],
       "@core": ["app/core/index.ts"],

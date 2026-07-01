@@ -1,9 +1,9 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams, inject } from '@shared/angular';
 // ==========================================================================
 // GENERIC BASE HTTP SERVICE (Clean Architecture Infrastructure)
 // ==========================================================================
 
-import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { retry } from 'rxjs/operators';
 import { AppConfigService } from '@configuration';

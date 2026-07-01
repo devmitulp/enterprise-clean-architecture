@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormBuilder, FormGroup, Router, SHARED_ANGULAR_MODULES, Validators, inject, signal } from '@shared/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ROUTE_PATHS } from '@constants';
 import { PasswordComponent } from '@form-controls';
@@ -9,7 +8,12 @@ import { TextBoxComponent } from '@form-controls';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, TextBoxComponent, TranslatePipe, PasswordComponent],
+  imports: [
+    ...SHARED_ANGULAR_MODULES,
+    TextBoxComponent,
+    TranslatePipe,
+    PasswordComponent
+  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

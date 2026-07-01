@@ -1,9 +1,8 @@
+import { HttpHandlerFn, HttpInterceptorFn, HttpRequest, inject } from '@shared/angular';
 // ==========================================================================
 // JWT AUTH INTERCEPTOR (Clean Architecture)
 // ==========================================================================
 
-import { HttpInterceptorFn, HttpRequest, HttpHandlerFn } from '@angular/common/http';
-import { inject } from '@angular/core';
 import { AuthTokenService } from '@auth';
 import { AppConfigService } from '@configuration';
 

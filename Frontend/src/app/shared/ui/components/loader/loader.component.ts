@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { inject } from '@shared/angular';
 import { LoaderService } from '@services';
 
 @Component({

@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormBuilder, FormGroup, Router, SHARED_ANGULAR_MODULES, Validators, inject, signal } from '@shared/angular';
+import { RouterLink } from '@angular/router';
 import { ROUTE_PATHS } from '@constants';
 import { TextBoxComponent } from '@form-controls';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -8,7 +8,12 @@ import { TranslatePipe } from '@ngx-translate/core';
 @Component({
   selector: 'app-mfa',
   standalone: true,
-  imports: [ReactiveFormsModule, TextBoxComponent, RouterLink, TranslatePipe],
+  imports: [
+    ...SHARED_ANGULAR_MODULES,
+    TextBoxComponent,
+    RouterLink,
+    TranslatePipe
+  ],
   templateUrl: './mfa.component.html',
   styleUrls: ['./mfa.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

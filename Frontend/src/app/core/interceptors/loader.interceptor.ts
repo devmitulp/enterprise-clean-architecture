@@ -1,5 +1,4 @@
-import { HttpInterceptorFn, HttpRequest, HttpHandlerFn } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { HttpHandlerFn, HttpInterceptorFn, HttpRequest, inject } from '@shared/angular';
 import { LoaderService } from '@services';
 import { finalize } from 'rxjs';
 

@@ -1,15 +1,18 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RadioButton } from 'primeng/radiobutton';
-import { Tooltip } from 'primeng/tooltip';
+import { OnInit, SHARED_ANGULAR_MODULES } from '@shared/angular';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { PRIMENG_FEEDBACK_MODULES, PRIMENG_FORM_MODULES } from '@primeng';
 import { BaseControlValueAccessor } from '../base/base-control-value-accessor';
 import { FormErrorComponent } from '../form-error/form-error.component';
 
 @Component({
   selector: 'app-radio',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RadioButton, Tooltip, FormErrorComponent],
+  imports: [
+    ...SHARED_ANGULAR_MODULES,
+    ...PRIMENG_FORM_MODULES,
+    ...PRIMENG_FEEDBACK_MODULES,
+    FormErrorComponent
+  ],
   templateUrl: './radio.component.html',
   styleUrl: './radio.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

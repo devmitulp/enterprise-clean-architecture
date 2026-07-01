@@ -1,9 +1,8 @@
+import { CanActivateFn, Router, inject } from '@shared/angular';
 // ==========================================================================
 // PERMISSION & ROLE GUARD FACTORY (Clean Architecture RBAC)
 // ==========================================================================
 
-import { CanActivateFn, Router } from '@angular/router';
-import { inject } from '@angular/core';
 import { AuthTokenService } from '@auth';
 import { ROUTE_PATHS } from '@constants';
 

@@ -1,5 +1,6 @@
-import { Component, ChangeDetectionStrategy, signal, computed, inject } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { computed, inject, signal } from '@shared/angular';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { ROUTE_PATHS } from '@constants';
 
@@ -13,7 +14,12 @@ interface NavItem {
 @Component({
   selector: 'app-private-layout',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslatePipe],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    TranslatePipe
+  ],
   templateUrl: './private-layout.component.html',
   styleUrls: ['./private-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
