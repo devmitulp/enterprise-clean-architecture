@@ -1,22 +1,27 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { DestroyRef, FormBuilder, FormGroup, Router, SHARED_ANGULAR_MODULES, Validators, inject, signal, takeUntilDestroyed } from '@shared/angular';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AuthService, AuthState } from '@auth';
 import { ROUTE_PATHS } from '@constants';
 import { TextBoxComponent } from '@form-controls';
+import { MfaVerifyRequest } from '@models';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LoggerService } from '@services';
-import { AuthService, AuthState } from '@auth';
-import { MfaVerifyRequest } from '@models';
+import {
+  DestroyRef,
+  FormBuilder,
+  FormControl,
+  Router,
+  SHARED_ANGULAR_MODULES,
+  Validators,
+  inject,
+  signal,
+  takeUntilDestroyed,
+} from '@shared/angular';
 
 @Component({
   selector: 'app-mfa',
   standalone: true,
-  imports: [
-    ...SHARED_ANGULAR_MODULES,
-    TextBoxComponent,
-    RouterLink,
-    TranslatePipe
-  ],
+  imports: [...SHARED_ANGULAR_MODULES, TextBoxComponent, RouterLink, TranslatePipe],
   templateUrl: './mfa.component.html',
   styleUrls: ['./mfa.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,9 +39,11 @@ export class MfaComponent {
   readonly mfaError = signal<string | null>(null);
   private readonly mfaToken = signal<string | null>(null);
 
-  // Strongly-typed reactive form for 6-digit MFA code
-  readonly mfaForm: FormGroup = this.fb.group({
-    code: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
+  // Strongly-typed reactive form for 6-digit MFA code directly typed with Pick of Dto properties
+  readonly mfaForm = this.fb.group<{
+    [K in keyof Pick<MfaVerifyRequest, 'Code'>]: FormControl<MfaVerifyRequest[K]>;
+  }>({
+    Code: this.fb.nonNullable.control('', [Validators.required, Validators.pattern(/^\d{6}$/)]),
   });
 
   constructor() {
@@ -50,7 +57,7 @@ export class MfaComponent {
   }
 
   get codeControl() {
-    return this.mfaForm.get('code');
+    return this.mfaForm.controls.Code;
   }
 
   onSubmit(): void {
@@ -68,26 +75,27 @@ export class MfaComponent {
     this.isSubmitting.set(true);
     this.mfaError.set(null);
 
-    const code = this.mfaForm.value.code;
+    const code = this.mfaForm.value.Code || '';
     const request: MfaVerifyRequest = {
       Code: code,
-      MfaToken: token
+      MfaToken: token,
     };
 
-    this.authService.verifyMfa(request)
+    this.authService
+      .verifyMfa(request)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: (response) => {
-        this.isSubmitting.set(false);
-        this.authState.loginSuccess(response.AccessToken, response.RefreshToken);
-        this.router.navigate([`/${this.routePaths.DASHBOARD}`]);
-      },
-      error: (err) => {
-        this.isSubmitting.set(false);
-        this.mfaError.set(err.error?.message || 'Invalid verification code.');
-        this.logger.error('[MfaComponent] MFA verification error', err);
-      }
-    });
+        next: (response) => {
+          this.isSubmitting.set(false);
+          this.authState.loginSuccess(response.AccessToken, response.RefreshToken);
+          this.router.navigate([`/${this.routePaths.DASHBOARD}`]);
+        },
+        error: (err) => {
+          this.isSubmitting.set(false);
+          this.mfaError.set(err.error?.message || 'Invalid verification code.');
+          this.logger.error('[MfaComponent] MFA verification error', err);
+        },
+      });
   }
 
   resendCode(): void {

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { DestroyRef, FormBuilder, FormGroup, Router, SHARED_ANGULAR_MODULES, Validators, inject, signal, takeUntilDestroyed } from '@shared/angular';
+import { DestroyRef, FormBuilder, FormControl, FormGroup, Router, SHARED_ANGULAR_MODULES, Validators, inject, signal, takeUntilDestroyed } from '@shared/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ROUTE_PATHS } from '@constants';
 import { TextBoxComponent, PasswordComponent } from '@form-controls';
@@ -34,18 +34,20 @@ export class LoginComponent {
   readonly isSubmitting = signal(false);
   readonly loginError = signal<string | null>(null);
 
-  // Strongly-typed reactive form
-  readonly loginForm: FormGroup = this.fb.group({
-    Email: ['', [Validators.required, Validators.email]],
-    Password: ['', [Validators.required, Validators.minLength(6)]],
-    RememberMe: [false],
+  // Strongly-typed reactive form directly typed with Dto properties
+  readonly loginForm = this.fb.group<{
+    [K in keyof LoginRequest]: FormControl<LoginRequest[K]>;
+  }>({
+    Email: this.fb.nonNullable.control('', [Validators.required, Validators.email]),
+    Password: this.fb.nonNullable.control('', [Validators.required, Validators.minLength(6)]),
+    RememberMe: this.fb.nonNullable.control(false),
   });
 
   get emailControl() {
-    return this.loginForm.get('Email');
+    return this.loginForm.controls.Email;
   }
   get passwordControl() {
-    return this.loginForm.get('Password');
+    return this.loginForm.controls.Password;
   }
 
   onSubmit(): void {
