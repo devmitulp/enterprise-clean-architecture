@@ -7,12 +7,14 @@ import { Router, computed, inject, signal } from '@shared/angular';
 import { AuthTokenService } from '@auth';
 import { JWT_CLAIM_KEYS } from '@auth';
 import { ROUTE_PATHS } from '@constants';
+import { TokenStorageService } from './token-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthState {
   private authTokenService = inject(AuthTokenService);
+  private tokenStorage = inject(TokenStorageService);
   private router = inject(Router);
 
   // --- Private Writable Signals ---
@@ -71,9 +73,9 @@ export class AuthState {
    * Dispatches login success action, updates storage and updates signals reactively.
    */
   public loginSuccess(accessToken: string, refreshToken: string): void {
-    this.authTokenService.setAccessToken(accessToken);
-    this.authTokenService.setRefreshToken(refreshToken);
-    const claims = this.authTokenService.parseJwt(accessToken);
+    this.tokenStorage.setAccessToken(accessToken);
+    this.tokenStorage.setRefreshToken(refreshToken);
+    const claims = this.tokenStorage.parseJwt(accessToken);
     this._currentUser.set(claims);
   }
 
@@ -81,7 +83,7 @@ export class AuthState {
    * Dispatches logout action, clears storage and resets signal state to null.
    */
   public logout(): void {
-    this.authTokenService.clearTokens();
+    this.tokenStorage.clearTokens();
     this._currentUser.set(null);
     this.router.navigate([ROUTE_PATHS.LOGIN]);
   }

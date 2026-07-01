@@ -5,12 +5,13 @@ import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest, Route
 
 import { throwError, from } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { AuthTokenService } from '@auth';
+import { AuthTokenService, AuthState } from '@auth';
 import { ROUTE_PATHS } from '@constants';
 import { LoggerService } from '@services';
 
 export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
   const authTokenService = inject(AuthTokenService);
+  const authState = inject(AuthState);
   const router = inject(Router);
   const logger = inject(LoggerService);
 
@@ -27,8 +28,7 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, n
               });
               return next(clonedRequest);
             } else {
-              authTokenService.clearTokens();
-              router.navigate([ROUTE_PATHS.LOGIN]);
+              authState.logout();
               return throwError(() => error);
             }
           })

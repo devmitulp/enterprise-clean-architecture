@@ -5,68 +5,34 @@ import { Injector, inject } from '@shared/angular';
 // ==========================================================================
 
 import { lastValueFrom } from 'rxjs';
-import { AUTH_STORAGE_KEYS, JWT_CLAIM_KEYS } from '@auth';
+import { JWT_CLAIM_KEYS } from '@auth';
 import { API_ENDPOINTS } from '@constants';
-import { AppConfigService } from '@configuration';
 import { BaseHttpService, LoggerService } from '@services';
+import { TokenStorageService } from './token-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthTokenService {
-  private appConfig = inject(AppConfigService);
   private injector = inject(Injector);
   private readonly logger = inject(LoggerService);
+  private readonly tokenStorage = inject(TokenStorageService);
 
-  // --- Token Storage Management ---
+  // --- Token Storage Read Access ---
 
   public getAccessToken(): string | null {
-    return localStorage.getItem(AUTH_STORAGE_KEYS.ACCESS_TOKEN);
-  }
-
-  public setAccessToken(token: string): void {
-    localStorage.setItem(AUTH_STORAGE_KEYS.ACCESS_TOKEN, token);
+    return this.tokenStorage.getAccessToken();
   }
 
   public getRefreshToken(): string | null {
-    return localStorage.getItem(AUTH_STORAGE_KEYS.REFRESH_TOKEN);
-  }
-
-  public setRefreshToken(token: string): void {
-    localStorage.setItem(AUTH_STORAGE_KEYS.REFRESH_TOKEN, token);
-  }
-
-  public clearTokens(): void {
-    localStorage.removeItem(AUTH_STORAGE_KEYS.ACCESS_TOKEN);
-    localStorage.removeItem(AUTH_STORAGE_KEYS.REFRESH_TOKEN);
-    localStorage.removeItem(AUTH_STORAGE_KEYS.USER_PERMISSIONS);
-  }
-
-  // --- JWT Token Parsing & Verification ---
-
-  public parseJwt(token: string): Record<string, any> | null {
-    try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(
-        window
-          .atob(base64)
-          .split('')
-          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-          .join('')
-      );
-      return JSON.parse(jsonPayload);
-    } catch (e) {
-      this.logger.error('[AuthTokenService] Failed to parse JWT token', e);
-      return null;
-    }
+    return this.tokenStorage.getRefreshToken();
   }
 
   public isAuthenticated(): boolean {
     const token = this.getAccessToken();
     if (!token) return false;
 
-    const decoded = this.parseJwt(token);
+    const decoded = this.tokenStorage.parseJwt(token);
     if (!decoded || !decoded[JWT_CLAIM_KEYS.EXP]) return false;
 
     // Check if token is expired (adding 30 seconds buffer)
@@ -78,7 +44,7 @@ export class AuthTokenService {
 
   public getClaims(): Record<string, any> | null {
     const token = this.getAccessToken();
-    return token ? this.parseJwt(token) : null;
+    return token ? this.tokenStorage.parseJwt(token) : null;
   }
 
   public getUserEmail(): string | null {
@@ -117,7 +83,7 @@ export class AuthTokenService {
     const refreshToken = this.getRefreshToken();
     const accessToken = this.getAccessToken();
     if (!refreshToken) {
-      this.clearTokens();
+      this.tokenStorage.clearTokens();
       return false;
     }
 
@@ -131,16 +97,16 @@ export class AuthTokenService {
       );
 
       if (response && response.AccessToken && response.RefreshToken) {
-        this.setAccessToken(response.AccessToken);
-        this.setRefreshToken(response.RefreshToken);
+        this.tokenStorage.setAccessToken(response.AccessToken);
+        this.tokenStorage.setRefreshToken(response.RefreshToken);
         return true;
       }
 
-      this.clearTokens();
+      this.tokenStorage.clearTokens();
       return false;
     } catch (error) {
       this.logger.error('[AuthTokenService] Token refresh failed', error);
-      this.clearTokens();
+      this.tokenStorage.clearTokens();
       return false;
     }
   }
