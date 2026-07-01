@@ -1,4 +1,13 @@
-import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners, provideHttpClient, provideRouter, provideZonelessChangeDetection, withInterceptors } from '@shared/angular';
+import {
+  ApplicationConfig,
+  inject,
+  provideAppInitializer,
+  provideBrowserGlobalErrorListeners,
+  provideHttpClient,
+  provideRouter,
+  provideZonelessChangeDetection,
+  withInterceptors,
+} from '@shared/angular';
 import { providePrimeNG } from '@primeng';
 import Aura from '@primeuix/themes/aura';
 import { provideTranslateService, provideTranslateLoader } from '@ngx-translate/core';
@@ -15,7 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor, errorInterceptor, loaderInterceptor])),
+    provideHttpClient(withInterceptors([loaderInterceptor, authInterceptor, errorInterceptor])),
     provideAppInitializer(() => {
       const appConfigService = inject(AppConfigService);
       return appConfigService.loadConfig();

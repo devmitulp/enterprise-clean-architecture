@@ -5,7 +5,6 @@ import { HttpClient, HttpHeaders, HttpParams, inject } from '@shared/angular';
 // ==========================================================================
 
 import { Observable } from 'rxjs';
-import { retry } from 'rxjs/operators';
 import { AppConfigService } from '@configuration';
 
 @Injectable({
@@ -56,7 +55,7 @@ export class BaseHttpService {
   ): Observable<T> {
     const url = this.getFullUrl(endpoint);
     const httpParams = this.buildParams(params);
-    return this.http.get<T>(url, { params: httpParams, headers }).pipe(retry(2));
+    return this.http.get<T>(url, { params: httpParams, headers });
   }
 
   /**
@@ -70,7 +69,9 @@ export class BaseHttpService {
   ): Observable<R> {
     const url = this.getFullUrl(endpoint);
     const httpParams = this.buildParams(params);
-    return this.http.post<R>(url, body, { params: httpParams, headers }).pipe(retry(2));
+    // NO retry on POST — it is non-idempotent. Retrying causes duplicate server-side
+    // effects (e.g. login called 3× per click). Error handling is done by errorInterceptor.
+    return this.http.post<R>(url, body, { params: httpParams, headers });
   }
 
   /**
@@ -84,7 +85,8 @@ export class BaseHttpService {
   ): Observable<R> {
     const url = this.getFullUrl(endpoint);
     const httpParams = this.buildParams(params);
-    return this.http.put<R>(url, body, { params: httpParams, headers }).pipe(retry(2));
+    // NO retry on PUT — non-idempotent in practice; errors handled by errorInterceptor.
+    return this.http.put<R>(url, body, { params: httpParams, headers });
   }
 
   /**
@@ -98,7 +100,8 @@ export class BaseHttpService {
   ): Observable<R> {
     const url = this.getFullUrl(endpoint);
     const httpParams = this.buildParams(params);
-    return this.http.patch<R>(url, body, { params: httpParams, headers }).pipe(retry(2));
+    // NO retry on PATCH — non-idempotent; errors handled by errorInterceptor.
+    return this.http.patch<R>(url, body, { params: httpParams, headers });
   }
 
   /**
@@ -111,6 +114,7 @@ export class BaseHttpService {
   ): Observable<T> {
     const url = this.getFullUrl(endpoint);
     const httpParams = this.buildParams(params);
-    return this.http.delete<T>(url, { params: httpParams, headers }).pipe(retry(2));
+    // NO retry on DELETE — non-idempotent; errors handled by errorInterceptor.
+    return this.http.delete<T>(url, { params: httpParams, headers });
   }
 }

@@ -51,6 +51,14 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
+    // ─── Guard: prevent duplicate submissions ──────────────────────────────
+    // In zoneless Angular, the DOM `disabled` binding is not updated
+    // synchronously, so rapid clicks can bypass it. Reading the signal value
+    // directly IS synchronous and acts as a reliable in-memory lock.
+    if (this.isSubmitting()) {
+      return;
+    }
+
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;
@@ -61,27 +69,31 @@ export class LoginComponent {
 
     const request = this.loginForm.value as LoginRequest;
 
+    // ─── Single subscription with takeUntilDestroyed ───────────────────────
+    // Each call to onSubmit() would normally create a new subscription.
+    // The guard above ensures only ONE subscription is ever active at a time.
+    // The request flows through: authInterceptor → errorInterceptor → loaderInterceptor → API
     this.authService.login(request)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: (response) => {
-        this.isSubmitting.set(false);
-        this.logger.log('Successfully logged in.');
-        if (response.RequiresMfa) {
-          this.router.navigate([`/${this.routePaths.MFA}`], {
-            state: { mfaToken: response.MfaToken }
-          });
-        } else {
-          this.authState.loginSuccess(response.AccessToken, response.RefreshToken);
-          this.router.navigate([`/${this.routePaths.DASHBOARD}`]);
+        next: (response) => {
+          this.isSubmitting.set(false);
+          this.logger.log('Successfully logged in.');
+          if (response.RequiresMfa) {
+            this.router.navigate([`/${this.routePaths.MFA}`], {
+              state: { mfaToken: response.MfaToken }
+            });
+          } else {
+            this.authState.loginSuccess(response.AccessToken, response.RefreshToken);
+            this.router.navigate([`/${this.routePaths.DASHBOARD}`]);
+          }
+        },
+        error: (err) => {
+          this.isSubmitting.set(false);
+          this.loginError.set(err.error?.message || 'Login failed. Please check your credentials.');
+          this.logger.error('[LoginComponent] Login error', err);
         }
-      },
-      error: (err) => {
-        this.isSubmitting.set(false);
-        this.loginError.set(err.error?.message || 'Login failed. Please check your credentials.');
-        this.logger.error('[LoginComponent] Login error', err);
-      }
-    });
+      });
   }
 
   loginWithGoogle(): void {
