@@ -4,8 +4,8 @@
 
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { AppConfigService } from '../config/app-config.service';
-import { ROUTE_PATHS } from '../constants/routes.constants';
+import { AppConfigService } from '@configuration';
+import { ROUTE_PATHS } from '@constants';
 
 /**
  * Validates system availability before granting access to layout routes.

@@ -5,9 +5,9 @@
 import { TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AppConfigService } from '../config/app-config.service';
+import { AppConfigService } from '@configuration';
 import { inject } from '@angular/core';
-import { API_ENDPOINTS } from '../constants/api-endpoints.constants';
+import { API_ENDPOINTS } from '@constants';
 
 /**
  * Custom translation loader that fetches dictionary resources dynamically

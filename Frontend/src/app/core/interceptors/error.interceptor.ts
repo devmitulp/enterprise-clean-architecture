@@ -7,8 +7,8 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { throwError, from } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { AuthTokenService } from '../services/auth-token.service';
-import { ROUTE_PATHS } from '../constants/routes.constants';
+import { AuthTokenService } from '@auth';
+import { ROUTE_PATHS } from '@constants';
 
 export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
   const authTokenService = inject(AuthTokenService);

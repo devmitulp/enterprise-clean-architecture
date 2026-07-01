@@ -10,13 +10,13 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { provideTranslateService, provideTranslateLoader } from '@ngx-translate/core';
-import { ApiTranslationLoader } from './core/loaders/api-translation.loader';
+import { ApiTranslationLoader } from '@core';
 
 import { routes } from './app.routes';
-import { AppConfigService } from './core/config/app-config.service';
-import { authInterceptor } from './core/interceptors/auth.interceptor';
-import { errorInterceptor } from './core/interceptors/error.interceptor';
-import { loaderInterceptor } from './core/interceptors/loader.interceptor';
+import { AppConfigService } from '@configuration';
+import { authInterceptor } from '@auth';
+import { errorInterceptor } from '@interceptors';
+import { loaderInterceptor } from '@interceptors';
 
 export const appConfig: ApplicationConfig = {
   providers: [

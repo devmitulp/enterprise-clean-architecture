@@ -4,8 +4,8 @@
 
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { AuthTokenService } from '../services/auth-token.service';
-import { ROUTE_PATHS } from '../constants/routes.constants';
+import { AuthTokenService } from '@auth';
+import { ROUTE_PATHS } from '@constants';
 
 export const publicGuard: CanActivateFn = (route, state) => {
   const authTokenService = inject(AuthTokenService);

@@ -6,7 +6,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { retry } from 'rxjs/operators';
-import { AppConfigService } from '../config/app-config.service';
+import { AppConfigService } from '@configuration';
 
 @Injectable({
   providedIn: 'root',

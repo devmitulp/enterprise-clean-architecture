@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { ROUTE_PATHS } from './core/constants/routes.constants';
-import { PUBLIC_ROUTES } from './presentation/pages/public/public.routes';
-import { AUTH_ROUTES } from './presentation/pages/auth/auth.routes';
-import { PRIVATE_ROUTES } from './presentation/pages/private/private.routes';
-import { ERROR_ROUTES } from './presentation/pages/errors/error.routes';
+import { ROUTE_PATHS } from '@constants';
+import { PUBLIC_ROUTES } from '@pages';
+import { AUTH_ROUTES } from '@pages';
+import { PRIVATE_ROUTES } from '@pages';
+import { ERROR_ROUTES } from '@pages';
 
 export const routes: Routes = [
   // Error Pages (Directly loaded, no layout wrap required)
