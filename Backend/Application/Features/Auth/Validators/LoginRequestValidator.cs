@@ -10,9 +10,9 @@ namespace Application.Features.Auth.Validators
         public LoginRequestValidator(ILocalizationService localizer)
             : base(localizer)
         {
-            RuleFor(x => x.UserName)
-                .Required(nameof(LoginRequestDto.UserName), L)
-                .MaxLengthValidation(nameof(LoginRequestDto.UserName), 100, L);
+            RuleFor(x => x.Email)
+                .Required(nameof(LoginRequestDto.Email), L)
+                .MaxLengthValidation(nameof(LoginRequestDto.Email), 100, L);
 
             RuleFor(x => x.Password)
                 .Required(nameof(LoginRequestDto.Password), L);

@@ -50,7 +50,7 @@ namespace Infrastructure.Services.Auth
                         .AsQueryable()
                         .Include(x => x.Employee)
                         .ThenInclude(x => x.JobTitle)
-                        .Where(x => x.UserName == request.UserName && x.IsActive)
+                        .Where(x => x.Employee.Email == request.Email && x.IsActive)
                         .FirstOrDefaultAsync(ct);
 
             if (user is null)

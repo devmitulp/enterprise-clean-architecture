@@ -124,15 +124,15 @@ export class AuthTokenService {
     try {
       const http = this.injector.get(BaseHttpService);
       const response = await lastValueFrom(
-        http.post<{ accessToken: string | null; refreshToken: string }, { accessToken: string; refreshToken: string }>(
+        http.post<{ AccessToken: string | null; RefreshToken: string | null }, { AccessToken: string; RefreshToken: string }>(
           API_ENDPOINTS.AUTH.REFRESH,
-          { accessToken, refreshToken }
+          { AccessToken: accessToken, RefreshToken: refreshToken }
         )
       );
 
-      if (response && response.accessToken && response.refreshToken) {
-        this.setAccessToken(response.accessToken);
-        this.setRefreshToken(response.refreshToken);
+      if (response && response.AccessToken && response.RefreshToken) {
+        this.setAccessToken(response.AccessToken);
+        this.setRefreshToken(response.RefreshToken);
         return true;
       }
 
