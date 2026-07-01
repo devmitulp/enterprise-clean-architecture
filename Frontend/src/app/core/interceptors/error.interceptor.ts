@@ -7,10 +7,12 @@ import { throwError, from } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthTokenService } from '@auth';
 import { ROUTE_PATHS } from '@constants';
+import { LoggerService } from '@services';
 
 export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
   const authTokenService = inject(AuthTokenService);
   const router = inject(Router);
+  const logger = inject(LoggerService);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -40,7 +42,7 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, n
       }
 
       // 3. Handle 500 Internal Server Error & Others
-      console.error('[ErrorInterceptor] API Request Failed:', error.message || error);
+      logger.error('[ErrorInterceptor] API Request Failed:', error.message || error);
       return throwError(() => error);
     })
   );

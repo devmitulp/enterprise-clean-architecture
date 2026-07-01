@@ -3,6 +3,7 @@ import { computed, inject, signal } from '@shared/angular';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { ROUTE_PATHS } from '@constants';
+import { LoggerService } from '@services';
 
 interface NavItem {
   label: string;
@@ -26,6 +27,7 @@ interface NavItem {
 })
 export class PrivateLayoutComponent {
   private translate = inject(TranslateService);
+  private readonly logger = inject(LoggerService);
   readonly routePaths = ROUTE_PATHS;
 
   // Layout State Signals
@@ -108,6 +110,6 @@ export class PrivateLayoutComponent {
 
   logout(): void {
     // Placeholder logout implementation
-    console.log('Logging out...');
+    this.logger.log('Logging out...');
   }
 }

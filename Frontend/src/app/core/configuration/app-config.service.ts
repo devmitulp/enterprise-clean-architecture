@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 // ==========================================================================
 // RUNTIME CONFIGURATION SERVICE (Clean Architecture APP_INITIALIZER)
 // ==========================================================================
 
 import { environment } from '@environment';
 import { AppConfig } from './app-config.interface';
+import { LoggerService } from '../services/logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ import { AppConfig } from './app-config.interface';
 export class AppConfigService {
   private config!: AppConfig;
   private _isMaintenanceMode = false;
+  private readonly logger = inject(LoggerService);
 
   /**
    * Loads the runtime configuration JSON file before Angular bootstrap.
@@ -25,7 +27,7 @@ export class AppConfigService {
         throw new Error(`Failed to load appsettings file at ${configPath}: ${response.statusText}`);
       }
       this.config = await response.json();
-      console.info(
+      this.logger.info(
         `[AppConfigService] Successfully loaded configuration for environment: ${environment.environmentName}`,
       );
 
@@ -37,14 +39,14 @@ export class AppConfigService {
           throw new Error(`API health check returned status ${healthResponse.status}`);
         }
       } catch (apiError) {
-        console.error(
+        this.logger.error(
           '[AppConfigService] API is unreachable or under maintenance. Enabling maintenance mode.',
           apiError
         );
         this._isMaintenanceMode = true;
       }
     } catch (error) {
-      console.error(
+      this.logger.error(
         `[AppConfigService] Critical Error: Configuration loading failed for environment: ${environment.environmentName}`,
         error,
       );

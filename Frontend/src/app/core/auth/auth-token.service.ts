@@ -8,7 +8,7 @@ import { lastValueFrom } from 'rxjs';
 import { AUTH_STORAGE_KEYS, JWT_CLAIM_KEYS } from '@auth';
 import { API_ENDPOINTS } from '@constants';
 import { AppConfigService } from '@configuration';
-import { BaseHttpService } from '@services';
+import { BaseHttpService, LoggerService } from '@services';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +16,7 @@ import { BaseHttpService } from '@services';
 export class AuthTokenService {
   private appConfig = inject(AppConfigService);
   private injector = inject(Injector);
+  private readonly logger = inject(LoggerService);
 
   // --- Token Storage Management ---
 
@@ -56,7 +57,7 @@ export class AuthTokenService {
       );
       return JSON.parse(jsonPayload);
     } catch (e) {
-      console.error('[AuthTokenService] Failed to parse JWT token', e);
+      this.logger.error('[AuthTokenService] Failed to parse JWT token', e);
       return null;
     }
   }
@@ -138,7 +139,7 @@ export class AuthTokenService {
       this.clearTokens();
       return false;
     } catch (error) {
-      console.error('[AuthTokenService] Token refresh failed', error);
+      this.logger.error('[AuthTokenService] Token refresh failed', error);
       this.clearTokens();
       return false;
     }

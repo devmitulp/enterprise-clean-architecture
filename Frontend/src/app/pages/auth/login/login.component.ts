@@ -2,8 +2,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Router, SHARED_ANGULAR_MODULES, Validators, inject, signal } from '@shared/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ROUTE_PATHS } from '@constants';
-import { PasswordComponent } from '@form-controls';
 import { TextBoxComponent } from '@form-controls';
+import { PasswordComponent } from '@form-controls';
+import { LoggerService } from '@services';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ import { TextBoxComponent } from '@form-controls';
 export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly logger = inject(LoggerService);
 
   readonly routePaths = ROUTE_PATHS;
   readonly isSubmitting = signal(false);
@@ -52,15 +54,15 @@ export class LoginComponent {
     // Simulate authentication API delay
     setTimeout(() => {
       this.isSubmitting.set(false);
-      console.log('Successfully logged in (mock).');
+      this.logger.log('Successfully logged in (mock).');
     }, 1500);
   }
 
   loginWithGoogle(): void {
-    console.log('Initiating Google Login...');
+    this.logger.log('Initiating Google Login...');
   }
 
   loginWithMicrosoft(): void {
-    console.log('Initiating Microsoft Login...');
+    this.logger.log('Initiating Microsoft Login...');
   }
 }

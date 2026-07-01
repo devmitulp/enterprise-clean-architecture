@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { ROUTE_PATHS } from '@constants';
 import { TextBoxComponent } from '@form-controls';
 import { TranslatePipe } from '@ngx-translate/core';
+import { LoggerService } from '@services';
 
 @Component({
   selector: 'app-mfa',
@@ -21,6 +22,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class MfaComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly logger = inject(LoggerService);
 
   readonly routePaths = ROUTE_PATHS;
   readonly isSubmitting = signal(false);
@@ -47,13 +49,13 @@ export class MfaComponent {
     // Simulate MFA verification API delay
     setTimeout(() => {
       this.isSubmitting.set(false);
-      console.log('Successfully verified MFA code (mock).');
+      this.logger.log('Successfully verified MFA code (mock).');
       this.router.navigate([`/${this.routePaths.DASHBOARD}`]);
     }, 1500);
   }
 
   resendCode(): void {
-    console.log('Resending MFA code...');
+    this.logger.log('Resending MFA code...');
     alert('A new verification code has been sent to your registered device.');
   }
 }
