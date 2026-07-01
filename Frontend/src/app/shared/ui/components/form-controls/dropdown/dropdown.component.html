@@ -25,34 +25,25 @@
           <i [class]="icon"></i>
         </p-inputgroup-addon>
       }
-      @if (prefix) {
-        <p-inputgroup-addon>
-          <span class="text-sm text-slate-500 dark:text-slate-400">{{ prefix }}</span>
-        </p-inputgroup-addon>
-      }
 
-      <input
-        pInputText
-        type="text"
-        [id]="id"
+      <p-select
+        [inputId]="id"
         [formControl]="control"
-        [readonly]="readonly"
-        [maxlength]="maxLength ?? null"
+        [options]="options"
+        [optionLabel]="optionLabel"
+        [optionValue]="optionValue"
+        [filter]="filter"
+        [filterBy]="filterBy"
+        [showClear]="showClear"
         [placeholder]="placeholder"
         [autofocus]="autofocus"
-        [autocomplete]="autoComplete"
         [pTooltip]="tooltip"
         tooltipPosition="top"
-        (blur)="onBlur()"
-        class="w-full py-2.5 px-3.5 text-sm bg-transparent rounded-xl focus:outline-none placeholder-slate-400 text-slate-900 dark:text-white"
-        [class.no-left-border]="!!icon || !!prefix"
-      />
-
-      @if (suffix) {
-        <p-inputgroup-addon>
-          <span class="text-sm text-slate-500 dark:text-slate-400">{{ suffix }}</span>
-        </p-inputgroup-addon>
-      }
+        (onBlur)="onBlur()"
+        class="w-full select-control-wrapper"
+        styleClass="w-full bg-transparent border-0 shadow-none text-sm text-slate-900 dark:text-white"
+        [class.no-left-border]="!!icon"
+      ></p-select>
     </p-inputgroup>
   </div>
 

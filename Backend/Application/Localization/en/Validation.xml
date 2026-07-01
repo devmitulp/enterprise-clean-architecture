@@ -7,10 +7,6 @@
 			{0} is required.
 		</text>
 
-		<text name="MaxLength">
-			{0} must not exceed {1} characters.
-		</text>
-
 		<text name="GreaterThan">
 			{0} must be greater than {1}.
 		</text>
@@ -18,7 +14,35 @@
 		<text name="InvalidCredentials">
 			Invalid username or password.
 		</text>
+		
+		<text name="Email">
+			{0} must be a valid email address.
+		</text>
 
+		<text name="MinLength">
+			{0} must be at least {1} characters.
+		</text>
+
+		<text name="MaxLength">
+			{0} must not exceed {1} characters.
+		</text>
+
+		<text name="Min">
+			{0} must be greater than or equal to {1}.
+		</text>
+
+		<text name="Max">
+			{0} must be less than or equal to {1}.
+		</text>
+
+		<text name="Pattern">
+			{0} format is invalid.
+		</text>
+
+		<text name="Invalid">
+			{0} is invalid.
+		</text>
+		
 		<text name="JobTitleAlreadyExists">Job title '{0}' already exists.</text>
 		<text name="JobTitleIdRequiredForUpdate">Id is required to update a job title.</text>
 		<text name="InvalidToken">Invalid access token or refresh token.</text>

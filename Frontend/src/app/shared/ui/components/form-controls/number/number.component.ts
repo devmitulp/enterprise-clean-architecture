@@ -3,29 +3,34 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { InputTextModule } from 'primeng/inputtext';
+import { InputNumber } from 'primeng/inputnumber';
 import { Tooltip } from 'primeng/tooltip';
 import { BaseControlValueAccessor } from '../base/base-control-value-accessor';
 import { FormErrorComponent } from '../form-error/form-error.component';
 
 @Component({
-  selector: 'app-text-box',
+  selector: 'app-number',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    InputTextModule,
-    FormErrorComponent,
+    InputNumber,
     InputGroupModule,
     InputGroupAddonModule,
     Tooltip,
+    FormErrorComponent,
   ],
-  templateUrl: './text-box.component.html',
-  styleUrl: './text-box.component.scss',
+  templateUrl: './number.component.html',
+  styleUrl: './number.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TextBoxComponent extends BaseControlValueAccessor<string> implements OnInit {
+export class NumberComponent extends BaseControlValueAccessor<number> implements OnInit {
   @Input() icon = '';
+  @Input() min?: number;
+  @Input() max?: number;
+  @Input() useGrouping = true;
+  @Input() minFractionDigits?: number;
+  @Input() maxFractionDigits?: number;
 
   ngOnInit(): void {
     this.initialize();

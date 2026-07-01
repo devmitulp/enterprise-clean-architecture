@@ -1,5 +1,14 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  Input,
+  inject,
+} from '@angular/core';
 import { AbstractControl } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { LOCALIZATION_KEYS, LocalizerService } from '../../../../localization';
 
 @Component({
   selector: 'app-form-error',
@@ -9,24 +18,109 @@ import { AbstractControl } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormErrorComponent {
-  @Input({ required: true }) control!: AbstractControl | null;
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly localizer = inject(LocalizerService);
+  private _control: AbstractControl | null = null;
+
+  @Input() label = 'This field';
+  @Input({ required: true })
+  set control(value: AbstractControl | null) {
+    if (!value || this._control === value) {
+      return;
+    }
+
+    this._control = value;
+
+    this._control.events.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.cdr.markForCheck();
+    });
+  }
+
+  get control(): AbstractControl | null {
+    return this._control;
+  }
+
+  get showError(): boolean {
+    return !!this.control && this.control.invalid && (this.control.dirty || this.control.touched);
+  }
 
   get errorMessage(): string {
-    if (!this.control || !this.control.errors) return '';
+    if (!this.control?.errors) {
+      return '';
+    }
 
     const errors = this.control.errors;
+    const fieldName = this.label?.trim() || 'This field';
 
-    if (errors['required']) return 'This field is required.';
-    if (errors['email']) return 'Please enter a valid email address.';
-    if (errors['minlength']) {
-      return `Minimum length is ${errors['minlength'].requiredLength} characters.`;
-    }
-    if (errors['maxlength']) {
-      return `Maximum length is ${errors['maxlength'].requiredLength} characters.`;
-    }
-    if (errors['pattern']) return 'Invalid format.';
-    if (errors['customError']) return errors['customError'];
+    const validationOrder = [
+      'required',
+      'email',
+      'minlength',
+      'maxlength',
+      'min',
+      'max',
+      'pattern',
+      'customError',
+      'message',
+    ];
 
-    return 'Invalid field value.';
+    for (const key of validationOrder) {
+      if (!errors[key]) {
+        continue;
+      }
+
+      switch (key) {
+        case 'required':
+          return this.localizer.get(LOCALIZATION_KEYS.Required, fieldName);
+
+        case 'email':
+          return this.localizer.get(LOCALIZATION_KEYS.Email, fieldName);
+
+        case 'minlength':
+          return this.localizer.get(
+            LOCALIZATION_KEYS.MinLength,
+            fieldName,
+            errors['minlength'].requiredLength,
+          );
+
+        case 'maxlength':
+          return this.localizer.get(
+            LOCALIZATION_KEYS.MaxLength,
+            fieldName,
+            errors['maxlength'].requiredLength,
+          );
+
+        case 'min':
+          return this.localizer.get(LOCALIZATION_KEYS.Min, fieldName, errors['min'].min);
+
+        case 'max':
+          return this.localizer.get(LOCALIZATION_KEYS.Max, fieldName, errors['max'].max);
+
+        case 'pattern':
+          return this.localizer.get(LOCALIZATION_KEYS.Pattern, fieldName);
+
+        case 'customError':
+          return errors['customError'];
+
+        case 'message':
+          return errors['message'];
+      }
+    }
+
+    // Generic custom validator fallback
+    for (const key of Object.keys(errors)) {
+      const value = errors[key];
+
+      if (typeof value === 'string') {
+        return value;
+      }
+
+      if (value?.message) {
+        return value.message;
+      }
+    }
+
+    return this.localizer.get('Invalid', fieldName);
   }
 }

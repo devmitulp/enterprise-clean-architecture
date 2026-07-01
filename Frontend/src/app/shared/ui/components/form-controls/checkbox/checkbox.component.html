@@ -1,0 +1,41 @@
+<div class="flex flex-col gap-1.5">
+  @if (label) {
+    <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+      {{ label }}
+      @if (required) {
+        <span class="text-rose-500 font-bold">*</span>
+      }
+    </span>
+  }
+
+  <div class="flex items-center gap-2">
+    <p-checkbox
+      [inputId]="id"
+      [formControl]="control"
+      [binary]="binary"
+      [value]="value"
+      [autofocus]="autofocus"
+      [pTooltip]="tooltip"
+      tooltipPosition="top"
+      (onBlur)="onBlur()"
+      [class.opacity-60]="disabled"
+      [class.pointer-events-none]="disabled"
+    ></p-checkbox>
+    @if (checkboxLabel) {
+      <label
+        [for]="id"
+        class="text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer select-none"
+      >
+        {{ checkboxLabel }}
+      </label>
+    }
+  </div>
+
+  @if (hint && !(displayControl?.invalid && (displayControl?.dirty || displayControl?.touched))) {
+    <span class="text-xs text-slate-500 dark:text-slate-400">{{ hint }}</span>
+  }
+
+  @if (displayControl) {
+    <app-form-error [control]="displayControl" [label]="label"></app-form-error>
+  }
+</div>

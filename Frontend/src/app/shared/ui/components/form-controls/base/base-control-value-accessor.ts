@@ -1,9 +1,9 @@
-import { Directive, inject, Input, OnInit, DestroyRef } from '@angular/core';
+import { Directive, inject, Input, DestroyRef } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Directive()
-export abstract class BaseControlValueAccessor<T = any> implements ControlValueAccessor {
+export abstract class BaseControlValueAccessor<T> implements ControlValueAccessor {
   // -------------------------------------------------------------------------
   // Common Inputs
   // -------------------------------------------------------------------------
@@ -12,12 +12,21 @@ export abstract class BaseControlValueAccessor<T = any> implements ControlValueA
   @Input() placeholder = '';
   @Input() required = false;
   @Input() readonly = false;
+  @Input() hint = '';
+  @Input() prefix = '';
+  @Input() suffix = '';
+  @Input() tooltip = '';
+  @Input() autofocus = false;
+  @Input() autoComplete = 'on';
+  @Input() maxLength?: number;
 
   disabled = false;
+
   /**
    * Internal control (Input Binding)
    */
   readonly control = new FormControl<T | null>(null);
+
   /**
    * Parent FormControl (Validation)
    */
@@ -52,7 +61,7 @@ export abstract class BaseControlValueAccessor<T = any> implements ControlValueA
   // CVA
   // ---------------------------
 
-  protected onChange: (value: T) => void = () => {};
+  protected onChange: (value: T | null) => void = () => {};
   protected onTouched: () => void = () => {};
 
   writeValue(value: T): void {
@@ -61,7 +70,7 @@ export abstract class BaseControlValueAccessor<T = any> implements ControlValueA
     });
   }
 
-  registerOnChange(fn: (value: T) => void): void {
+  registerOnChange(fn: (value: T | null) => void): void {
     this.onChange = fn;
   }
 

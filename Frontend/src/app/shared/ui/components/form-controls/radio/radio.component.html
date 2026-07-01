@@ -1,0 +1,42 @@
+<div class="flex flex-col gap-2">
+  @if (label) {
+    <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+      {{ label }}
+      @if (required) {
+        <span class="text-rose-500 font-bold">*</span>
+      }
+    </span>
+  }
+
+  <div class="flex flex-wrap gap-4">
+    @for (option of options; track option; let idx = $index) {
+      <div class="flex items-center gap-2">
+        <p-radiobutton
+          [inputId]="id + '-' + idx"
+          [name]="name"
+          [value]="getOptionValue(option)"
+          [formControl]="control"
+          [pTooltip]="tooltip"
+          tooltipPosition="top"
+          (onBlur)="onBlur()"
+          [class.opacity-60]="disabled"
+          [class.pointer-events-none]="disabled"
+        ></p-radiobutton>
+        <label
+          [for]="id + '-' + idx"
+          class="text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer select-none"
+        >
+          {{ getOptionLabel(option) }}
+        </label>
+      </div>
+    }
+  </div>
+
+  @if (hint && !(displayControl?.invalid && (displayControl?.dirty || displayControl?.touched))) {
+    <span class="text-xs text-slate-500 dark:text-slate-400">{{ hint }}</span>
+  }
+
+  @if (displayControl) {
+    <app-form-error [control]="displayControl" [label]="label"></app-form-error>
+  }
+</div>

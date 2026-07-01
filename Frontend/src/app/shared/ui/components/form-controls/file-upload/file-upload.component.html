@@ -1,0 +1,34 @@
+<div class="w-full flex flex-col gap-1.5">
+  @if (label) {
+    <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">
+      {{ label }}
+      @if (required) {
+        <span class="text-rose-500 font-bold">*</span>
+      }
+    </span>
+  }
+
+  <p-fileupload
+    [name]="id"
+    [accept]="accept"
+    [multiple]="multiple"
+    [maxFileSize]="maxFileSize ?? null"
+    [mode]="mode"
+    [auto]="auto"
+    [disabled]="disabled || readonly"
+    [pTooltip]="tooltip"
+    tooltipPosition="top"
+    (onSelect)="onSelect($event)"
+    (onClear)="onClear()"
+    (onRemove)="onRemove($event)"
+    styleClass="w-full"
+  ></p-fileupload>
+
+  @if (hint && !(displayControl?.invalid && (displayControl?.dirty || displayControl?.touched))) {
+    <span class="text-xs text-slate-500 dark:text-slate-400">{{ hint }}</span>
+  }
+
+  @if (displayControl) {
+    <app-form-error [control]="displayControl" [label]="label"></app-form-error>
+  }
+</div>

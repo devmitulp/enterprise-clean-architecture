@@ -1,0 +1,11 @@
+:host ::ng-deep {
+  .p-datepicker {
+    display: inline-flex;
+    width: 100%;
+  }
+  .p-datepicker-trigger {
+    border: 0 !important;
+    background: transparent !important;
+    color: var(--p-text-muted-color) !important;
+  }
+}

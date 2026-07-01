@@ -1,0 +1,49 @@
+import { Injectable, inject } from '@angular/core';
+import { LocalizationKey } from './localization.types';
+import { TranslateService } from '@ngx-translate/core';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class LocalizerService {
+  private readonly translate = inject(TranslateService);
+
+  /**
+   * Returns localized text.
+   */
+  /**
+   * Returns translated text.
+   */
+  text(key: LocalizationKey | string, ...parameters: unknown[]): string {
+    let message = this.translate.instant(key);
+
+    parameters.forEach((parameter, index) => {
+      message = message.replace(`{${index}}`, String(parameter));
+    });
+
+    return message;
+  }
+
+  /**
+   * Alias of text()
+   */
+  get(key: LocalizationKey | string, ...parameters: unknown[]): string {
+    return this.text(key, ...parameters);
+  }
+
+  /**
+   * Returns translated text if available; otherwise returns the key.
+   */
+  tryGet(key: LocalizationKey | string, ...parameters: unknown[]): string {
+    const value = this.text(key, ...parameters);
+
+    return value === key ? key : value;
+  }
+
+  /**
+   * Checks whether a localization key exists.
+   */
+  exists(key: LocalizationKey | string): boolean {
+    return this.translate.instant(key) !== key;
+  }
+}

@@ -1,0 +1,12 @@
+:host ::ng-deep {
+  .p-inputnumber {
+    display: inline-flex;
+    width: 100%;
+  }
+  .p-inputnumber input {
+    border: 0 !important;
+    border-radius: var(--radius-xl) !important;
+    box-shadow: none !important;
+    width: 100%;
+  }
+}

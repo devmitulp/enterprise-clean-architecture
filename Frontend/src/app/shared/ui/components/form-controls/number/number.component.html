@@ -31,22 +31,24 @@
         </p-inputgroup-addon>
       }
 
-      <input
-        pInputText
-        type="text"
-        [id]="id"
+      <p-inputnumber
+        [inputId]="id"
         [formControl]="control"
         [readonly]="readonly"
-        [maxlength]="maxLength ?? null"
         [placeholder]="placeholder"
+        [min]="min ?? null"
+        [max]="max ?? null"
+        [useGrouping]="useGrouping"
+        [minFractionDigits]="minFractionDigits ?? null"
+        [maxFractionDigits]="maxFractionDigits ?? null"
         [autofocus]="autofocus"
-        [autocomplete]="autoComplete"
         [pTooltip]="tooltip"
         tooltipPosition="top"
-        (blur)="onBlur()"
-        class="w-full py-2.5 px-3.5 text-sm bg-transparent rounded-xl focus:outline-none placeholder-slate-400 text-slate-900 dark:text-white"
+        (onBlur)="onBlur()"
+        class="w-full"
+        inputStyleClass="w-full py-2.5 px-3.5 text-sm bg-transparent focus:outline-none placeholder-slate-400 text-slate-900 dark:text-white border-0 shadow-none"
         [class.no-left-border]="!!icon || !!prefix"
-      />
+      ></p-inputnumber>
 
       @if (suffix) {
         <p-inputgroup-addon>

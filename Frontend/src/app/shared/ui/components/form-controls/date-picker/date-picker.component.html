@@ -25,34 +25,27 @@
           <i [class]="icon"></i>
         </p-inputgroup-addon>
       }
-      @if (prefix) {
-        <p-inputgroup-addon>
-          <span class="text-sm text-slate-500 dark:text-slate-400">{{ prefix }}</span>
-        </p-inputgroup-addon>
-      }
 
-      <input
-        pInputText
-        type="text"
-        [id]="id"
+      <p-datepicker
+        [inputId]="id"
         [formControl]="control"
-        [readonly]="readonly"
-        [maxlength]="maxLength ?? null"
         [placeholder]="placeholder"
+        [showIcon]="showIcon"
+        [selectionMode]="selectionMode"
+        [dateFormat]="dateFormat"
+        [showTime]="showTime"
+        [hourFormat]="hourFormat"
+        [minDate]="minDate ?? null"
+        [maxDate]="maxDate ?? null"
         [autofocus]="autofocus"
-        [autocomplete]="autoComplete"
         [pTooltip]="tooltip"
         tooltipPosition="top"
-        (blur)="onBlur()"
-        class="w-full py-2.5 px-3.5 text-sm bg-transparent rounded-xl focus:outline-none placeholder-slate-400 text-slate-900 dark:text-white"
-        [class.no-left-border]="!!icon || !!prefix"
-      />
-
-      @if (suffix) {
-        <p-inputgroup-addon>
-          <span class="text-sm text-slate-500 dark:text-slate-400">{{ suffix }}</span>
-        </p-inputgroup-addon>
-      }
+        (onBlur)="onBlur()"
+        class="w-full"
+        styleClass="w-full bg-transparent"
+        inputStyleClass="w-full py-2.5 px-3.5 text-sm bg-transparent border-0 focus:outline-none placeholder-slate-400 text-slate-900 dark:text-white shadow-none"
+        [class.no-left-border]="!!icon"
+      ></p-datepicker>
     </p-inputgroup>
   </div>
 

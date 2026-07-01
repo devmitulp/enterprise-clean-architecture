@@ -1,0 +1,20 @@
+:host ::ng-deep {
+  .p-select {
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    border: 0 !important;
+    border-radius: var(--radius-xl) !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+  .p-select-label {
+    padding: 0.625rem 0.875rem !important;
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+    background: transparent !important;
+  }
+  .p-select-clear-icon {
+    right: 2.5rem !important;
+  }
+}
