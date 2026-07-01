@@ -1,5 +1,12 @@
 import { Directive, Input } from '@angular/core';
-import { ControlValueAccessor, DestroyRef, FormControl, NgControl, inject, takeUntilDestroyed } from '@shared/angular';
+import {
+  ControlValueAccessor,
+  DestroyRef,
+  FormControl,
+  NgControl,
+  inject,
+  takeUntilDestroyed,
+} from '@shared/angular';
 
 @Directive()
 export abstract class BaseControlValueAccessor<T> implements ControlValueAccessor {
@@ -29,8 +36,8 @@ export abstract class BaseControlValueAccessor<T> implements ControlValueAccesso
   /**
    * Parent FormControl (Validation)
    */
-  get displayControl(): FormControl {
-    return this.ngControl?.control as FormControl;
+  get displayControl(): FormControl<T | null> | null {
+    return (this.ngControl?.control as FormControl<T | null>) ?? null;
   }
 
   protected readonly destroyRef = inject(DestroyRef);
