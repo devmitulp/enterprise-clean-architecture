@@ -11,7 +11,7 @@ import { LoggerService } from '../services/logger.service';
   providedIn: 'root',
 })
 export class AppConfigService {
-  private config!: AppConfig;
+  private config: AppConfig | null = null;
   private _isMaintenanceMode = false;
   private readonly logger = inject(LoggerService);
 
@@ -33,7 +33,7 @@ export class AppConfigService {
 
       // --- Startup API Health & Maintenance Check ---
       try {
-        const apiBase = this.config.apiBaseUrl.replace(/\/+$/, '');
+        const apiBase = this.config!.apiBaseUrl.replace(/\/+$/, '');
         const healthResponse = await fetch(`${apiBase}/common/settings`, { method: 'GET' });
         if (!healthResponse.ok) {
           throw new Error(`API health check returned status ${healthResponse.status}`);
@@ -61,14 +61,23 @@ export class AppConfigService {
   }
 
   public get settings(): AppConfig {
-    return this.config;
+    this.ensureConfigLoaded();
+    return this.config!;
   }
 
   public get apiBaseUrl(): string {
-    return this.config.apiBaseUrl;
+    return this.settings.apiBaseUrl;
   }
 
   public get featureFlags() {
-    return this.config.featureFlags;
+    return this.settings.featureFlags;
+  }
+
+  private ensureConfigLoaded(): void {
+    if (!this.config) {
+      throw new Error(
+        '[AppConfigService] Configuration is not yet loaded. Ensure APP_INITIALIZER has completed execution before accessing config properties.'
+      );
+    }
   }
 }
