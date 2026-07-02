@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ROUTE_PATHS } from '@constants';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { LoggerService, ThemeService } from '@services';
+import { TranslatePipe } from '@ngx-translate/core';
+import { LoggerService, ThemeService, LanguageService } from '@services';
 import { computed, inject, signal } from '@shared/angular';
 
 interface NavItem {
@@ -21,9 +21,9 @@ interface NavItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PrivateLayoutComponent {
-  private translate = inject(TranslateService);
   private readonly logger = inject(LoggerService);
   private readonly themeService = inject(ThemeService);
+  private readonly languageService = inject(LanguageService);
   readonly routePaths = ROUTE_PATHS;
 
   // Layout State Signals
@@ -32,7 +32,7 @@ export class PrivateLayoutComponent {
   readonly isProfileMenuOpen = signal(false);
   readonly isNotificationsOpen = signal(false);
   readonly isLanguageMenuOpen = signal(false);
-  readonly currentLang = signal(this.translate.getCurrentLang() || 'en');
+  readonly currentLang = this.languageService.currentLang;
 
   readonly availableLanguages = [
     { code: 'en', name: 'English' },
@@ -90,8 +90,7 @@ export class PrivateLayoutComponent {
   }
 
   changeLanguage(code: string): void {
-    this.currentLang.set(code);
-    this.translate.use(code);
+    this.languageService.setLanguage(code);
     this.isLanguageMenuOpen.set(false);
   }
 
