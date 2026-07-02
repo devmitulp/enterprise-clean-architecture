@@ -11,10 +11,7 @@ export {
   computed,
   ChangeDetectorRef,
   DestroyRef,
-  Injector,
-  provideZonelessChangeDetection,
-  provideAppInitializer,
-  provideBrowserGlobalErrorListeners
+  Injector
 } from '@angular/core';
 
 export {
@@ -26,8 +23,7 @@ export {
 } from '@angular/forms';
 
 export {
-  Router,
-  provideRouter
+  Router
 } from '@angular/router';
 
 export {
@@ -37,15 +33,12 @@ export {
 export {
   HttpClient,
   HttpHeaders,
-  HttpParams,
-  provideHttpClient,
-  withInterceptors
+  HttpParams
 } from '@angular/common/http';
 
 // Type Exports
 export type {
-  OnInit,
-  ApplicationConfig
+  OnInit
 } from '@angular/core';
 
 export type {

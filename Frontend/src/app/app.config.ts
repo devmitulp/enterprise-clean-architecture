@@ -1,13 +1,13 @@
 import {
   ApplicationConfig,
-  inject,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideHttpClient,
   provideRouter,
   provideZonelessChangeDetection,
   withInterceptors,
-} from '@shared/angular';
+} from '@core/providers';
+import { inject } from '@shared/angular';
 import { providePrimeNG } from '@primeng';
 import Aura from '@primeuix/themes/aura';
 import { provideTranslateService, provideTranslateLoader } from '@ngx-translate/core';

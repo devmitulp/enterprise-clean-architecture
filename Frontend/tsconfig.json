@@ -41,6 +41,7 @@
       "@constants": ["app/core/constants/index.ts"],
       "@enums": ["app/core/enums/index.ts"],
       "@models": ["app/core/models/index.ts"],
+      "@core/providers": ["app/core/providers/index.ts"],
       "@state": ["app/core/state/index.ts"],
       "@auth": ["app/core/auth/index.ts"],
       "@configuration": ["app/core/configuration/index.ts"],
