@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DestroyRef, FormBuilder, FormControl, FormGroup, Router, SHARED_ANGULAR_MODULES, Validators, inject, signal, takeUntilDestroyed } from '@shared/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ROUTE_PATHS } from '@constants';
-import { TextBoxComponent, PasswordComponent } from '@form-controls';
+import { TextBoxComponent, PasswordComponent, CheckboxComponent } from '@form-controls';
 import { LoggerService } from '@services';
 import { AuthService, AuthState } from '@auth';
 import { AppConfigService } from '@configuration';
@@ -15,7 +15,8 @@ import { LoginRequest } from '@models';
     ...SHARED_ANGULAR_MODULES,
     TextBoxComponent,
     TranslatePipe,
-    PasswordComponent
+    PasswordComponent,
+    CheckboxComponent
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
