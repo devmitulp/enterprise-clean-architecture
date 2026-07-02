@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { computed, inject, signal } from '@shared/angular';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { TranslateService, TranslatePipe } from '@ngx-translate/core';
 import { ROUTE_PATHS } from '@constants';
-import { LoggerService, LocalStorageService } from '@services';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { LoggerService } from '@services';
+import { computed, inject, signal } from '@shared/angular';
 
 interface NavItem {
   label: string;
@@ -23,7 +23,6 @@ interface NavItem {
 export class PrivateLayoutComponent {
   private translate = inject(TranslateService);
   private readonly logger = inject(LoggerService);
-  private readonly localStorageService = inject(LocalStorageService);
   readonly routePaths = ROUTE_PATHS;
 
   // Layout State Signals
@@ -39,10 +38,7 @@ export class PrivateLayoutComponent {
     { code: 'gu', name: 'ગુજરાતી' },
   ];
 
-  constructor() {
-    this.translate.setFallbackLang('en');
-    this.translate.use(this.currentLang());
-  }
+  constructor() {}
 
   // Sample User Permissions (would normally come from AuthFacade)
   readonly userPermissions = signal<string[]>(['read:dashboard', 'read:settings']);
@@ -100,7 +96,6 @@ export class PrivateLayoutComponent {
   changeLanguage(code: string): void {
     this.currentLang.set(code);
     this.translate.use(code);
-    this.localStorageService.setItem('lang', code);
     this.isLanguageMenuOpen.set(false);
   }
 
