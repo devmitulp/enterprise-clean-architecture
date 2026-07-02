@@ -35,6 +35,16 @@ export class PrivateLayoutComponent {
   readonly isNotificationsOpen = signal(false);
   readonly isLanguageMenuOpen = signal(false);
   readonly currentLang = this.languageService.currentLang;
+  readonly userContext = this.authState.userContext;
+  readonly userInitials = computed(() => {
+    const name = this.userContext()?.FullName;
+    if (!name) return 'U';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+  });
 
   readonly availableLanguages = [
     { code: 'en', name: 'English' },
@@ -42,8 +52,6 @@ export class PrivateLayoutComponent {
   ];
 
   constructor() {}
-
-
 
   // Dynamic Navigation menu (to be replaced with API-driven dynamic menu later)
   readonly menuItems = signal<NavItem[]>([

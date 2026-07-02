@@ -4,8 +4,7 @@ import { Router, computed, inject, signal } from '@shared/angular';
 // MODERN ANGULAR SIGNAL STATE STORE (Clean Architecture Core)
 // ==========================================================================
 
-import { AuthTokenService } from '@auth';
-import { JWT_CLAIM_KEYS } from '@auth';
+import { AuthTokenService, JWT_CLAIM_KEYS, UserContext } from '@auth';
 import { ROUTE_PATHS } from '@constants';
 import { TokenStorageService } from './token-storage.service';
 
@@ -45,26 +44,74 @@ export class AuthState {
   /** Read-only signal representing global loading state */
   public isLoading = computed(() => this._isLoading());
 
-  /** Read-only signal extracting user email from C# .NET XML or standard claims */
-  public userEmail = computed(() => {
-    const claims = this._currentUser();
-    if (!claims) return null;
-    return claims[JWT_CLAIM_KEYS.EMAIL_XML] || claims[JWT_CLAIM_KEYS.EMAIL] || null;
+  /** Read-only signal representing the parsed UserContext from verified JWT claims */
+  public readonly userContext = computed<UserContext | null>(() => {
+    return this.fromClaims(this._currentUser());
   });
 
-  /** Read-only signal extracting user roles array from C# .NET XML or standard claims */
-  public userRoles = computed<string[]>(() => {
-    const claims = this._currentUser();
-    if (!claims) return [];
-    const roles = claims[JWT_CLAIM_KEYS.ROLE_XML] || claims[JWT_CLAIM_KEYS.ROLE] || [];
-    return Array.isArray(roles) ? roles : [roles];
-  });
-
-  /** Read-only signal extracting tenant ID */
-  public tenantId = computed(() => {
-    const claims = this._currentUser();
+  /**
+   * Helper mapping raw JWT claims into a structured UserContext interface.
+   */
+  private fromClaims(claims: Record<string, any> | null): UserContext | null {
     if (!claims) return null;
-    return claims[JWT_CLAIM_KEYS.TENANT_ID] || null;
+
+    const email = claims[JWT_CLAIM_KEYS.EMAIL_XML] || claims[JWT_CLAIM_KEYS.EMAIL] || null;
+    const name = claims[JWT_CLAIM_KEYS.NAME_XML] || claims[JWT_CLAIM_KEYS.NAME] || null;
+    const id = claims[JWT_CLAIM_KEYS.NAME_IDENTIFIER] || claims[JWT_CLAIM_KEYS.SUB] || null;
+    const rolesData = claims[JWT_CLAIM_KEYS.ROLE_XML] || claims[JWT_CLAIM_KEYS.ROLE] || [];
+    const roles = Array.isArray(rolesData) ? rolesData : [rolesData];
+    const tenantId = claims[JWT_CLAIM_KEYS.TENANT_ID] || null;
+    const department = claims[JWT_CLAIM_KEYS.DEPARTMENT] || null;
+
+    let firstName =
+      claims['given_name'] ||
+      claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname'] ||
+      null;
+    let lastName =
+      claims['family_name'] ||
+      claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname'] ||
+      null;
+
+    if (!firstName && name) {
+      const parts = name.trim().split(/\s+/);
+      firstName = parts[0] || null;
+      lastName = parts.slice(1).join(' ') || null;
+    }
+
+    return {
+      Id: id,
+      UserName: name || email || 'User',
+      EmailAddress: email,
+      FirstName: firstName,
+      LastName: lastName,
+      FullName: name || 'User',
+      Roles: roles,
+      TenantId: tenantId,
+      Department: department,
+    };
+  }
+
+  /** Read-only signal extracting user email from the user context */
+  public userEmail = computed(() => this.userContext()?.EmailAddress ?? null);
+
+  /** Read-only signal extracting user roles array from the user context */
+  public userRoles = computed(() => this.userContext()?.Roles ?? []);
+
+  /** Read-only signal extracting tenant ID from the user context */
+  public tenantId = computed(() => this.userContext()?.TenantId ?? null);
+
+  /** Read-only signal extracting user full name from the user context */
+  public userName = computed(() => this.userContext()?.FullName ?? 'User');
+
+  /** Read-only signal generating initials from user full name */
+  public userInitials = computed(() => {
+    const name = this.userName();
+    if (!name) return 'U';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
   });
 
   // --- State Action Methods ---
