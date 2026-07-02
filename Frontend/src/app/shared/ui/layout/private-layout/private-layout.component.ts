@@ -18,7 +18,7 @@ interface NavItem {
   standalone: true,
   imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslatePipe],
   templateUrl: './private-layout.component.html',
-  styleUrls: ['./private-layout.component.scss'],
+  styleUrl: './private-layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PrivateLayoutComponent {

@@ -23,7 +23,7 @@ import {
   standalone: true,
   imports: [...SHARED_ANGULAR_MODULES, TextBoxComponent, RouterLink, TranslatePipe],
   templateUrl: './mfa.component.html',
-  styleUrls: ['./mfa.component.scss'],
+  styleUrl: './mfa.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MfaComponent {
