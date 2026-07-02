@@ -3,12 +3,12 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { AuthState } from '@auth';
 
 interface DashboardStats {
-  labelKey: string;
-  value?: string;
-  valueKey?: string;
-  trend: string;
-  trendUp: boolean;
-  icon: string;
+  LabelKey: string;
+  Value?: string;
+  ValueKey?: string;
+  Trend: string;
+  TrendUp: boolean;
+  Icon: string;
 }
 
 @Component({
@@ -26,32 +26,32 @@ export class DashboardComponent {
 
   readonly stats: DashboardStats[] = [
     {
-      labelKey: 'ActiveUsers',
-      value: '1,482',
-      trend: '+12.4%',
-      trendUp: true,
-      icon: 'fa fa-users',
+      LabelKey: 'ActiveUsers',
+      Value: '1,482',
+      Trend: '+12.4%',
+      TrendUp: true,
+      Icon: 'fa fa-users',
     },
     {
-      labelKey: 'TotalRevenue',
-      valueKey: 'RevenueValue',
-      trend: '+8.2%',
-      trendUp: true,
-      icon: 'fa-solid fa-dollar-sign',
+      LabelKey: 'TotalRevenue',
+      Value: '$45,231',
+      Trend: '+8.2%',
+      TrendUp: true,
+      Icon: 'fa-solid fa-dollar-sign',
     },
     {
-      labelKey: 'PendingApprovals',
-      value: '18',
-      trend: '-2.4%',
-      trendUp: false,
-      icon: 'fa fa-file-edit',
+      LabelKey: 'PendingApprovals',
+      Value: '18',
+      Trend: '-2.4%',
+      TrendUp: false,
+      Icon: 'fa fa-file-edit',
     },
     {
-      labelKey: 'SystemHealth',
-      value: '99.9%',
-      trend: '+0.01%',
-      trendUp: true,
-      icon: 'fa-regular fa-circle-check',
+      LabelKey: 'SystemHealth',
+      Value: '99.9%',
+      Trend: '+0.01%',
+      TrendUp: true,
+      Icon: 'fa-regular fa-circle-check',
     },
   ];
 }

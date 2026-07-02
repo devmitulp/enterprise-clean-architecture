@@ -31,7 +31,6 @@
 		<text name="TodayOverview">Here is what's happening today.</text>
 		<text name="ActiveUsers">Active Users</text>
 		<text name="TotalRevenue">Total Revenue</text>
-		<text name="RevenueValue">$45,231</text>
 		<text name="PendingApprovals">Pending Approvals</text>
 		<text name="SystemHealth">System Health</text>
 		<text name="VsLastMonth">vs last month</text>
