@@ -27,14 +27,16 @@ export class BaseHttpService {
   /**
    * Helper to convert plain JS objects or HttpParams into valid HttpParams.
    */
-  protected buildParams(params?: HttpParams | Record<string, any>): HttpParams {
+  protected buildParams<P>(
+    params?: HttpParams | P
+  ): HttpParams {
     if (params instanceof HttpParams) {
       return params;
     }
     let httpParams = new HttpParams();
     if (params) {
       Object.keys(params).forEach((key) => {
-        const value = params[key];
+        const value = (params as any)[key];
         if (value !== undefined && value !== null) {
           httpParams = httpParams.set(key, value.toString());
         }
@@ -48,10 +50,10 @@ export class BaseHttpService {
   /**
    * Executes an HTTP GET request returning an Observable of type T.
    */
-  public get<T>(
+  public get<T, P = any>(
     endpoint: string,
-    params?: HttpParams | Record<string, any>,
-    headers?: HttpHeaders
+    params?: HttpParams | P,
+    headers?: HttpHeaders,
   ): Observable<T> {
     const url = this.getFullUrl(endpoint);
     const httpParams = this.buildParams(params);
@@ -61,11 +63,11 @@ export class BaseHttpService {
   /**
    * Executes an HTTP POST request returning an Observable of type R (Response).
    */
-  public post<T, R = T>(
+  public post<T, R = T, P = any>(
     endpoint: string,
     body: T,
-    params?: HttpParams | Record<string, any>,
-    headers?: HttpHeaders
+    params?: HttpParams | P,
+    headers?: HttpHeaders,
   ): Observable<R> {
     const url = this.getFullUrl(endpoint);
     const httpParams = this.buildParams(params);
@@ -77,11 +79,11 @@ export class BaseHttpService {
   /**
    * Executes an HTTP PUT request returning an Observable of type R (Response).
    */
-  public put<T, R = T>(
+  public put<T, R = T, P = any>(
     endpoint: string,
     body: T,
-    params?: HttpParams | Record<string, any>,
-    headers?: HttpHeaders
+    params?: HttpParams | P,
+    headers?: HttpHeaders,
   ): Observable<R> {
     const url = this.getFullUrl(endpoint);
     const httpParams = this.buildParams(params);
@@ -92,11 +94,11 @@ export class BaseHttpService {
   /**
    * Executes an HTTP PATCH request returning an Observable of type R (Response).
    */
-  public patch<T, R = T>(
+  public patch<T, R = T, P = any>(
     endpoint: string,
     body: T,
-    params?: HttpParams | Record<string, any>,
-    headers?: HttpHeaders
+    params?: HttpParams | P,
+    headers?: HttpHeaders,
   ): Observable<R> {
     const url = this.getFullUrl(endpoint);
     const httpParams = this.buildParams(params);
@@ -107,10 +109,10 @@ export class BaseHttpService {
   /**
    * Executes an HTTP DELETE request returning an Observable of type T.
    */
-  public delete<T>(
+  public delete<T, P = any>(
     endpoint: string,
-    params?: HttpParams | Record<string, any>,
-    headers?: HttpHeaders
+    params?: HttpParams | P,
+    headers?: HttpHeaders,
   ): Observable<T> {
     const url = this.getFullUrl(endpoint);
     const httpParams = this.buildParams(params);
