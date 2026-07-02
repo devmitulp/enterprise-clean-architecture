@@ -12,6 +12,6 @@ import { LoaderComponent } from '@components';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class App {
+export class AppComponent {
   protected readonly title = signal('enterprise-frontend');
 }
