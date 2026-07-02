@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ROUTE_PATHS } from '@constants';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { LoggerService } from '@services';
+import { LoggerService, ThemeService } from '@services';
 import { computed, inject, signal } from '@shared/angular';
 
 interface NavItem {
@@ -23,11 +23,12 @@ interface NavItem {
 export class PrivateLayoutComponent {
   private translate = inject(TranslateService);
   private readonly logger = inject(LoggerService);
+  private readonly themeService = inject(ThemeService);
   readonly routePaths = ROUTE_PATHS;
 
   // Layout State Signals
   readonly isSidebarCollapsed = signal(false);
-  readonly isDarkMode = signal(false);
+  readonly isDarkMode = signal(this.themeService.isDarkMode());
   readonly isProfileMenuOpen = signal(false);
   readonly isNotificationsOpen = signal(false);
   readonly isLanguageMenuOpen = signal(false);
@@ -72,13 +73,8 @@ export class PrivateLayoutComponent {
   }
 
   toggleTheme(): void {
-    this.isDarkMode.update((val) => !val);
-    const htmlElement = document.documentElement;
-    if (this.isDarkMode()) {
-      htmlElement.classList.add('dark');
-    } else {
-      htmlElement.classList.remove('dark');
-    }
+    const isDark = this.themeService.toggleTheme();
+    this.isDarkMode.set(isDark);
   }
 
   toggleProfileMenu(): void {
