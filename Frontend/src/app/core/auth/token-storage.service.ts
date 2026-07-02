@@ -1,30 +1,33 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AUTH_STORAGE_KEYS } from './auth.constants';
+import { LocalStorageService } from '@services';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TokenStorageService {
+  private readonly localStorageService = inject(LocalStorageService);
+
   setAccessToken(token: string): void {
-    localStorage.setItem(AUTH_STORAGE_KEYS.ACCESS_TOKEN, token);
+    this.localStorageService.setItem(AUTH_STORAGE_KEYS.ACCESS_TOKEN, token);
   }
 
   getAccessToken(): string | null {
-    return localStorage.getItem(AUTH_STORAGE_KEYS.ACCESS_TOKEN);
+    return this.localStorageService.getItem(AUTH_STORAGE_KEYS.ACCESS_TOKEN);
   }
 
   setRefreshToken(token: string): void {
-    localStorage.setItem(AUTH_STORAGE_KEYS.REFRESH_TOKEN, token);
+    this.localStorageService.setItem(AUTH_STORAGE_KEYS.REFRESH_TOKEN, token);
   }
 
   getRefreshToken(): string | null {
-    return localStorage.getItem(AUTH_STORAGE_KEYS.REFRESH_TOKEN);
+    return this.localStorageService.getItem(AUTH_STORAGE_KEYS.REFRESH_TOKEN);
   }
 
   clearTokens(): void {
-    localStorage.removeItem(AUTH_STORAGE_KEYS.ACCESS_TOKEN);
-    localStorage.removeItem(AUTH_STORAGE_KEYS.REFRESH_TOKEN);
-    localStorage.removeItem(AUTH_STORAGE_KEYS.USER_PERMISSIONS);
+    this.localStorageService.removeItem(AUTH_STORAGE_KEYS.ACCESS_TOKEN);
+    this.localStorageService.removeItem(AUTH_STORAGE_KEYS.REFRESH_TOKEN);
+    this.localStorageService.removeItem(AUTH_STORAGE_KEYS.USER_PERMISSIONS);
   }
 
   parseJwt(token: string): Record<string, any> | null {
