@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ROUTE_PATHS } from '@constants';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LoggerService, ThemeService, LanguageService } from '@services';
+import { AuthState } from '@auth';
 import { computed, inject, signal } from '@shared/angular';
 
 interface NavItem {
@@ -24,6 +25,7 @@ export class PrivateLayoutComponent {
   private readonly logger = inject(LoggerService);
   private readonly themeService = inject(ThemeService);
   private readonly languageService = inject(LanguageService);
+  private readonly authState = inject(AuthState);
   readonly routePaths = ROUTE_PATHS;
 
   // Layout State Signals
@@ -41,32 +43,24 @@ export class PrivateLayoutComponent {
 
   constructor() {}
 
-  // Sample User Permissions (would normally come from AuthFacade)
-  readonly userPermissions = signal<string[]>(['read:dashboard', 'read:settings']);
 
-  // Dynamic Navigation menu with role/permission based rendering
+
+  // Dynamic Navigation menu (to be replaced with API-driven dynamic menu later)
   readonly menuItems = signal<NavItem[]>([
     {
       label: 'LAYOUT.DASHBOARD',
       icon: 'pi pi-th-large',
       route: `/${ROUTE_PATHS.DASHBOARD}`,
-      requiredPermission: 'read:dashboard',
     },
     {
       label: 'LAYOUT.SETTINGS',
       icon: 'pi pi-cog',
       route: `/${ROUTE_PATHS.SETTINGS}`,
-      requiredPermission: 'read:settings',
     },
   ]);
 
-  // Filtered menu based on user permissions
-  readonly authorizedMenuItems = computed(() => {
-    const permissions = this.userPermissions();
-    return this.menuItems().filter(
-      (item) => !item.requiredPermission || permissions.includes(item.requiredPermission),
-    );
-  });
+  // Expose menu items to template
+  readonly authorizedMenuItems = computed(() => this.menuItems());
 
   toggleSidebar(): void {
     this.isSidebarCollapsed.update((val) => !val);
@@ -95,7 +89,7 @@ export class PrivateLayoutComponent {
   }
 
   logout(): void {
-    // Placeholder logout implementation
     this.logger.log('Logging out...');
+    this.authState.logout();
   }
 }
