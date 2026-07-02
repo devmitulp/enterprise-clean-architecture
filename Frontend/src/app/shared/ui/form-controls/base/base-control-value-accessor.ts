@@ -28,6 +28,7 @@ export abstract class BaseControlValueAccessor<T> implements ControlValueAccesso
 
   private readonly _disabled = signal(false);
   readonly disabled = this._disabled.asReadonly();
+  private _initialized = false;
 
   /**
    * Internal control (Input Binding)
@@ -59,6 +60,11 @@ export abstract class BaseControlValueAccessor<T> implements ControlValueAccesso
   // ---------------------------
 
   protected initialize(): void {
+    if (this._initialized) {
+      return;
+    }
+    this._initialized = true;
+
     this.control.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
       this.onChange(value as T);
     });
