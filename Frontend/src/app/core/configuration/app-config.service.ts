@@ -69,7 +69,7 @@ export class AppConfigService {
     return this.settings.apiBaseUrl;
   }
 
-  public get featureFlags() {
+  public get featureFlags(): any {
     return this.settings.featureFlags;
   }
 
