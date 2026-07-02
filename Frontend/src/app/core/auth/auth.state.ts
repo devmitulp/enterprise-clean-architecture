@@ -31,10 +31,10 @@ export class AuthState {
   // --- Public Computed Signals (Read-Only) ---
 
   /** Read-only signal representing current user claims object */
-  public currentUser = computed(() => this._currentUser());
+  public readonly currentUser = computed(() => this._currentUser());
 
   /** Read-only signal representing whether user is valid and authenticated */
-  public isAuthenticated = computed(() => {
+  public readonly isAuthenticated = computed(() => {
     // Depend on _currentUser signal for reactivity
     const user = this._currentUser();
     if (!user) return false;
@@ -42,7 +42,7 @@ export class AuthState {
   });
 
   /** Read-only signal representing global loading state */
-  public isLoading = computed(() => this._isLoading());
+  public readonly isLoading = computed(() => this._isLoading());
 
   /** Read-only signal representing the parsed UserContext from verified JWT claims */
   public readonly userContext = computed<UserContext | null>(() => {
@@ -92,19 +92,19 @@ export class AuthState {
   }
 
   /** Read-only signal extracting user email from the user context */
-  public userEmail = computed(() => this.userContext()?.EmailAddress ?? null);
+  public readonly userEmail = computed(() => this.userContext()?.EmailAddress ?? null);
 
   /** Read-only signal extracting user roles array from the user context */
-  public userRoles = computed(() => this.userContext()?.Roles ?? []);
+  public readonly userRoles = computed(() => this.userContext()?.Roles ?? []);
 
   /** Read-only signal extracting tenant ID from the user context */
-  public tenantId = computed(() => this.userContext()?.TenantId ?? null);
+  public readonly tenantId = computed(() => this.userContext()?.TenantId ?? null);
 
   /** Read-only signal extracting user full name from the user context */
-  public userName = computed(() => this.userContext()?.FullName ?? 'User');
+  public readonly userName = computed(() => this.userContext()?.FullName ?? 'User');
 
   /** Read-only signal generating initials from user full name */
-  public userInitials = computed(() => {
+  public readonly userInitials = computed(() => {
     const name = this.userName();
     if (!name) return 'U';
     const parts = name.trim().split(/\s+/);
