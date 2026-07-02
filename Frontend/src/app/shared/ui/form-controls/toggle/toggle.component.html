@@ -18,6 +18,9 @@
       (onBlur)="onBlur()"
       [class.opacity-60]="disabled"
       [class.pointer-events-none]="disabled"
+      [attr.aria-required]="required || null"
+      [attr.aria-invalid]="(displayControl?.invalid && (displayControl?.dirty || displayControl?.touched)) || null"
+      [attr.aria-describedby]="(displayControl?.invalid && (displayControl?.dirty || displayControl?.touched)) ? id + '-error' : null"
     ></p-toggleswitch>
     @if (toggleLabel) {
       <label
@@ -34,6 +37,6 @@
   }
 
   @if (displayControl) {
-    <app-form-error [control]="displayControl" [label]="label"></app-form-error>
+    <app-form-error [control]="displayControl" [label]="label" [id]="id"></app-form-error>
   }
 </div>

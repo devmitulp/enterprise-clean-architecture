@@ -43,6 +43,9 @@
         class="w-full select-control-wrapper"
         styleClass="w-full bg-transparent border-0 shadow-none text-sm text-slate-900 dark:text-white"
         [class.no-left-border]="!!icon"
+        [attr.aria-required]="required || null"
+        [attr.aria-invalid]="(displayControl?.invalid && (displayControl?.dirty || displayControl?.touched)) || null"
+        [attr.aria-describedby]="(displayControl?.invalid && (displayControl?.dirty || displayControl?.touched)) ? id + '-error' : null"
       ></p-select>
     </p-inputgroup>
   </div>
@@ -52,6 +55,6 @@
   }
 
   @if (displayControl) {
-    <app-form-error [control]="displayControl" [label]="label"></app-form-error>
+    <app-form-error [control]="displayControl" [label]="label" [id]="id"></app-form-error>
   }
 </div>

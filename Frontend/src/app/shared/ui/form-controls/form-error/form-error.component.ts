@@ -16,6 +16,7 @@ export class FormErrorComponent {
   private _control: AbstractControl | null = null;
 
   @Input() label = 'This field';
+  @Input() id = '';
   @Input({ required: true })
   set control(value: AbstractControl | null) {
     if (!value || this._control === value) {

@@ -46,6 +46,9 @@
         (blur)="onBlur()"
         class="w-full py-2.5 px-3.5 text-sm bg-transparent rounded-xl focus:outline-none placeholder-slate-400 text-slate-900 dark:text-white"
         [class.no-left-border]="!!icon || !!prefix"
+        [attr.aria-required]="required || null"
+        [attr.aria-invalid]="(displayControl?.invalid && (displayControl?.dirty || displayControl?.touched)) || null"
+        [attr.aria-describedby]="(displayControl?.invalid && (displayControl?.dirty || displayControl?.touched)) ? id + '-error' : null"
       />
 
       @if (suffix) {
@@ -61,6 +64,6 @@
   }
 
   @if (displayControl) {
-    <app-form-error [control]="displayControl" [label]="label"></app-form-error>
+    <app-form-error [control]="displayControl" [label]="label" [id]="id"></app-form-error>
   }
 </div>
