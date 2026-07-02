@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { signal } from '@shared/angular';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
+import { AuthState } from '@auth';
 
 interface DashboardStats {
-  label: string;
-  value: string;
+  labelKey: string;
+  value?: string;
+  valueKey?: string;
   trend: string;
   trendUp: boolean;
   icon: string;
@@ -12,15 +14,44 @@ interface DashboardStats {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
+  imports: [TranslatePipe],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent {
-  readonly stats = signal<DashboardStats[]>([
-    { label: 'Active Users', value: '1,482', trend: '+12.4%', trendUp: true, icon: 'pi pi-users' },
-    { label: 'Total Revenue', value: '$45,231', trend: '+8.2%', trendUp: true, icon: 'pi pi-dollar' },
-    { label: 'Pending Approvals', value: '18', trend: '-2.4%', trendUp: false, icon: 'pi pi-file-edit' },
-    { label: 'System Health', value: '99.9%', trend: '+0.01%', trendUp: true, icon: 'pi pi-check-circle' }
-  ]);
+  private readonly authState = inject(AuthState);
+
+  readonly userName = this.authState.userName;
+
+  readonly stats: DashboardStats[] = [
+    {
+      labelKey: 'ActiveUsers',
+      value: '1,482',
+      trend: '+12.4%',
+      trendUp: true,
+      icon: 'pi pi-users',
+    },
+    {
+      labelKey: 'TotalRevenue',
+      valueKey: 'RevenueValue',
+      trend: '+8.2%',
+      trendUp: true,
+      icon: 'pi pi-dollar',
+    },
+    {
+      labelKey: 'PendingApprovals',
+      value: '18',
+      trend: '-2.4%',
+      trendUp: false,
+      icon: 'pi pi-file-edit',
+    },
+    {
+      labelKey: 'SystemHealth',
+      value: '99.9%',
+      trend: '+0.01%',
+      trendUp: true,
+      icon: 'pi pi-check-circle',
+    },
+  ];
 }

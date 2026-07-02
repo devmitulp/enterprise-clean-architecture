@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<localizationDictionary culture="gu">
+	<texts>
+		<!-- Login Page -->
+		<text name="SignInToYourAccount">તમારા એકાઉન્ટમાં સાઇન ઇન કરો</text>
+		<text name="WelcomeToOurEnterprisePortal">અમારા એન્ટરપ્રાઇઝ પોર્ટલમાં આપનું સ્વાગત છે</text>
+		<text name="EmailAddress">ઇમેઇલ સરનામું</text>
+		<text name="EmailPlaceholder">તમારું ઇમેઇલ સરનામું દાખલ કરો</text>
+		<text name="Password">પાસવર્ડ</text>
+		<text name="PasswordPlaceholder">તમારો પાસવર્ડ દાખલ કરો</text>
+		<text name="RememberMe">મને યાદ રાખો</text>
+		<text name="Authenticating">પ્રમાણિત કરી રહ્યું છે...</text>
+		<text name="SignIn">સાઇન ઇન કરો</text>
+		<text name="OrContinueWith">અથવા આનાથી ચાલુ રાખો</text>
+		<text name="Google">ગૂગલ</text>
+		<text name="Microsoft">માઇક્રોસોફ્ટ</text>
+
+		<!-- MFA Page -->
+		<text name="TwoFactorAuthentication">બે-પરિબળ પ્રમાણીકરણ</text>
+		<text name="MfaDescription">કૃપા કરીને તમારા પ્રમાણકર્તા એપ્લિકેશન અથવા મોબાઇલ ઉપકરણ પર મોકલેલો 6-અંકનો વેરિફિકેશન કોડ દાખલ કરો.</text>
+		<text name="VerificationCode">વેરિફિકેશન કોડ</text>
+		<text name="VerificationCodePlaceholder">123456</text>
+		<text name="Verifying">ચકાસી રહ્યું છે...</text>
+		<text name="VerifyCode">કોડ ચકાસો</text>
+		<text name="DidNotReceiveCodeResend">કોડ મળ્યો નથી? ફરીથી મોકલો</text>
+		<text name="BackToSignIn">સાઇન ઇનમાં પાછા જાઓ</text>
+
+		<!-- Dashboard -->
+		<text name="WorkspaceOverview">કાર્યસ્થળ વિહંગાવલોકન</text>
+		<text name="WelcomeBack">પાછા સ્વાગત છે</text>
+		<text name="TodayOverview">આજે શું થઈ રહ્યું છે તે અહીં છે.</text>
+		<text name="ActiveUsers">સક્રિય વપરાશકર્તાઓ</text>
+		<text name="TotalRevenue">કુલ આવક</text>
+		<text name="RevenueValue">₹45,231</text>
+		<text name="PendingApprovals">બાકી મંજૂરીઓ</text>
+		<text name="SystemHealth">સિસ્ટમ સ્વાસ્થ્ય</text>
+		<text name="VsLastMonth">ગયા મહિનાની સરખામણીમાં</text>
+		<text name="PerformanceAnalytics">પ્રદર્શન વિશ્લેષણ</text>
+		<text name="AnalyticsPlaceholder">બેકએન્ડ સેવા એકીકરણ પૂર્ણ થયા પછી વિશ્લેષણ ચાર્ટ અહીં પ્રદર્શિત થશે.</text>
+		<text name="RecentActivities">તાજેતરની પ્રવૃત્તિઓ</text>
+		<text name="ActivitiesPlaceholder">સિસ્ટમ ઇવેન્ટ્સ, ઓડિટ લોગ્સ અને સ્ટેટસ અપડેટ્સની ટાઇમલાઇન અહીં પ્રદર્શિત થશે.</text>
+	</texts>
+</localizationDictionary>

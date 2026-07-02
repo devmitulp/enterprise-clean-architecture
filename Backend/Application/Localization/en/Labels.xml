@@ -24,5 +24,20 @@
 		<text name="VerifyCode">Verify Code</text>
 		<text name="DidNotReceiveCodeResend">Didn't receive the code? Resend</text>
 		<text name="BackToSignIn">Back to Sign In</text>
+
+		<!-- Dashboard -->
+		<text name="WorkspaceOverview">Workspace Overview</text>
+		<text name="WelcomeBack">Welcome back</text>
+		<text name="TodayOverview">Here is what's happening today.</text>
+		<text name="ActiveUsers">Active Users</text>
+		<text name="TotalRevenue">Total Revenue</text>
+		<text name="RevenueValue">$45,231</text>
+		<text name="PendingApprovals">Pending Approvals</text>
+		<text name="SystemHealth">System Health</text>
+		<text name="VsLastMonth">vs last month</text>
+		<text name="PerformanceAnalytics">Performance Analytics</text>
+		<text name="AnalyticsPlaceholder">Analytics charts will display here once backend service integration is completed.</text>
+		<text name="RecentActivities">Recent Activities</text>
+		<text name="ActivitiesPlaceholder">A timeline of system events, audit logs, and status updates will be displayed here.</text>
 	</texts>
 </localizationDictionary>
