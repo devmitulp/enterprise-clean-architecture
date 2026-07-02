@@ -46,7 +46,6 @@ export class FileUploadComponent extends BaseControlValueAccessor<File | File[]>
     } else {
       this.control.setValue(files[0] || null);
     }
-    this.onChange(this.control.value);
     this.onTouched();
   }
 
@@ -59,13 +58,11 @@ export class FileUploadComponent extends BaseControlValueAccessor<File | File[]>
     } else {
       this.control.setValue(null);
     }
-    this.onChange(this.control.value);
     this.onTouched();
   }
 
   onClear(): void {
     this.control.setValue(null);
-    this.onChange(null);
     this.onTouched();
   }
 }
