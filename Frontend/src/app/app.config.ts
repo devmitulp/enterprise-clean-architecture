@@ -16,8 +16,7 @@ import { ApiTranslationLoader } from '@core';
 import { routes } from './app.routes';
 import { AppConfigService } from '@configuration';
 import { authInterceptor } from '@auth';
-import { errorInterceptor } from '@interceptors';
-import { loaderInterceptor } from '@interceptors';
+import { errorInterceptor, loaderInterceptor } from '@interceptors';
 
 export const appConfig: ApplicationConfig = {
   providers: [
