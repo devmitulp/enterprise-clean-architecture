@@ -32,7 +32,7 @@ export class PrivateLayoutComponent {
   readonly isProfileMenuOpen = signal(false);
   readonly isNotificationsOpen = signal(false);
   readonly isLanguageMenuOpen = signal(false);
-  readonly currentLang = signal(this.translate.currentLang.toString() || 'en');
+  readonly currentLang = signal(this.translate.getCurrentLang() || 'en');
 
   readonly availableLanguages = [
     { code: 'en', name: 'English' },
