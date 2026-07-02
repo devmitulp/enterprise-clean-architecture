@@ -14,7 +14,7 @@ import { TokenStorageService } from './token-storage.service';
   providedIn: 'root',
 })
 export class AuthTokenService {
-  private injector = inject(Injector);
+  private readonly injector = inject(Injector);
   private readonly logger = inject(LoggerService);
   private readonly tokenStorage = inject(TokenStorageService);
 

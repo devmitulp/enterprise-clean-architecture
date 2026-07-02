@@ -8,7 +8,7 @@ import { LoginRequest, LoginResponse, MfaVerifyRequest } from '@models';
   providedIn: 'root',
 })
 export class AuthService {
-  private http = inject(BaseHttpService);
+  private readonly http = inject(BaseHttpService);
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginRequest, LoginResponse>(API_ENDPOINTS.AUTH.LOGIN, credentials);

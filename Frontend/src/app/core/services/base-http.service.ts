@@ -11,8 +11,8 @@ import { AppConfigService } from '@configuration';
   providedIn: 'root',
 })
 export class BaseHttpService {
-  protected http = inject(HttpClient);
-  protected appConfig = inject(AppConfigService);
+  protected readonly http = inject(HttpClient);
+  protected readonly appConfig = inject(AppConfigService);
 
   /**
    * Constructs the full absolute API URL by combining apiBaseUrl with the relative endpoint path.

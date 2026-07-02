@@ -13,8 +13,8 @@ import { API_ENDPOINTS } from '@constants';
  * from the C# Web API based on the selected culture/language code.
  */
 export class ApiTranslationLoader implements TranslateLoader {
-  private http = inject(HttpClient);
-  private appConfig = inject(AppConfigService);
+  private readonly http = inject(HttpClient);
+  private readonly appConfig = inject(AppConfigService);
 
   public getTranslation(lang: string): Observable<Record<string, string>> {
     const baseUrl = this.appConfig.apiBaseUrl.replace(/\/+$/, '');

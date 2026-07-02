@@ -12,9 +12,9 @@ import { TokenStorageService } from './token-storage.service';
   providedIn: 'root',
 })
 export class AuthState {
-  private authTokenService = inject(AuthTokenService);
-  private tokenStorage = inject(TokenStorageService);
-  private router = inject(Router);
+  private readonly authTokenService = inject(AuthTokenService);
+  private readonly tokenStorage = inject(TokenStorageService);
+  private readonly router = inject(Router);
 
   // --- Private Writable Signals ---
 
