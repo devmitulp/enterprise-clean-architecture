@@ -6,6 +6,7 @@ import { Injectable, inject } from '@angular/core';
 import { environment } from '@environment';
 import { AppConfig } from './app-config.interface';
 import { LoggerService } from '../services/logger.service';
+import { API_ENDPOINTS } from '@constants';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +35,7 @@ export class AppConfigService {
       // --- Startup API Health & Maintenance Check ---
       try {
         const apiBase = this.config!.apiBaseUrl.replace(/\/+$/, '');
-        const healthResponse = await fetch(`${apiBase}/common/settings`, { method: 'GET' });
+        const healthResponse = await fetch(`${apiBase}/${API_ENDPOINTS.COMMON.SETTINGS}`, { method: 'GET' });
         if (!healthResponse.ok) {
           throw new Error(`API health check returned status ${healthResponse.status}`);
         }

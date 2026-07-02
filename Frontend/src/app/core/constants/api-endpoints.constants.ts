@@ -28,7 +28,7 @@ export const API_ENDPOINTS = {
   // --- Common / Shared Endpoints ---
   COMMON: {
     FILE_UPLOAD: 'common/upload',
-    HEALTH_CHECK: 'common/health',
+    SETTINGS: 'common/settings',
     LOOKUPS: 'common/lookups',
   },
 
