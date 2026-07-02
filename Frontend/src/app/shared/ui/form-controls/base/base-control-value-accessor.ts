@@ -1,4 +1,4 @@
-import { Directive, Input } from '@angular/core';
+import { Directive, Input, signal } from '@angular/core';
 import {
   ControlValueAccessor,
   DestroyRef,
@@ -26,7 +26,8 @@ export abstract class BaseControlValueAccessor<T> implements ControlValueAccesso
   @Input() autoComplete = 'on';
   @Input() maxLength?: number;
 
-  disabled = false;
+  private readonly _disabled = signal(false);
+  readonly disabled = this._disabled.asReadonly();
 
   /**
    * Internal control (Input Binding)
@@ -85,7 +86,7 @@ export abstract class BaseControlValueAccessor<T> implements ControlValueAccesso
   }
 
   setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this._disabled.set(isDisabled);
 
     if (isDisabled) {
       this.control.disable({

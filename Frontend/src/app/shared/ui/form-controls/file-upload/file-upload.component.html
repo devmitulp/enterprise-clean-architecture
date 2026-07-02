@@ -15,7 +15,7 @@
     [maxFileSize]="maxFileSize ?? null"
     [mode]="mode"
     [auto]="auto"
-    [disabled]="disabled || readonly"
+    [disabled]="disabled() || readonly"
     [pTooltip]="tooltip"
     tooltipPosition="top"
     (onSelect)="onSelect($event)"
