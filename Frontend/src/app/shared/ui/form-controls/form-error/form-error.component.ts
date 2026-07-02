@@ -26,7 +26,7 @@ export class FormErrorComponent {
     this._control = value;
 
     this._control.events.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.cdr.markForCheck();
+      this.cdr.detectChanges();
     });
   }
 
