@@ -10,9 +10,6 @@ export class LocalizerService {
   private readonly translate = inject(TranslateService);
 
   /**
-   * Returns localized text.
-   */
-  /**
    * Returns translated text.
    */
   text(key: LocalizationKey | string, ...parameters: unknown[]): string {
