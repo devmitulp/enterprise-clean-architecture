@@ -13,14 +13,14 @@ import { FormErrorComponent } from '../form-error/form-error.component';
     InputGroup,
     InputGroupAddon,
     Tooltip,
-    FormErrorComponent
+    FormErrorComponent,
   ],
   templateUrl: './password.component.html',
   styleUrl: './password.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordComponent extends BaseControlValueAccessor<string> implements OnInit {
-  @Input() icon = 'pi pi-lock';
+  @Input() icon = 'fa-solid fa-lock';
   @Input() feedback = false;
   @Input() toggleMask = true;
 

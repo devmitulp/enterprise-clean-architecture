@@ -7,7 +7,7 @@
       <div
         class="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 text-white shadow-xl shadow-indigo-500/25"
       >
-        <i class="pi pi-compass text-2xl animate-spin-slow"></i>
+        <i class="fa-regular fa-compass text-base animate-spin-slow"></i>
       </div>
     </div>
     <h2
@@ -29,7 +29,7 @@
         <div
           class="mb-5 p-4 rounded-none bg-rose-50 border border-rose-200 text-rose-700 dark:bg-rose-950/20 dark:border-rose-900 dark:text-rose-400 text-xs flex items-center gap-2"
         >
-          <i class="pi pi-exclamation-triangle"></i>
+          <i class="fa-solid fa-triangle-exclamation text-base"></i>
           <span>{{ loginError() }}</span>
         </div>
       }
@@ -41,7 +41,7 @@
             formControlName="Email"
             [label]="'EmailAddress' | translate"
             [placeholder]="'EmailPlaceholder' | translate"
-            icon="fa-regular fa-envelope"
+            icon="fa-regular fa-envelope text-base"
             [required]="true"
             [maxLength]="30"
             [autoComplete]="'emailAddress'"
@@ -55,7 +55,7 @@
             formControlName="Password"
             [label]="'Password' | translate"
             [placeholder]="'PasswordPlaceholder' | translate"
-            icon="fa fa-lock"
+            icon="fa fa-lock text-base"
             [required]="true"
             [maxLength]="20"
             [autoComplete]="'new-password'"
@@ -86,10 +86,10 @@
             class="w-full flex justify-center items-center gap-2 rounded-none bg-gradient-to-r from-violet-600 to-indigo-600 py-3 text-sm font-semibold text-white shadow-md hover:from-violet-500 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 disabled:opacity-50 disabled:pointer-events-none active:scale-98 transition-all"
           >
             @if (isSubmitting()) {
-              <i class="pi pi-spin pi-spinner text-sm animate-spin"></i>
+              <i class="fa-solid fa-spinner text-base animate-spin"></i>
               <span>{{ 'Authenticating' | translate }}</span>
             } @else {
-              <i class="pi pi-sign-in text-sm"></i>
+              <i class="fa-solid fa-arrow-right-to-bracket text-base"></i>
               <span>{{ 'SignIn' | translate }}</span>
             }
           </button>

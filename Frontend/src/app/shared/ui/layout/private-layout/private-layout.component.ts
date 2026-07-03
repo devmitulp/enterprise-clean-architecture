@@ -57,12 +57,12 @@ export class PrivateLayoutComponent {
   readonly menuItems = signal<NavItem[]>([
     {
       label: 'Dashboard',
-      icon: 'pi pi-th-large',
+      icon: 'fa-solid fa-gauge-high',
       route: `/${ROUTE_PATHS.DASHBOARD}`,
     },
     {
       label: 'Settings',
-      icon: 'pi pi-cog',
+      icon: 'fa-solid fa-cog',
       route: `/${ROUTE_PATHS.SETTINGS}`,
     },
   ]);

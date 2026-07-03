@@ -12,7 +12,7 @@
       <div
         class="flex h-10 w-10 min-w-10 items-center justify-center rounded-none bg-gradient-to-tr from-violet-600 to-indigo-600 text-white shadow-lg shadow-indigo-500/20"
       >
-        <i class="pi pi-compass text-xl"></i>
+        <i class="fa-regular fa-compass text-base"></i>
       </div>
       @if (!isSidebarCollapsed()) {
         <span
@@ -49,8 +49,8 @@
         class="w-full flex items-center justify-center p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
       >
         <i
-          [class]="isSidebarCollapsed() ? 'pi pi-chevron-right' : 'pi pi-chevron-left'"
-          class="text-sm"
+          [class]="isSidebarCollapsed() ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left'"
+          class="text-base"
         ></i>
       </button>
     </div>
@@ -69,7 +69,7 @@
           [attr.aria-label]="'ToggleSidebar' | translate"
           class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none"
         >
-          <i class="pi pi-bars text-lg"></i>
+          <i class="fa-solid fa-bars text-base"></i>
         </button>
 
         <!-- Breadcrumb -->
@@ -79,7 +79,7 @@
           <span class="hover:text-slate-800 dark:hover:text-white cursor-pointer">{{
             'Workspace' | translate
           }}</span>
-          <i class="pi pi-chevron-right text-[10px]"></i>
+          <i class="fa-solid fa-chevron-right text-base"></i>
           <span class="text-slate-800 dark:text-white font-semibold">{{
             'Dashboard' | translate
           }}</span>
@@ -96,7 +96,7 @@
             [attr.aria-label]="'ToggleLanguage' | translate"
             class="flex items-center gap-1.5 p-2 rounded-none text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-colors"
           >
-            <i class="pi pi-globe text-lg"></i>
+            <i class="fa-solid fa-globe text-base"></i>
             <span class="text-xs font-semibold uppercase">{{ currentLang() }}</span>
           </button>
 
@@ -114,7 +114,7 @@
                 >
                   <span>{{ lang.name }}</span>
                   @if (currentLang() === lang.code) {
-                    <i class="pi pi-check text-xs"></i>
+                    <i class="fa-solid fa-check text-base"></i>
                   }
                 </button>
               }
@@ -129,7 +129,10 @@
           [attr.aria-label]="'ToggleTheme' | translate"
           class="p-2 rounded-none text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-colors"
         >
-          <i [class]="isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'" class="text-lg"></i>
+          <i
+            [class]="isDarkMode() ? 'fa-regular fa-sun' : 'fa-regular fa-moon'"
+            class="text-base"
+          ></i>
         </button>
 
         <!-- Notification Area -->
@@ -139,7 +142,7 @@
             [attr.aria-label]="'Notifications' | translate"
             class="p-2 rounded-none text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none relative"
           >
-            <i class="pi pi-bell text-lg"></i>
+            <i class="fa-regular fa-bell text-base"></i>
             <span
               class="absolute top-1.5 right-1.5 h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-white dark:ring-slate-900"
             ></span>
@@ -171,7 +174,7 @@
           [attr.aria-label]="'Settings' | translate"
           class="p-2 rounded-none text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none"
         >
-          <i class="pi pi-cog text-lg"></i>
+          <i class="fa-solid fa-cog text-base"></i>
         </a>
 
         <!-- Divider -->
@@ -194,7 +197,7 @@
                 {{ 'Administrator' | translate }}
               </p>
             </div>
-            <i class="pi pi-chevron-down text-[10px] text-slate-400"></i>
+            <i class="fa-solid fa-chevron-down text-base text-slate-400"></i>
           </button>
 
           @if (isProfileMenuOpen()) {
@@ -209,20 +212,21 @@
                 href="#"
                 class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50"
               >
-                <i class="pi pi-user text-xs"></i> {{ 'MyProfile' | translate }}
+                <i class="fa-regular fa-user text-base"></i> {{ 'MyProfile' | translate }}
               </a>
               <a
                 [routerLink]="[routePaths.SETTINGS]"
                 class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50"
               >
-                <i class="pi pi-sliders-h text-xs"></i> {{ 'Settings' | translate }}
+                <i class="fa fa-sliders text-base"></i> {{ 'Settings' | translate }}
               </a>
               <div class="border-t border-slate-100 dark:border-slate-800 my-1"></div>
               <button
                 (click)="logout()"
                 class="w-full text-left flex items-center gap-3 px-4 py-2 text-sm text-rose-600 dark:text-rose-400 hover:bg-slate-50 dark:hover:bg-slate-800/50"
               >
-                <i class="pi pi-sign-out text-xs"></i> {{ 'SignOut' | translate }}
+                <i class="fa fa-arrow-right-from-bracket text-base"></i>
+                {{ 'SignOut' | translate }}
               </button>
             </div>
           }
