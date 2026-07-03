@@ -56,12 +56,12 @@ export class PrivateLayoutComponent {
   // Dynamic Navigation menu (to be replaced with API-driven dynamic menu later)
   readonly menuItems = signal<NavItem[]>([
     {
-      label: 'LAYOUT.DASHBOARD',
+      label: 'Dashboard',
       icon: 'pi pi-th-large',
       route: `/${ROUTE_PATHS.DASHBOARD}`,
     },
     {
-      label: 'LAYOUT.SETTINGS',
+      label: 'Settings',
       icon: 'pi pi-cog',
       route: `/${ROUTE_PATHS.SETTINGS}`,
     },

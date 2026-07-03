@@ -45,6 +45,7 @@
     <div class="p-4 border-t border-slate-200 dark:border-slate-800">
       <button
         (click)="toggleSidebar()"
+        [attr.aria-label]="'ToggleSidebar' | translate"
         class="w-full flex items-center justify-center p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
       >
         <i
@@ -65,6 +66,7 @@
       <div class="flex items-center gap-4">
         <button
           (click)="toggleSidebar()"
+          [attr.aria-label]="'ToggleSidebar' | translate"
           class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none"
         >
           <i class="pi pi-bars text-lg"></i>
@@ -75,11 +77,11 @@
           class="hidden md:flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400"
         >
           <span class="hover:text-slate-800 dark:hover:text-white cursor-pointer">{{
-            'LAYOUT.WORKSPACE' | translate
+            'Workspace' | translate
           }}</span>
           <i class="pi pi-chevron-right text-[10px]"></i>
           <span class="text-slate-800 dark:text-white font-semibold">{{
-            'LAYOUT.DASHBOARD' | translate
+            'Dashboard' | translate
           }}</span>
         </nav>
       </div>
@@ -90,7 +92,8 @@
         <div class="relative">
           <button
             (click)="toggleLanguageMenu()"
-            [title]="'LAYOUT.LANG_TOGGLE' | translate"
+            [title]="'ToggleLanguage' | translate"
+            [attr.aria-label]="'ToggleLanguage' | translate"
             class="flex items-center gap-1.5 p-2 rounded-none text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-colors"
           >
             <i class="pi pi-globe text-lg"></i>
@@ -122,7 +125,8 @@
         <!-- Theme Switch -->
         <button
           (click)="toggleTheme()"
-          [title]="'LAYOUT.THEME_TOGGLE' | translate"
+          [title]="'ToggleTheme' | translate"
+          [attr.aria-label]="'ToggleTheme' | translate"
           class="p-2 rounded-none text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-colors"
         >
           <i [class]="isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'" class="text-lg"></i>
@@ -132,6 +136,7 @@
         <div class="relative">
           <button
             (click)="toggleNotifications()"
+            [attr.aria-label]="'Notifications' | translate"
             class="p-2 rounded-none text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none relative"
           >
             <i class="pi pi-bell text-lg"></i>
@@ -147,14 +152,14 @@
               <div
                 class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800"
               >
-                <span class="font-semibold text-sm">{{ 'LAYOUT.NOTIFICATIONS' | translate }}</span>
+                <span class="font-semibold text-sm">{{ 'Notifications' | translate }}</span>
                 <span
                   class="text-[10px] text-violet-600 dark:text-violet-400 font-semibold cursor-pointer"
-                  >{{ 'LAYOUT.MARK_READ' | translate }}</span
+                  >{{ 'MarkAsRead' | translate }}</span
                 >
               </div>
               <div class="py-3 text-center text-xs text-slate-500">
-                {{ 'LAYOUT.NO_NOTIFICATIONS' | translate }}.
+                {{ 'NoNotifications' | translate }}.
               </div>
             </div>
           }
@@ -163,6 +168,7 @@
         <!-- Settings Icon -->
         <a
           [routerLink]="[routePaths.SETTINGS]"
+          [attr.aria-label]="'Settings' | translate"
           class="p-2 rounded-none text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none"
         >
           <i class="pi pi-cog text-lg"></i>
@@ -185,7 +191,7 @@
             <div class="hidden sm:block text-left">
               <p class="text-xs font-semibold leading-none">{{ userContext()?.FullName }}</p>
               <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
-                {{ 'LAYOUT.ADMINISTRATOR' | translate }}
+                {{ 'Administrator' | translate }}
               </p>
             </div>
             <i class="pi pi-chevron-down text-[10px] text-slate-400"></i>
@@ -196,27 +202,27 @@
               class="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl py-2 z-50"
             >
               <div class="px-4 py-2 border-b border-slate-100 dark:border-slate-800">
-                <p class="text-xs text-slate-400">{{ 'LAYOUT.SIGNED_IN_AS' | translate }}</p>
+                <p class="text-xs text-slate-400">{{ 'SignedInAs' | translate }}</p>
                 <p class="text-sm font-semibold truncate">{{ userContext()?.EmailAddress }}</p>
               </div>
               <a
                 href="#"
                 class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50"
               >
-                <i class="pi pi-user text-xs"></i> {{ 'LAYOUT.MY_PROFILE' | translate }}
+                <i class="pi pi-user text-xs"></i> {{ 'MyProfile' | translate }}
               </a>
               <a
                 [routerLink]="[routePaths.SETTINGS]"
                 class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50"
               >
-                <i class="pi pi-sliders-h text-xs"></i> {{ 'LAYOUT.SETTINGS' | translate }}
+                <i class="pi pi-sliders-h text-xs"></i> {{ 'Settings' | translate }}
               </a>
               <div class="border-t border-slate-100 dark:border-slate-800 my-1"></div>
               <button
                 (click)="logout()"
                 class="w-full text-left flex items-center gap-3 px-4 py-2 text-sm text-rose-600 dark:text-rose-400 hover:bg-slate-50 dark:hover:bg-slate-800/50"
               >
-                <i class="pi pi-sign-out text-xs"></i> {{ 'LAYOUT.SIGN_OUT' | translate }}
+                <i class="pi pi-sign-out text-xs"></i> {{ 'SignOut' | translate }}
               </button>
             </div>
           }
@@ -235,13 +241,13 @@
     <footer
       class="h-12 flex-shrink-0 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 flex items-center justify-between px-8 text-xs text-slate-500 dark:text-slate-400 transition-colors duration-300"
     >
-      <span>© 2026 ANTIGRAVITY. {{ 'LAYOUT.FOOTER_RIGHTS' | translate }}.</span>
+      <span>© 2026 ANTIGRAVITY. {{ 'AllRightsReserved' | translate }}.</span>
       <div class="flex gap-4">
         <a href="#" class="hover:text-slate-800 dark:hover:text-white">{{
-          'LAYOUT.PRIVACY_POLICY' | translate
+          'PrivacyPolicy' | translate
         }}</a>
         <a href="#" class="hover:text-slate-800 dark:hover:text-white">{{
-          'LAYOUT.TERMS_SERVICE' | translate
+          'TermsOfService' | translate
         }}</a>
       </div>
     </footer>

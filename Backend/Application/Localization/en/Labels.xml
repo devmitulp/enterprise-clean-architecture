@@ -39,5 +39,23 @@
 		<text name="AnalyticsPlaceholder">Analytics charts will display here once backend service integration is completed.</text>
 		<text name="RecentActivities">Recent Activities</text>
 		<text name="ActivitiesPlaceholder">A timeline of system events, audit logs, and status updates will be displayed here.</text>
+
+		<!-- Layout -->
+		<text name="Workspace">Workspace</text>
+		<text name="Dashboard">Dashboard</text>
+		<text name="Settings">Settings</text>
+		<text name="ToggleLanguage">Toggle Language</text>
+		<text name="ToggleTheme">Toggle Theme</text>
+		<text name="Notifications">Notifications</text>
+		<text name="MarkAsRead">Mark all as read</text>
+		<text name="NoNotifications">No new notifications</text>
+		<text name="Administrator">Administrator</text>
+		<text name="SignedInAs">Signed in as</text>
+		<text name="MyProfile">My Profile</text>
+		<text name="SignOut">Sign Out</text>
+		<text name="AllRightsReserved">All rights reserved</text>
+		<text name="PrivacyPolicy">Privacy Policy</text>
+		<text name="TermsOfService">Terms of Service</text>
+		<text name="ToggleSidebar">Toggle Sidebar</text>
 	</texts>
 </localizationDictionary>

@@ -39,6 +39,24 @@
 		<text name="PerformanceAnalytics">પ્રદર્શન વિશ્લેષણ</text>
 		<text name="AnalyticsPlaceholder">બેકએન્ડ સેવા એકીકરણ પૂર્ણ થયા પછી વિશ્લેષણ ચાર્ટ અહીં પ્રદર્શિત થશે.</text>
 		<text name="RecentActivities">તાજેતરની પ્રવૃત્તિઓ</text>
-		<text name="ActivitiesPlaceholder">સિસ્ટમ ઇવેન્ટ્સ, ઓડિટ લોગ્સ અને સ્ટેટસ અપડેટ્સની ટાઇમલાઇન અહીં પ્રદર્શિત થશે.</text>
+		<text name="ActivitiesPlaceholder">સિસ્ટમ ઇવેન્ટ્સ, ઓડિટ લોગ્સ અને સ્ટેટસ અપડેટ્સની સમયરેખા અહીં પ્રદર્શિત કરવામાં આવશે.</text>
+
+		<!-- Layout -->
+		<text name="Workspace">કાર્યસ્થળ</text>
+		<text name="Dashboard">ડેશબોર્ડ</text>
+		<text name="Settings">સેટિંગ્સ</text>
+		<text name="ToggleLanguage">ભાષા બદલો</text>
+		<text name="ToggleTheme">થીમ બદલો</text>
+		<text name="Notifications">સૂચનાઓ</text>
+		<text name="MarkAsRead">બધા વાંચેલા તરીકે માર્ક કરો</text>
+		<text name="NoNotifications">કોઈ નવી સૂચનાઓ નથી</text>
+		<text name="Administrator">એડમિનિસ્ટ્રેટર</text>
+		<text name="SignedInAs">આ તરીકે સાઇન ઇન કર્યું</text>
+		<text name="MyProfile">મારી પ્રોફાઇલ</text>
+		<text name="SignOut">સાઇન આઉટ</text>
+		<text name="AllRightsReserved">બધા હકો અમારી પાસે રાખેલા છે</text>
+		<text name="PrivacyPolicy">ગોપનીયતા નીતિ</text>
+		<text name="TermsOfService">સેવાની શરતો</text>
+		<text name="ToggleSidebar">સાઇડબાર ટૉગલ કરો</text>
 	</texts>
 </localizationDictionary>
