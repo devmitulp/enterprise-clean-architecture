@@ -4,7 +4,8 @@ import { Injector, inject } from '@shared/angular';
 // AUTH TOKEN & CLAIMS SERVICE (Clean Architecture)
 // ==========================================================================
 
-import { lastValueFrom } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { map, catchError, shareReplay, finalize } from 'rxjs/operators';
 import { JWT_CLAIM_KEYS, AUTH_TOKEN_EXPIRY_BUFFER_MS } from '@auth';
 import { API_ENDPOINTS } from '@constants';
 import { BaseHttpService, LoggerService } from '@services';
@@ -73,41 +74,52 @@ export class AuthTokenService {
     return permissionArray.includes(requiredPermission);
   }
 
+  private refresh$: Observable<boolean> | null = null;
+
   // --- Silent Refresh Token Flow ---
 
   /**
    * Refreshes the JWT Access Token using the stored Refresh Token.
    * Uses Angular Injector at runtime to fetch BaseHttpService, preventing Circular Dependency DI loops.
    */
-  public async refreshToken(): Promise<boolean> {
+  public refreshToken(): Observable<boolean> {
+    if (this.refresh$) {
+      this.logger.info('[AuthTokenService] Token refresh already in progress, sharing stream...');
+      return this.refresh$;
+    }
+
     const refreshToken = this.getRefreshToken();
     const accessToken = this.getAccessToken();
     if (!refreshToken) {
       this.tokenStorage.clearTokens();
-      return false;
+      return of(false);
     }
 
-    try {
-      const http = this.injector.get(BaseHttpService);
-      const response = await lastValueFrom(
-        http.post<{ AccessToken: string | null; RefreshToken: string | null }, { AccessToken: string; RefreshToken: string }>(
-          API_ENDPOINTS.AUTH.REFRESH,
-          { AccessToken: accessToken, RefreshToken: refreshToken }
-        )
-      );
+    const http = this.injector.get(BaseHttpService);
+    this.refresh$ = http.post<{ AccessToken: string | null; RefreshToken: string | null }, { AccessToken: string; RefreshToken: string }>(
+      API_ENDPOINTS.AUTH.REFRESH,
+      { AccessToken: accessToken, RefreshToken: refreshToken }
+    ).pipe(
+      map((response) => {
+        if (response && response.AccessToken && response.RefreshToken) {
+          this.tokenStorage.setAccessToken(response.AccessToken);
+          this.tokenStorage.setRefreshToken(response.RefreshToken);
+          return true;
+        }
+        this.tokenStorage.clearTokens();
+        return false;
+      }),
+      catchError((error) => {
+        this.logger.error('[AuthTokenService] Token refresh failed', error);
+        this.tokenStorage.clearTokens();
+        return of(false);
+      }),
+      shareReplay(1),
+      finalize(() => {
+        this.refresh$ = null;
+      })
+    );
 
-      if (response && response.AccessToken && response.RefreshToken) {
-        this.tokenStorage.setAccessToken(response.AccessToken);
-        this.tokenStorage.setRefreshToken(response.RefreshToken);
-        return true;
-      }
-
-      this.tokenStorage.clearTokens();
-      return false;
-    } catch (error) {
-      this.logger.error('[AuthTokenService] Token refresh failed', error);
-      this.tokenStorage.clearTokens();
-      return false;
-    }
+    return this.refresh$;
   }
 }
