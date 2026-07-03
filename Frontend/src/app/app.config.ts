@@ -17,6 +17,7 @@ import { routes } from './app.routes';
 import { AppConfigService } from '@configuration';
 import { authInterceptor } from '@auth';
 import { errorInterceptor, loaderInterceptor } from '@interceptors';
+import { AppTheme } from './shared/theme/app-theme';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -35,7 +36,7 @@ export const appConfig: ApplicationConfig = {
     }),
     providePrimeNG({
       theme: {
-        preset: Aura,
+        preset: AppTheme,
         options: {
           darkModeSelector: '.dark',
         },
