@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { DestroyRef, FormBuilder, FormControl, FormGroup, Router, SHARED_ANGULAR_MODULES, Validators, inject, signal, takeUntilDestroyed } from '@shared/angular';
+import { Router, RouterLink } from '@angular/router';
+import { DestroyRef, FormBuilder, FormControl, FormGroup, SHARED_ANGULAR_MODULES, Validators, inject, signal, takeUntilDestroyed } from '@shared/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ROUTE_PATHS } from '@constants';
 import { TextBoxComponent, PasswordComponent, CheckboxComponent } from '@form-controls';
@@ -16,7 +17,8 @@ import { LoginRequest } from '@models';
     TextBoxComponent,
     TranslatePipe,
     PasswordComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    RouterLink
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',

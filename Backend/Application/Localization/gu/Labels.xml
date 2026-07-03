@@ -9,6 +9,7 @@
 		<text name="Password">પાસવર્ડ</text>
 		<text name="PasswordPlaceholder">તમારો પાસવર્ડ દાખલ કરો</text>
 		<text name="RememberMe">મને યાદ રાખો</text>
+		<text name="ForgotPassword">પાસવર્ડ ભૂલી ગયા છો?</text>
 		<text name="Authenticating">પ્રમાણિત કરી રહ્યું છે...</text>
 		<text name="SignIn">સાઇન ઇન કરો</text>
 		<text name="OrContinueWith">અથવા આનાથી ચાલુ રાખો</text>

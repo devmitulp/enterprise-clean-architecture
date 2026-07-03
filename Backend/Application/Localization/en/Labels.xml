@@ -9,6 +9,7 @@
 		<text name="Password">Password</text>
 		<text name="PasswordPlaceholder">Enter your password</text>
 		<text name="RememberMe">Remember me</text>
+		<text name="ForgotPassword">Forgot Password?</text>
 		<text name="Authenticating">Authenticating...</text>
 		<text name="SignIn">Sign In</text>
 		<text name="OrContinueWith">Or continue with</text>
