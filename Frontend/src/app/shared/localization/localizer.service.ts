@@ -33,15 +33,19 @@ export class LocalizerService {
    * Returns translated text if available; otherwise returns the key.
    */
   tryGet(key: LocalizationKey | string, ...parameters: unknown[]): string {
-    const value = this.text(key, ...parameters);
-
-    return value === key ? key : value;
+    return this.exists(key) ? this.text(key, ...parameters) : (key as string);
   }
 
   /**
    * Checks whether a localization key exists.
    */
   exists(key: LocalizationKey | string): boolean {
-    return this.translate.instant(key) !== key;
+    const translateService = this.translate as any;
+    const currentLang = translateService.currentLang();
+    const translations = translateService.store?.translations[currentLang];
+    if (!translations) {
+      return false;
+    }
+    return translateService.parser.getValue(translations, key) !== undefined;
   }
 }
