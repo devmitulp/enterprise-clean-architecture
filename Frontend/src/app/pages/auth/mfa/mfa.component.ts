@@ -100,6 +100,5 @@ export class MfaComponent {
 
   resendCode(): void {
     this.logger.log('Resending MFA code...');
-    alert('A new verification code has been sent to your registered device.');
   }
 }
