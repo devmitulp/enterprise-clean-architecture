@@ -132,7 +132,7 @@ export class AuthState {
   public logout(): void {
     this.tokenStorage.clearTokens();
     this._currentUser.set(null);
-    this.router.navigate([ROUTE_PATHS.LOGIN]);
+    this.router.navigate([`/${ROUTE_PATHS.LOGIN}`]);
   }
 
   /**
