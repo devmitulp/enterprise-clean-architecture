@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { inject } from '@shared/angular';
 import { LocalizationKey } from './localization.types';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -47,5 +49,20 @@ export class LocalizerService {
       return false;
     }
     return translateService.parser.getValue(translations, key) !== undefined;
+  }
+
+  /**
+   * Returns translated text asynchronously, waiting for translations to load if necessary.
+   */
+  getTextAsync(key: LocalizationKey | string, ...parameters: unknown[]): Observable<string> {
+    return this.translate.get(key).pipe(
+      map(message => {
+        let formattedMessage = message;
+        parameters.forEach((parameter, index) => {
+          formattedMessage = formattedMessage.replace(`{${index}}`, String(parameter));
+        });
+        return formattedMessage;
+      })
+    );
   }
 }

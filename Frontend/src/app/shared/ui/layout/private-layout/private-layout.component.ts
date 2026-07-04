@@ -46,10 +46,7 @@ export class PrivateLayoutComponent {
     return name.slice(0, 2).toUpperCase();
   });
 
-  readonly availableLanguages = [
-    { code: 'en', name: 'English' },
-    { code: 'gu', name: 'ગુજરાતી' },
-  ];
+  readonly availableLanguages = this.languageService.availableLanguages;
 
   constructor() {}
 
