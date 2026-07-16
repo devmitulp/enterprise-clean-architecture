@@ -45,5 +45,20 @@ namespace API.Controllers.Auth
 
             return Ok(response);
         }
+
+        [HttpPost("logout")]
+        [ProducesResponseType(typeof(Shared.Results.Result), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Logout(
+            [FromBody] LogoutRequestDto request,
+            CancellationToken ct)
+        {
+            var response = await _authService.LogoutAsync(request, ct);
+            if (!response.Succeeded)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
     }
 }

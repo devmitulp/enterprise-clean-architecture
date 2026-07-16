@@ -23,6 +23,8 @@
 		<text name="JobTitleIdRequiredForUpdate">જોબ શીર્ષક અપડેટ કરવા માટે આઈડી જરૂરી છે.</text>
 		<text name="InvalidToken">અમાન્ય એક્સેસ ટોકન અથવા રિફ્રેશ ટોકન.</text>
 		<text name="EntityNotFound">આઇડેન્ટિફાયર '{1}' સાથેનું {0} મળ્યું નથી.</text>
+		<text name="LoggedOutSuccessfully">સફળતાપૂર્વક લોગ આઉટ થયા.</text>
+		<text name="InvalidSession">અમાન્ય સત્ર.</text>
 	</texts>
 
 </localizationDictionary>

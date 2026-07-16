@@ -10,8 +10,10 @@ using Domain.Entities.Users;
 using Domain.Entities.UserSessions;
 using Infrastructure.Services.Common.Base;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Shared.Exceptions;
+using Shared.Results;
 
 namespace Infrastructure.Services.Auth
 {
@@ -21,6 +23,7 @@ namespace Infrastructure.Services.Auth
         private readonly IRepository<UserSession> _sessionRepository;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly IPasswordHelper _passwordHelper;
+        private readonly ILogger<AuthService> _logger;
 
         private readonly JwtSettings _jwtSettings;
 
@@ -30,12 +33,14 @@ namespace Infrastructure.Services.Auth
             IRepository<UserSession> sessionRepository,
             IJwtTokenService jwtTokenService,
             IPasswordHelper passwordHelper,
-            IOptions<JwtSettings> jwtSettings) : base(context)
+            IOptions<JwtSettings> jwtSettings,
+            ILogger<AuthService> logger) : base(context)
         {
             _userRepository = userRepository;
             _sessionRepository = sessionRepository;
             _jwtTokenService = jwtTokenService;
             _passwordHelper = passwordHelper;
+            _logger = logger;
 
             _jwtSettings = jwtSettings.Value;
         }
@@ -129,6 +134,38 @@ namespace Infrastructure.Services.Auth
             await SaveUserSessionAsync(session, false, ct);
 
             return tokenResult;
+        }
+
+        public async Task<Result> LogoutAsync(
+            LogoutRequestDto request,
+            CancellationToken ct = default)
+        {
+            var userId = UserContext.UserId;
+            if (userId is null)
+            {
+                _logger.LogWarning("Logout attempted with missing user ID in context.");
+                throw new UnauthorizedException(Localization.L("InvalidToken"));
+            }
+
+            var session = await _sessionRepository
+                .AsQueryable()
+                .FirstOrDefaultAsync(x => x.RefreshToken == request.RefreshToken && x.UserId == userId && x.IsActive, ct);
+
+            if (session is null)
+            {
+                _logger.LogWarning("Invalid logout attempt: no active session found for User {UserId} with the provided Refresh Token.", userId);
+                return Result.Failure(Localization.L("InvalidSession"));
+            }
+
+            session.IsActive = false;
+            session.AccessTokenExpiryTime = DateTime.UtcNow;
+            session.RefreshTokenExpiryTime = DateTime.UtcNow;
+            _sessionRepository.Update(session);
+            await UnitOfWork.SaveChangesAsync(ct);
+
+            _logger.LogInformation("User {UserId} successfully logged out and session with Refresh Token revoked.", userId);
+
+            return Result.Success(Localization.L("LoggedOutSuccessfully"));
         }
 
         private async Task SaveUserSessionAsync(UserSession session, bool isNew, CancellationToken ct)
