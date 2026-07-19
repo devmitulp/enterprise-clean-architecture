@@ -27,8 +27,14 @@ namespace Infrastructure.Services.Common.JwtToken
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Employee.Email),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
+                new Claim(ClaimTypes.Email, user.Employee.Email),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.GivenName, user.Employee.FirstName),
+                new Claim(ClaimTypes.Surname, user.Employee.LastName),
+                new Claim(ClaimTypes.Role, user.Employee.JobTitle.Name)
             };
 
             var key = new SymmetricSecurityKey(

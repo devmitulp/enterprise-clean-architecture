@@ -86,7 +86,7 @@ export class LoginComponent {
             this.router.navigate([`/${this.routePaths.MFA}`], {
               state: { mfaToken: response.MfaToken }
             });
-          } else {
+          } else if (response.AccessToken && response.RefreshToken) {
             this.authState.loginSuccess(response.AccessToken, response.RefreshToken);
             this.router.navigate([`/${this.routePaths.DASHBOARD}`]);
           }
@@ -100,12 +100,16 @@ export class LoginComponent {
   }
 
   loginWithGoogle(): void {
+    const state = crypto.randomUUID();
+    sessionStorage.setItem('oauth_state', state);
     const baseUrl = this.appConfig.apiBaseUrl.replace(/\/+$/, '');
-    window.location.href = `${baseUrl}/auth/login-google`;
+    window.location.href = `${baseUrl}/auth/login-google?state=${state}`;
   }
 
   loginWithMicrosoft(): void {
+    const state = crypto.randomUUID();
+    sessionStorage.setItem('oauth_state', state);
     const baseUrl = this.appConfig.apiBaseUrl.replace(/\/+$/, '');
-    window.location.href = `${baseUrl}/auth/login-microsoft`;
+    window.location.href = `${baseUrl}/auth/login-microsoft?state=${state}`;
   }
 }

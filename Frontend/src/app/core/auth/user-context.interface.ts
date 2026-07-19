@@ -6,6 +6,7 @@ export interface UserContext {
   LastName: string | null;
   FullName: string | null;
   Roles: string[];
+  Permissions?: string[];
   TenantId: string | null;
   Department: string | null;
 }

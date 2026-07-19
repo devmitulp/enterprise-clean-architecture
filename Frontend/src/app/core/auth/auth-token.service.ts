@@ -10,6 +10,8 @@ import { JWT_CLAIM_KEYS, AUTH_TOKEN_EXPIRY_BUFFER_MS } from '@auth';
 import { API_ENDPOINTS } from '@constants';
 import { BaseHttpService, LoggerService } from '@services';
 import { TokenStorageService } from './token-storage.service';
+import { AuthState } from './auth.state';
+import { LoginResponse } from '@models';
 
 @Injectable({
   providedIn: 'root',
@@ -96,7 +98,7 @@ export class AuthTokenService {
     }
 
     const http = this.injector.get(BaseHttpService);
-    this.refresh$ = http.post<{ AccessToken: string | null; RefreshToken: string | null }, { AccessToken: string; RefreshToken: string }>(
+    this.refresh$ = http.post<{ AccessToken: string | null; RefreshToken: string | null }, LoginResponse>(
       API_ENDPOINTS.AUTH.REFRESH,
       { AccessToken: accessToken, RefreshToken: refreshToken }
     ).pipe(
@@ -104,6 +106,10 @@ export class AuthTokenService {
         if (response && response.AccessToken && response.RefreshToken) {
           this.tokenStorage.setAccessToken(response.AccessToken);
           this.tokenStorage.setRefreshToken(response.RefreshToken);
+          if (response.UserContext) {
+            const authState = this.injector.get(AuthState);
+            authState.updateUserContext(response.UserContext);
+          }
           return true;
         }
         this.tokenStorage.clearTokens();

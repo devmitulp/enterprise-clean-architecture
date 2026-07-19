@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Router, computed, inject, signal } from '@shared/angular';
+import { Injectable, inject, computed, signal } from '@angular/core';
+import { Router } from '@angular/router';
 // ==========================================================================
 // MODERN ANGULAR SIGNAL STATE STORE (Clean Architecture Core)
 // ==========================================================================
@@ -35,7 +35,6 @@ export class AuthState {
 
   /** Read-only signal representing whether user is valid and authenticated */
   public readonly isAuthenticated = computed(() => {
-    // Depend on _currentUser signal for reactivity
     const user = this._currentUser();
     if (!user) return false;
     return this.authTokenService.isAuthenticated();
@@ -60,6 +59,8 @@ export class AuthState {
     const id = claims[JWT_CLAIM_KEYS.NAME_IDENTIFIER] || claims[JWT_CLAIM_KEYS.SUB] || null;
     const rolesData = claims[JWT_CLAIM_KEYS.ROLE_XML] || claims[JWT_CLAIM_KEYS.ROLE] || [];
     const roles = Array.isArray(rolesData) ? rolesData : [rolesData];
+    const permissions = claims[JWT_CLAIM_KEYS.PERMISSIONS] || [];
+    const permissionArray = Array.isArray(permissions) ? permissions : [permissions];
     const tenantId = claims[JWT_CLAIM_KEYS.TENANT_ID] || null;
     const department = claims[JWT_CLAIM_KEYS.DEPARTMENT] || null;
 
@@ -86,6 +87,7 @@ export class AuthState {
       LastName: lastName,
       FullName: name || 'User',
       Roles: roles,
+      Permissions: permissionArray,
       TenantId: tenantId,
       Department: department,
     };
@@ -127,6 +129,17 @@ export class AuthState {
   }
 
   /**
+   * Updates user context state in memory (e.g., after a token refresh).
+   */
+  public updateUserContext(userContext: UserContext): void {
+    const token = this.tokenStorage.getAccessToken();
+    if (token) {
+      const claims = this.tokenStorage.parseJwt(token);
+      this._currentUser.set(claims);
+    }
+  }
+
+  /**
    * Dispatches logout action, clears storage and resets signal state to null.
    */
   public logout(): void {
@@ -140,5 +153,14 @@ export class AuthState {
    */
   public setLoading(loading: boolean): void {
     this._isLoading.set(loading);
+  }
+
+  public hasRole(requiredRole: string): boolean {
+    return this.userRoles().includes(requiredRole);
+  }
+
+  public hasPermission(requiredPermission: string): boolean {
+    const permissions = this.userContext()?.Permissions ?? [];
+    return permissions.includes(requiredPermission);
   }
 }

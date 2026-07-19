@@ -3,7 +3,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ROUTE_PATHS } from '@constants';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LoggerService, ThemeService, LanguageService } from '@services';
-import { AuthState } from '@auth';
+import { AuthState, AuthService } from '@auth';
 import { computed, inject, signal } from '@shared/angular';
 
 interface NavItem {
@@ -26,6 +26,7 @@ export class PrivateLayoutComponent {
   private readonly themeService = inject(ThemeService);
   private readonly languageService = inject(LanguageService);
   private readonly authState = inject(AuthState);
+  private readonly authService = inject(AuthService);
   readonly routePaths = ROUTE_PATHS;
 
   // Layout State Signals
@@ -95,6 +96,14 @@ export class PrivateLayoutComponent {
 
   logout(): void {
     this.logger.log('Logging out...');
-    this.authState.logout();
+    this.authService.logoutApi().subscribe({
+      next: () => {
+        this.authState.logout();
+      },
+      error: (err) => {
+        this.logger.error('Logout API call failed', err);
+        this.authState.logout(); // Fallback to local logout on failure
+      }
+    });
   }
 }

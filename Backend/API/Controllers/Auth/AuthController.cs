@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Shared.Constants;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace API.Controllers.Auth
 {
@@ -28,7 +30,17 @@ namespace API.Controllers.Auth
         {
             var userAgent = Request.Headers.UserAgent.ToString();
             var timeZone = Request.Headers["X-Timezone"].ToString();
-            var response = await _authService.LoginAsync(request, userAgent, timeZone, ct);
+            var tokenResult = await _authService.LoginAsync(request, userAgent, timeZone, ct);
+
+            var userContext = GetUserContextFromToken(tokenResult.AccessToken);
+            var response = new LoginResponseDto
+            {
+                AccessToken = tokenResult.AccessToken,
+                RefreshToken = tokenResult.RefreshToken,
+                RequiresMfa = false,
+                MfaToken = null,
+                UserContext = userContext
+            };
 
             return Ok(response);
         }
@@ -41,7 +53,15 @@ namespace API.Controllers.Auth
         {
             var userAgent = Request.Headers.UserAgent.ToString();
             var timeZone = Request.Headers["X-Timezone"].ToString();
-            var response = await _authService.RefreshTokenAsync(request, userAgent, timeZone, ct);
+            var tokenResult = await _authService.RefreshTokenAsync(request, userAgent, timeZone, ct);
+
+            var userContext = GetUserContextFromToken(tokenResult.AccessToken);
+            var response = new LoginResponseDto
+            {
+                AccessToken = tokenResult.AccessToken,
+                RefreshToken = tokenResult.RefreshToken,
+                UserContext = userContext
+            };
 
             return Ok(response);
         }
@@ -59,6 +79,33 @@ namespace API.Controllers.Auth
             }
 
             return Ok(response);
+        }
+
+        private UserContextDto GetUserContextFromToken(string accessToken)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(accessToken);
+            var claims = jwtToken.Claims;
+
+            var id = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub || c.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+            var email = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email || c.Type == ClaimTypes.Email)?.Value ?? string.Empty;
+            var name = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.UniqueName || c.Type == ClaimTypes.Name)?.Value ?? string.Empty;
+            var firstName = claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value ?? string.Empty;
+            var lastName = claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value ?? string.Empty;
+            var roles = claims.Where(c => c.Type == ClaimTypes.Role || c.Type == "role").Select(c => c.Value).ToList();
+            var permissions = claims.Where(c => c.Type == "permissions" || c.Type == "permission").Select(c => c.Value).ToList();
+
+            return new UserContextDto
+            {
+                Id = id,
+                UserName = name,
+                EmailAddress = email,
+                FirstName = firstName,
+                LastName = lastName,
+                FullName = $"{firstName} {lastName}".Trim(),
+                Roles = roles,
+                Permissions = permissions
+            };
         }
     }
 }

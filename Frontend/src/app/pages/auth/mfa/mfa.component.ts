@@ -87,7 +87,7 @@ export class MfaComponent {
       .subscribe({
         next: (response) => {
           this.isSubmitting.set(false);
-          this.authState.loginSuccess(response.AccessToken, response.RefreshToken);
+          this.authState.loginSuccess(response.AccessToken!, response.RefreshToken!);
           this.router.navigate([`/${this.routePaths.DASHBOARD}`]);
         },
         error: (err) => {
