@@ -9,5 +9,7 @@ namespace Application.Common.Interfaces.JwtToken
         TokenResult GenerateToken(User user, string refreshToken);
         string GenerateRefreshToken();
         ClaimsPrincipal? GetPrincipalFromExpiredToken(string token);
+        string GenerateMfaToken(User user);
+        ClaimsPrincipal? ValidateMfaToken(string token);
     }
 }

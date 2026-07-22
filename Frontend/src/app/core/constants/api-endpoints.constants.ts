@@ -15,6 +15,9 @@ export const API_ENDPOINTS = {
     FORGOT_PASSWORD: 'auth/forgot-password',
     RESET_PASSWORD: 'auth/reset-password',
     MFA_VERIFY: 'auth/mfa-verify',
+    MFA_SETUP: 'auth/mfa/setup',
+    MFA_ENABLE: 'auth/mfa/enable',
+    MFA_DISABLE: 'auth/mfa/disable',
   },
 
   // --- Master Data & Configuration Module ---

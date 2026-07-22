@@ -9,4 +9,5 @@ export interface UserContext {
   Permissions?: string[];
   TenantId: string | null;
   Department: string | null;
+  IsMfaEnabled?: boolean;
 }

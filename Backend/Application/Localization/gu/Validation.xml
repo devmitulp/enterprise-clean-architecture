@@ -25,6 +25,12 @@
 		<text name="EntityNotFound">આઇડેન્ટિફાયર '{1}' સાથેનું {0} મળ્યું નથી.</text>
 		<text name="LoggedOutSuccessfully">સફળતાપૂર્વક લોગ આઉટ થયા.</text>
 		<text name="InvalidSession">અમાન્ય સત્ર.</text>
+		<text name="InvalidMfaCode">અમાન્ય ચકાસણી કોડ. કૃપા કરીને તમારી એપ્લિકેશન તપાસો અને ફરીથી પ્રયાસ કરો.</text>
+		<text name="MfaSecretMismatch">ચકાસણી કોડ વર્તમાન MFA ગોઠવણી સાથે મેળ ખાતો નથી. કૃપા કરીને નવીનતમ QR કોડ સ્કેન કરો.</text>
+		<text name="MfaLockedOut">ઘણા બધા અસફળ MFA ચકાસણી પ્રયાસો. એકાઉન્ટ તાત્કાલિક લોક થયેલ છે.</text>
+		<text name="MfaNotEnabled">આ એકાઉન્ટ માટે MFA સક્ષમ કરેલ નથી.</text>
+		<text name="InvalidMfaToken">અમાન્ય અથવા મુદત વીતી ગયેલ MFA ટોકન. કૃપા કરીને ફરીથી સાઇન ઇન કરો.</text>
+		<text name="UserNotFound">વપરાશકર્તા મળ્યો નથી.</text>
 	</texts>
 
 </localizationDictionary>

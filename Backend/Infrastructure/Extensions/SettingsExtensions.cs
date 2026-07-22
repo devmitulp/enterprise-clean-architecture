@@ -14,6 +14,9 @@ namespace Infrastructure.Extensions
             services.Configure<JwtSettings>(
                 configuration.GetSection("JwtSettings"));
 
+            services.Configure<MfaSettings>(
+                configuration.GetSection("MfaSettings"));
+
             services.Configure<PasswordHasherOptions>(
                 configuration.GetSection("PasswordHasherOptions"));
 

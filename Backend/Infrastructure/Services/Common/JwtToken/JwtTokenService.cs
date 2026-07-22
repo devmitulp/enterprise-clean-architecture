@@ -34,7 +34,8 @@ namespace Infrastructure.Services.Common.JwtToken
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.GivenName, user.Employee.FirstName),
                 new Claim(ClaimTypes.Surname, user.Employee.LastName),
-                new Claim(ClaimTypes.Role, user.Employee.JobTitle.Name)
+                new Claim(ClaimTypes.Role, user.Employee.JobTitle.Name),
+                new Claim("mfa_enabled", (!string.IsNullOrEmpty(user.MfaSecret)).ToString().ToLower())
             };
 
             var key = new SymmetricSecurityKey(
@@ -82,6 +83,68 @@ namespace Infrastructure.Services.Common.JwtToken
                 var principal = _tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
                 if (securityToken is not JwtSecurityToken jwtSecurityToken ||
                     !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.OrdinalIgnoreCase))
+                {
+                    return null;
+                }
+
+                return principal;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public string GenerateMfaToken(User user)
+        {
+            var expiresAt = DateTime.UtcNow.AddMinutes(5); // MFA token is short-lived
+
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("mfa_pending", "true")
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                claims: claims,
+                expires: expiresAt,
+                signingCredentials: credentials);
+
+            return _tokenHandler.WriteToken(token);
+        }
+
+        public ClaimsPrincipal? ValidateMfaToken(string token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = true,
+                ValidAudience = _jwtSettings.Audience,
+                ValidateIssuer = true,
+                ValidIssuer = _jwtSettings.Issuer,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey)),
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+
+            try
+            {
+                var principal = _tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+                if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+                    !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.OrdinalIgnoreCase))
+                {
+                    return null;
+                }
+
+                // Check that mfa_pending claim exists
+                var mfaPendingClaim = principal.FindFirst("mfa_pending")?.Value;
+                if (mfaPendingClaim != "true")
                 {
                     return null;
                 }

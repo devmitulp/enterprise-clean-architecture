@@ -49,6 +49,12 @@
 		<text name="EntityNotFound">{0} with identifier '{1}' was not found.</text>
 		<text name="LoggedOutSuccessfully">Logged out successfully.</text>
 		<text name="InvalidSession">Invalid session.</text>
+		<text name="InvalidMfaCode">Invalid verification code. Please check your authenticator app and try again.</text>
+		<text name="MfaSecretMismatch">The verification code does not match the current MFA configuration. Please scan the latest QR code and use the newly generated verification code.</text>
+		<text name="MfaLockedOut">Too many failed MFA verification attempts. Account temporarily locked out.</text>
+		<text name="MfaNotEnabled">MFA has not been configured for this account.</text>
+		<text name="InvalidMfaToken">Invalid or expired MFA session token. Please sign in again.</text>
+		<text name="UserNotFound">User not found.</text>
 	</texts>
 
 </localizationDictionary>

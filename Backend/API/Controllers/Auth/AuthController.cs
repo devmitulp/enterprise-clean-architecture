@@ -30,18 +30,61 @@ namespace API.Controllers.Auth
         {
             var userAgent = Request.Headers.UserAgent.ToString();
             var timeZone = Request.Headers["X-Timezone"].ToString();
-            var tokenResult = await _authService.LoginAsync(request, userAgent, timeZone, ct);
+            var response = await _authService.LoginAsync(request, userAgent, timeZone, ct);
 
-            var userContext = GetUserContextFromToken(tokenResult.AccessToken);
-            var response = new LoginResponseDto
+            if (!response.RequiresMfa && !string.IsNullOrEmpty(response.AccessToken))
             {
-                AccessToken = tokenResult.AccessToken,
-                RefreshToken = tokenResult.RefreshToken,
-                RequiresMfa = false,
-                MfaToken = null,
-                UserContext = userContext
-            };
+                response.UserContext = GetUserContextFromToken(response.AccessToken);
+            }
 
+            return Ok(response);
+        }
+
+        [AllowAnonymous]
+        [EnableRateLimiting(RateLimitPolicies.Login)]
+        [HttpPost("mfa-verify")]
+        public async Task<IActionResult> VerifyMfa(
+            [FromBody] MfaVerifyRequestDto request,
+            CancellationToken ct)
+        {
+            var userAgent = Request.Headers.UserAgent.ToString();
+            var timeZone = Request.Headers["X-Timezone"].ToString();
+            var response = await _authService.VerifyMfaAsync(request, userAgent, timeZone, ct);
+
+            if (!response.RequiresMfa && !string.IsNullOrEmpty(response.AccessToken))
+            {
+                response.UserContext = GetUserContextFromToken(response.AccessToken);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost("mfa/setup")]
+        public async Task<IActionResult> SetupMfa(CancellationToken ct)
+        {
+            var response = await _authService.SetupMfaAsync(ct);
+            return Ok(response);
+        }
+
+        [HttpPost("mfa/enable")]
+        public async Task<IActionResult> EnableMfa(
+            [FromBody] MfaEnableRequestDto request,
+            CancellationToken ct)
+        {
+            var response = await _authService.EnableMfaAsync(request, ct);
+            return Ok(response);
+        }
+
+        [HttpPost("mfa/disable")]
+        public async Task<IActionResult> DisableMfa(
+            [FromBody] MfaDisableRequestDto request,
+            CancellationToken ct)
+        {
+            var response = await _authService.DisableMfaAsync(request, ct);
+            if (!response.Succeeded)
+            {
+                return BadRequest(response);
+            }
             return Ok(response);
         }
 
@@ -94,6 +137,8 @@ namespace API.Controllers.Auth
             var lastName = claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value ?? string.Empty;
             var roles = claims.Where(c => c.Type == ClaimTypes.Role || c.Type == "role").Select(c => c.Value).ToList();
             var permissions = claims.Where(c => c.Type == "permissions" || c.Type == "permission").Select(c => c.Value).ToList();
+            var mfaEnabledClaim = claims.FirstOrDefault(c => c.Type == "mfa_enabled")?.Value;
+            var isMfaEnabled = mfaEnabledClaim == "true";
 
             return new UserContextDto
             {
@@ -104,7 +149,8 @@ namespace API.Controllers.Auth
                 LastName = lastName,
                 FullName = $"{firstName} {lastName}".Trim(),
                 Roles = roles,
-                Permissions = permissions
+                Permissions = permissions,
+                IsMfaEnabled = isMfaEnabled
             };
         }
     }

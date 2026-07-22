@@ -90,6 +90,7 @@ export class AuthState {
       Permissions: permissionArray,
       TenantId: tenantId,
       Department: department,
+      IsMfaEnabled: claims['mfa_enabled'] === 'true' || claims['mfa_enabled'] === true,
     };
   }
 
@@ -136,6 +137,14 @@ export class AuthState {
     if (token) {
       const claims = this.tokenStorage.parseJwt(token);
       this._currentUser.set(claims);
+    }
+  }
+
+  public setMfaEnabledState(isEnabled: boolean): void {
+    const user = this._currentUser();
+    if (user) {
+      user['mfa_enabled'] = isEnabled ? 'true' : 'false';
+      this._currentUser.set({ ...user });
     }
   }
 

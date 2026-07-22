@@ -22,7 +22,12 @@ export const errorInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, n
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       // 1. Handle 401 Unauthorized (Trigger Silent Refresh Token flow)
-      if (error.status === 401 && !req.url.includes('/auth/login') && !req.url.includes('/auth/refresh')) {
+      if (
+        error.status === 401 &&
+        !req.url.includes('/auth/login') &&
+        !req.url.includes('/auth/refresh') &&
+        !req.url.includes('/auth/mfa-verify')
+      ) {
         if (!isRefreshing) {
           isRefreshing = true;
           refreshTokenSubject.next(null); // Reset subject to block concurrent requests

@@ -11,7 +11,13 @@ namespace Application.Features.Auth.DTOs
 
         public bool RequiresMfa { get; set; }
 
+        public bool IsMfaSetupRequired { get; set; }
+
         public string? MfaToken { get; set; }
+
+        public string? QrCodeSvg { get; set; }
+
+        public string? Secret { get; set; }
 
         public UserContextDto? UserContext { get; set; }
     }
@@ -37,5 +43,7 @@ namespace Application.Features.Auth.DTOs
         public string? TenantId { get; set; }
 
         public string? Department { get; set; }
+
+        public bool IsMfaEnabled { get; set; }
     }
 }

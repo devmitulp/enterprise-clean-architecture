@@ -24,6 +24,9 @@ namespace Infrastructure.Extensions
             // Service Context
             services.AddScoped<IServiceContext, ServiceContext>();
 
+            // Data Protection for MFA secret encryption
+            services.AddDataProtection();
+
             // Localization Service
             services.AddSingleton<ILocalizationService, LocalizationService>();
 
@@ -35,6 +38,9 @@ namespace Infrastructure.Extensions
 
             // Password Helper Service
             services.AddScoped<IPasswordHelper, PasswordHelper>();
+
+            // TOTP MFA Service
+            services.AddScoped<ITotpService, TotpService>();
 
             // Auth Service
             services.AddScoped<IAuthService, AuthService>();

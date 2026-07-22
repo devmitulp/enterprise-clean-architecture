@@ -19,6 +19,14 @@ namespace Domain.Entities.Users
 
         public string? ExternalProviderId { get; set; }
 
+        public string? MfaSecret { get; set; }
+
+        public int MfaFailedAttempts { get; set; }
+
+        public DateTime? MfaLockedUntilUtc { get; set; }
+
+        public string? MfaRecoveryCodes { get; set; } // Semicolon-delimited list of hashed recovery codes
+
         // Navigation Property
         public Employee Employee { get; set; } = default!;
 

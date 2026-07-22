@@ -1,6 +1,16 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { DestroyRef, FormBuilder, FormControl, FormGroup, SHARED_ANGULAR_MODULES, Validators, inject, signal, takeUntilDestroyed } from '@shared/angular';
+import {
+  DestroyRef,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  SHARED_ANGULAR_MODULES,
+  Validators,
+  inject,
+  signal,
+  takeUntilDestroyed,
+} from '@shared/angular';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ROUTE_PATHS } from '@constants';
 import { TextBoxComponent, PasswordComponent, CheckboxComponent } from '@form-controls';
@@ -18,7 +28,7 @@ import { LoginRequest } from '@models';
     TranslatePipe,
     PasswordComponent,
     CheckboxComponent,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -76,7 +86,8 @@ export class LoginComponent {
     // Each call to onSubmit() would normally create a new subscription.
     // The guard above ensures only ONE subscription is ever active at a time.
     // The request flows through: authInterceptor → errorInterceptor → loaderInterceptor → API
-    this.authService.login(request)
+    this.authService
+      .login(request)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
@@ -84,7 +95,12 @@ export class LoginComponent {
           this.logger.log('Successfully logged in.');
           if (response.RequiresMfa) {
             this.router.navigate([`/${this.routePaths.MFA}`], {
-              state: { mfaToken: response.MfaToken }
+              state: {
+                mfaToken: response.MfaToken,
+                isSetupRequired: response.IsMfaSetupRequired,
+                qrCodeSvg: response.QrCodeSvg,
+                secret: response.Secret,
+              },
             });
           } else if (response.AccessToken && response.RefreshToken) {
             this.authState.loginSuccess(response.AccessToken, response.RefreshToken);
@@ -93,9 +109,9 @@ export class LoginComponent {
         },
         error: (err) => {
           this.isSubmitting.set(false);
-          this.loginError.set(err.error?.message || 'Login failed. Please check your credentials.');
+          this.loginError.set(err.error?.Message || 'Login failed. Please check your credentials.');
           this.logger.error('[LoginComponent] Login error', err);
-        }
+        },
       });
   }
 

@@ -20,6 +20,18 @@ export class AuthService {
     return this.http.post<MfaVerifyRequest, LoginResponse>(API_ENDPOINTS.AUTH.MFA_VERIFY, request);
   }
 
+  setupMfa(): Observable<{ Secret: string; QrCodeSvg: string }> {
+    return this.http.post<void, { Secret: string; QrCodeSvg: string }>(API_ENDPOINTS.AUTH.MFA_SETUP, undefined);
+  }
+
+  enableMfa(request: { Code: string; Secret: string }): Observable<{ RecoveryCodes: string[] }> {
+    return this.http.post<{ Code: string; Secret: string }, { RecoveryCodes: string[] }>(API_ENDPOINTS.AUTH.MFA_ENABLE, request);
+  }
+
+  disableMfa(request: { Code: string }): Observable<any> {
+    return this.http.post<{ Code: string }, any>(API_ENDPOINTS.AUTH.MFA_DISABLE, request);
+  }
+
   logoutApi(): Observable<void> {
     const refreshToken = this.authTokenService.getRefreshToken() || '';
     return this.http.post<{ RefreshToken: string }, void>(API_ENDPOINTS.AUTH.LOGOUT, { RefreshToken: refreshToken });
