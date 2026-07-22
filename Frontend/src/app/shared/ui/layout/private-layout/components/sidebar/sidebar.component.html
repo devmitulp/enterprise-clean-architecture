@@ -1,0 +1,62 @@
+<!-- Mobile Backdrop Overlay -->
+@if (!isCollapsed()) {
+  <div
+    (click)="toggleSidebar.emit()"
+    class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 md:hidden transition-opacity duration-300"
+  ></div>
+}
+
+<aside
+  [class.-translate-x-full]="isCollapsed()"
+  [class.translate-x-0]="!isCollapsed()"
+  [class.md:w-64]="!isCollapsed()"
+  [class.md:w-20]="isCollapsed()"
+  [class.md:translate-x-0]="true"
+  class="fixed md:relative inset-y-0 left-0 z-40 h-full border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 transition-all duration-300 ease-in-out flex flex-col w-64 flex-shrink-0"
+>
+  <!-- Sidebar Brand -->
+  <div class="h-16 flex items-center px-4 border-b border-slate-200 dark:border-slate-800 gap-3">
+    <div class="flex items-center gap-3 overflow-hidden">
+      <div
+        class="flex h-10 w-10 min-w-10 items-center justify-center rounded-none bg-gradient-to-tr from-violet-600 to-indigo-600 text-white shadow-lg shadow-indigo-500/20 flex-shrink-0"
+      >
+        <i class="fa-regular fa-compass text-base"></i>
+      </div>
+      @if (!isCollapsed()) {
+        <span
+          class="text-lg font-bold tracking-tight bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent dark:from-violet-400 dark:to-indigo-400 truncate"
+        >
+          ANTIGRAVITY
+        </span>
+      }
+    </div>
+  </div>
+
+  <!-- Sidebar Navigation -->
+  <nav class="flex-grow py-4 px-3 space-y-1 overflow-y-auto">
+    @for (item of menuItems(); track item.route) {
+      <a
+        [routerLink]="[item.route]"
+        (click)="closeOnMobile()"
+        routerLinkActive="bg-violet-50 text-violet-600 dark:bg-violet-950/30 dark:text-violet-400 font-semibold"
+        class="flex items-center gap-4 px-3 py-3 rounded-none hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-200 group"
+      >
+        <i
+          [class]="item.icon + ' text-lg transition-transform duration-200 group-hover:scale-110 flex-shrink-0'"
+        ></i>
+        @if (!isCollapsed()) {
+          <span class="text-sm font-medium whitespace-nowrap">{{ item.label | translate }}</span>
+        }
+      </a>
+    }
+  </nav>
+
+  <!-- Sidebar Footer -->
+  <div class="p-4 border-t border-slate-200 dark:border-slate-800 text-center text-xs h-12 flex items-center justify-center text-slate-500 dark:text-slate-400 font-medium">
+    @if (!isCollapsed()) {
+      <span>Version : 1.0.0</span>
+    } @else {
+      <span class="hidden md:inline">v1.0</span>
+    }
+  </div>
+</aside>

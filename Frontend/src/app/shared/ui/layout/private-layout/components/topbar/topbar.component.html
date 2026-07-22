@@ -1,0 +1,174 @@
+<header
+  class="h-16 flex-shrink-0 border-b border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md flex items-center justify-between px-6 z-10 transition-colors duration-300"
+>
+  <!-- Toolbar Left: Menu Toggle & Breadcrumb -->
+  <div class="flex items-center gap-4">
+    <button
+      (click)="toggleSidebar.emit()"
+      [attr.aria-label]="'ToggleSidebar' | translate"
+      class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none"
+    >
+      <i class="fa-solid fa-bars text-base"></i>
+    </button>
+
+    <!-- Breadcrumb -->
+    <nav
+      class="hidden md:flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400"
+    >
+      <span class="hover:text-slate-800 dark:hover:text-white cursor-pointer">{{
+        'Workspace' | translate
+      }}</span>
+      <i class="fa-solid fa-chevron-right text-base"></i>
+      <span class="text-slate-800 dark:text-white font-semibold">{{
+        'Dashboard' | translate
+      }}</span>
+    </nav>
+  </div>
+
+  <!-- Toolbar Right: Language Switch, Theme Switch, Notifications, Settings, Profile -->
+  <div class="flex items-center gap-2">
+    <!-- Language Switcher -->
+    <div class="relative">
+      <button
+        (click)="toggleLanguageMenu()"
+        [title]="'ToggleLanguage' | translate"
+        [attr.aria-label]="'ToggleLanguage' | translate"
+        class="flex items-center gap-1.5 p-2 rounded-none text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-colors"
+      >
+        <i class="fa-solid fa-globe text-base"></i>
+        <span class="text-xs font-semibold uppercase">{{ currentLang() }}</span>
+      </button>
+
+      @if (isLanguageMenuOpen()) {
+        <div
+          class="absolute right-0 mt-2 w-32 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl py-2 z-50"
+        >
+          @for (lang of availableLanguages; track lang.Code) {
+            <button
+              (click)="changeLanguage(lang.Code)"
+              [class.text-violet-600]="currentLang() === lang.Code"
+              [class.dark:text-violet-400]="currentLang() === lang.Code"
+              [class.font-semibold]="currentLang() === lang.Code"
+              class="w-full text-left flex items-center justify-between px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+            >
+              <span>{{ lang.Name }}</span>
+              @if (currentLang() === lang.Code) {
+                <i class="fa-solid fa-check text-base"></i>
+              }
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Theme Switch -->
+    <button
+      (click)="toggleTheme()"
+      [title]="'ToggleTheme' | translate"
+      [attr.aria-label]="'ToggleTheme' | translate"
+      class="p-2 rounded-none text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-colors"
+    >
+      <i
+        [class]="isDarkMode() ? 'fa-regular fa-sun' : 'fa-regular fa-moon'"
+        class="text-base"
+      ></i>
+    </button>
+
+    <!-- Notification Area -->
+    <div class="relative">
+      <button
+        (click)="toggleNotifications()"
+        [attr.aria-label]="'Notifications' | translate"
+        class="p-2 rounded-none text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none relative"
+      >
+        <i class="fa-regular fa-bell text-base"></i>
+        <span
+          class="absolute top-1.5 right-1.5 h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-white dark:ring-slate-900"
+        ></span>
+      </button>
+
+      @if (isNotificationsOpen()) {
+        <div
+          class="absolute right-0 mt-2 w-80 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl py-3 px-4 z-50"
+        >
+          <div
+            class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800"
+          >
+            <span class="font-semibold text-sm">{{ 'Notifications' | translate }}</span>
+            <span
+              class="text-[10px] text-violet-600 dark:text-violet-400 font-semibold cursor-pointer"
+              >{{ 'MarkAsRead' | translate }}</span
+            >
+          </div>
+          <div class="py-3 text-center text-xs text-slate-500">
+            {{ 'NoNotifications' | translate }}.
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Settings Icon -->
+    <a
+      [routerLink]="[routePaths.SETTINGS]"
+      [attr.aria-label]="'Settings' | translate"
+      class="p-2 rounded-none text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none"
+    >
+      <i class="fa-solid fa-cog text-base"></i>
+    </a>
+
+    <!-- Divider -->
+    <span class="h-6 w-px bg-slate-200 dark:bg-slate-800 mx-1"></span>
+
+    <!-- User Profile Menu -->
+    <div class="relative">
+      <button
+        (click)="toggleProfileMenu()"
+        class="flex items-center gap-2 p-1.5 rounded-none hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-none transition-all"
+      >
+        <div
+          class="h-8 w-8 rounded-lg bg-gradient-to-tr from-violet-500 to-indigo-500 text-white flex items-center justify-center font-bold text-sm shadow-sm"
+        >
+          {{ userInitials() }}
+        </div>
+        <div class="hidden sm:block text-left">
+          <p class="text-xs font-semibold leading-none">{{ userContext()?.FullName }}</p>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
+            {{ 'Administrator' | translate }}
+          </p>
+        </div>
+        <i class="fa-solid fa-chevron-down text-base text-slate-400"></i>
+      </button>
+
+      @if (isProfileMenuOpen()) {
+        <div
+          class="absolute right-0 mt-2 w-56 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl py-2 z-50"
+        >
+          <div class="px-4 py-2 border-b border-slate-100 dark:border-slate-800">
+            <p class="text-xs text-slate-400">{{ 'SignedInAs' | translate }}</p>
+            <p class="text-sm font-semibold truncate">{{ userContext()?.EmailAddress }}</p>
+          </div>
+          <a
+            href="#"
+            class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+          >
+            <i class="fa-regular fa-user text-base"></i> {{ 'MyProfile' | translate }}
+          </a>
+          <a
+            [routerLink]="[routePaths.SETTINGS]"
+            class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+          >
+            <i class="fa fa-sliders text-base"></i> {{ 'Settings' | translate }}
+          </a>
+          <div class="border-t border-slate-100 dark:border-slate-800 my-1"></div>
+          <button
+            (click)="logout()"
+            class="w-full text-left flex items-center gap-3 px-4 py-2 text-sm text-rose-600 dark:text-rose-400 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+          >
+            <i class="fa fa-arrow-right-from-bracket text-base"></i>
+            {{ 'SignOut' | translate }}
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</header>
