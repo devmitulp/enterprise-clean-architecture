@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal, HostListener } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ROUTE_PATHS } from '@constants';
 import { NavItem, SidebarComponent, TopbarComponent, FooterComponent } from './components';
@@ -34,6 +34,17 @@ export class PrivateLayoutComponent {
   ]);
 
   readonly authorizedMenuItems = computed(() => this.menuItems());
+
+  @HostListener('window:resize')
+  onResize(): void {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth < 768) {
+        this.isSidebarCollapsed.set(true);
+      } else {
+        this.isSidebarCollapsed.set(false);
+      }
+    }
+  }
 
   toggleSidebar(): void {
     this.isSidebarCollapsed.update((val) => !val);
