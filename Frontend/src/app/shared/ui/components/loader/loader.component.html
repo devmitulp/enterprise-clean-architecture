@@ -1,19 +1,92 @@
 @if (isLoading()) {
+  <!-- Full-Screen IRCTC Beta Style Light Overlay with Strict Interaction Blocking -->
   <div
-    class="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-900/60 backdrop-blur-md transition-all duration-300 animate-fade-in"
+    class="fixed inset-0 z-[99999] flex items-center justify-center bg-slate-500/15 dark:bg-black/30 pointer-events-auto select-none touch-none transition-all duration-300 animate-fade-in"
+    (click)="$event.stopPropagation(); $event.preventDefault()"
+    (keydown)="$event.stopPropagation(); $event.preventDefault()"
+    (mousedown)="$event.stopPropagation(); $event.preventDefault()"
   >
+    <!-- IRCTC Beta Style Semi-Transparent Frosted Glass Box Container -->
     <div
-      class="flex flex-col items-center justify-center gap-4 p-8 rounded-3xl bg-white/10 dark:bg-slate-950/20 border border-white/20 dark:border-slate-800/30 shadow-2xl backdrop-blur-xl"
+      class="flex flex-col z-[99999] items-center justify-center p-8 rounded-3xl bg-white/25 dark:bg-slate-900/35 border border-white/40 dark:border-slate-700/40 shadow-2xl backdrop-blur-md"
     >
-      <!-- Premium Spinner -->
-      <div class="relative flex h-16 w-16 items-center justify-center">
-        <div
-          class="absolute inset-0 rounded-full border-4 border-t-indigo-600 border-r-violet-600 border-b-slate-200/20 border-l-slate-200/20 animate-spin"
-        ></div>
-        <div
-          class="absolute h-10 w-10 rounded-full bg-gradient-to-tr from-violet-500/20 to-indigo-500/20 blur-sm"
-        ></div>
-        <i class="fa-regular fa-compass text-base text-indigo-500 animate-pulse"></i>
+      <!-- Concentric Dashed Multi-Ring Spinner (IRCTC Beta Exact Style) -->
+      <div class="relative flex h-24 w-24 items-center justify-center">
+        <svg
+          class="h-full w-full"
+          viewBox="0 0 100 100"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!-- Outer Ring (Clockwise) -->
+          <g class="animate-spin-clockwise">
+            <circle
+              cx="50"
+              cy="50"
+              r="40"
+              stroke="var(--color-primary-600)"
+              stroke-width="3.5"
+              stroke-linecap="round"
+              stroke-dasharray="4 6"
+            />
+            <circle
+              cx="50"
+              cy="50"
+              r="40"
+              stroke="var(--color-secondary-600)"
+              stroke-width="3.5"
+              stroke-linecap="round"
+              stroke-dasharray="4 6"
+              stroke-dashoffset="62"
+            />
+          </g>
+
+          <!-- Middle Ring (Counter-Clockwise) -->
+          <g class="animate-spin-counterclockwise">
+            <circle
+              cx="50"
+              cy="50"
+              r="28"
+              stroke="var(--color-secondary-600)"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-dasharray="3.5 5.5"
+            />
+            <circle
+              cx="50"
+              cy="50"
+              r="28"
+              stroke="var(--color-primary-600)"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-dasharray="3.5 5.5"
+              stroke-dashoffset="44"
+            />
+          </g>
+
+          <!-- Inner Ring (Clockwise) -->
+          <g class="animate-spin-clockwise-fast">
+            <circle
+              cx="50"
+              cy="50"
+              r="18"
+              stroke="var(--color-primary-600)"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-dasharray="3.5 5"
+            />
+            <circle
+              cx="50"
+              cy="50"
+              r="18"
+              stroke="var(--color-secondary-600)"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-dasharray="3.5 5"
+              stroke-dashoffset="25"
+            />
+          </g>
+        </svg>
       </div>
     </div>
   </div>

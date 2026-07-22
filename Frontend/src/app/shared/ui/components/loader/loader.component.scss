@@ -1,14 +1,45 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
-    backdrop-filter: blur(0px);
   }
   to {
     opacity: 1;
-    backdrop-filter: blur(8px);
   }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+@keyframes spinClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinCounterClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.animate-spin-clockwise {
+  animation: spinClockwise 3.5s linear infinite;
+  transform-origin: center;
+}
+
+.animate-spin-counterclockwise {
+  animation: spinCounterClockwise 2.5s linear infinite;
+  transform-origin: center;
+}
+
+.animate-spin-clockwise-fast {
+  animation: spinClockwise 1.8s linear infinite;
+  transform-origin: center;
 }
