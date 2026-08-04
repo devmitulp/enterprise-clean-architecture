@@ -1,5 +1,6 @@
 using Domain.Common;
 using Domain.Entities.Employees;
+using Domain.Entities.Roles;
 using Domain.Entities.UserSessions;
 using Domain.Enums;
 
@@ -31,5 +32,7 @@ namespace Domain.Entities.Users
         public Employee Employee { get; set; } = default!;
 
         public ICollection<UserSession> UserSessions { get; set; } = new List<UserSession>();
+
+        public ICollection<UserRole> UserRoles { get; set; } = new List<Roles.UserRole>();
     }
 }

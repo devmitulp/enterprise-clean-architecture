@@ -42,6 +42,12 @@
 		<text name="Invalid">
 			{0} is invalid.
 		</text>
+
+		<text name="ValidEnum">
+			{0} is not a valid value.
+		</text>
+
+
 		
 		<text name="JobTitleAlreadyExists">Job title '{0}' already exists.</text>
 		<text name="JobTitleIdRequiredForUpdate">Id is required to update a job title.</text>

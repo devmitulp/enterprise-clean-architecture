@@ -1,5 +1,6 @@
 using Application.Common.Interfaces.Localization;
 using FluentValidation;
+using System.Collections.Generic;
 
 namespace Application.Common.Extensions
 {
@@ -48,10 +49,9 @@ namespace Application.Common.Extensions
             TProperty valueToCompare,
             ILocalizationService localizer,
             Func<T, bool>? condition = null)
-            where TProperty : IComparable<TProperty>, IComparable
         {
             var options = ruleBuilder
-                .GreaterThan(valueToCompare)
+                .Must(x => x is null || Comparer<TProperty>.Default.Compare(x, valueToCompare) > 0)
                 .WithMessage(
                     localizer.L(
                         "GreaterThan",
@@ -60,22 +60,55 @@ namespace Application.Common.Extensions
 
             return condition != null ? options.When(condition) : options;
         }
-
-        public static IRuleBuilderOptions<T, int?>
-        GreaterThanValidation<T>(
-            this IRuleBuilder<T, int?> ruleBuilder,
+        public static IRuleBuilderOptions<T, int>
+        ValidEnumValidation<T, TEnum>(
+            this IRuleBuilder<T, int> ruleBuilder,
             string propertyName,
-            int valueToCompare,
+            ILocalizationService localizer,
+            Func<T, bool>? condition = null)
+            where TEnum : struct, Enum
+        {
+            var options = ruleBuilder
+                .Must(x => Enum.IsDefined(typeof(TEnum), x))
+                .WithMessage(localizer.L("ValidEnum", propertyName));
+
+            return condition != null ? options.When(condition) : options;
+        }
+
+        public static IRuleBuilderOptions<T, TProperty>
+        MinValidation<T, TProperty>(
+            this IRuleBuilder<T, TProperty> ruleBuilder,
+            string propertyName,
+            TProperty min,
             ILocalizationService localizer,
             Func<T, bool>? condition = null)
         {
             var options = ruleBuilder
-                .GreaterThan(valueToCompare)
+                .Must(x => x is null || Comparer<TProperty>.Default.Compare(x, min) >= 0)
                 .WithMessage(
                     localizer.L(
-                        "GreaterThan",
+                        "Min",
                         propertyName,
-                        valueToCompare));
+                        min));
+
+            return condition != null ? options.When(condition) : options;
+        }
+
+        public static IRuleBuilderOptions<T, TProperty>
+        MaxValidation<T, TProperty>(
+            this IRuleBuilder<T, TProperty> ruleBuilder,
+            string propertyName,
+            TProperty max,
+            ILocalizationService localizer,
+            Func<T, bool>? condition = null)
+        {
+            var options = ruleBuilder
+                .Must(x => x is null || Comparer<TProperty>.Default.Compare(x, max) <= 0)
+                .WithMessage(
+                    localizer.L(
+                        "Max",
+                        propertyName,
+                        max));
 
             return condition != null ? options.When(condition) : options;
         }

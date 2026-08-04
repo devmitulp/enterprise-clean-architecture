@@ -32,6 +32,12 @@ namespace Persistence.Context
 
         public DbSet<UserSession> UserSessions => Set<UserSession>();
 
+        public DbSet<Domain.Entities.Roles.Role> Roles => Set<Domain.Entities.Roles.Role>();
+        
+        public DbSet<Domain.Entities.Roles.UserRole> UserRoles => Set<Domain.Entities.Roles.UserRole>();
+        
+        public DbSet<Domain.Entities.Roles.RolePermission> RolePermissions => Set<Domain.Entities.Roles.RolePermission>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

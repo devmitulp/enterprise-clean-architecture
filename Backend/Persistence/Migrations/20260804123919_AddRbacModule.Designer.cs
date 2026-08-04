@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Context;
 
@@ -11,9 +12,11 @@ using Persistence.Context;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260804123919_AddRbacModule")]
+    partial class AddRbacModule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,18 +301,6 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDateUtc = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "System administrator with full access to all features.",
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Product Admin",
-                            RoleType = 1
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Roles.RolePermission", b =>
@@ -389,17 +380,6 @@ namespace Persistence.Migrations
                         .IsUnique();
 
                     b.ToTable("UserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedDateUtc = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            IsActive = true,
-                            IsDeleted = false,
-                            RoleId = 1,
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.UserSessions.UserSession", b =>
