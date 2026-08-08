@@ -21,6 +21,9 @@
 
 		<text name="JobTitleAlreadyExists">જોબ શીર્ષક '{0}' પહેલેથી અસ્તિત્વમાં છે.</text>
 		<text name="JobTitleIdRequiredForUpdate">જોબ શીર્ષક અપડેટ કરવા માટે આઈડી જરૂરી છે.</text>
+		<text name="RoleAlreadyExists">રોલ '{0}' પહેલેથી અસ્તિત્વમાં છે.</text>
+		<text name="RoleIdRequiredForUpdate">રોલ અપડેટ કરવા માટે આઈડી જરૂરી છે.</text>
+		<text name="CannotManageProductAdminRole">પ્રોડક્ટ એડમિન રોલ સંસ્થાના સંચાલકો દ્વારા સંચાલિત કરી શકાતા નથી.</text>
 		<text name="InvalidToken">અમાન્ય એક્સેસ ટોકન અથવા રિફ્રેશ ટોકન.</text>
 		<text name="EntityNotFound">આઇડેન્ટિફાયર '{1}' સાથેનું {0} મળ્યું નથી.</text>
 		<text name="LoggedOutSuccessfully">સફળતાપૂર્વક લોગ આઉટ થયા.</text>
